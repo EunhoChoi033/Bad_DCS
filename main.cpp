@@ -1,6 +1,7 @@
 #include <iostream>
 #include <raylib.h>
-#include "aircraft.hpp"
+#include "game.hpp"
+#include "enemy.hpp"
 
 using namespace std;
 
@@ -10,16 +11,22 @@ int main () {
     int windowWidth = 750;
     int windowHeight = 750;
 
-    InitWindow(windowWidth, windowHeight, "Game Window C++");
+    InitWindow(windowWidth, windowHeight, "Bad DCS");
     SetTargetFPS(60);
 
-    Aircraft aircraft;
+   Game game;
+   Enemy enemy = Enemy({100, 100});
 
     while(!WindowShouldClose()) {
         
         BeginDrawing();
         ClearBackground(grey);
-        aircraft.Draw();
+
+        game.HandleInput();
+        game.Update();
+
+        game.Draw();
+        enemy.Draw();
         
         EndDrawing();
     }
