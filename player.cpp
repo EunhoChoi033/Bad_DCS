@@ -2,8 +2,8 @@
 
 Player::Player() {
     image = LoadTexture("Graphics/jet.png");
-    image.height /= 20;
-    image.width /= 20;
+    image.height /= 25;
+    image.width /= 25;
     position.x = (GetScreenWidth() - image.width)/2;
     position.y = GetScreenHeight() - image.height;
     fireCooldown = 0.0;

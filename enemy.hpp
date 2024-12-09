@@ -7,6 +7,7 @@ class Enemy {
         void Draw();
         void MoveDown();
         void Update();
+        void FireBullet();
         bool alive;
     private:
     Texture2D image;

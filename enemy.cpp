@@ -1,6 +1,6 @@
 #include "enemy.hpp"
 #include <cstdlib>
-#include <iostream>
+// #include <iostream>
 
 using namespace std;
 
@@ -8,8 +8,8 @@ Enemy::Enemy(Vector2 position) {
     this -> position = position;
     
     image = LoadTexture("Graphics/jet2.png");
-    image.height /= 20;
-    image.width /= 20;
+    image.height /= 25;
+    image.width /= 25;
     movementCooldown = 0.0;
 }
 
@@ -26,54 +26,30 @@ void Enemy::MoveDown() {
 }
 
 void Enemy::Update() {
-    if (GetTime() - movementCooldown >= 0.02) {
+    if (GetTime() - movementCooldown >= 1) {
         movementDecider = rand() % 3;
+        movementCooldown = GetTime();
+        // cout << "Movement decider changed to " << movementDecider << endl;
     }
-
-    cout << movementDecider << endl;
     
     switch(movementDecider) {
     case 0:
         if (position.x > 0) {
             position.x -= 5;
-            movementCooldown = GetTime();
         }
         break;
     
     case 1:
         if (position.x < (GetScreenWidth() - image.width)) {
             position.x += 5;
-            movementCooldown = GetTime();
         }
         break;
 
-    case 2:
-        break;
+    // case 2:
+    //     break;
     }
-    // switch(rand() % 3){
-    //     case 0:
-    //         if (position.x > 0) {
-    //             if (GetTime() - movementCooldown >= 1) {
-    //                 position.x -= 5;
-    //                 movementCooldown = GetTime();
-    //             } else {
-    //                 position.x += 5;
-    //             }
-    //         }
-    //         break;
+}
 
-    //     case 1:
-    //         if (position.x < GetScreenWidth() - image.width) {
-    //             if (GetTime() - movementCooldown >= 1) {
-    //                 position.x += 5;
-    //                 movementCooldown = GetTime();
-    //             } else {
-    //                 position.x -= 5;
-    //             }
-    //         }
-    //         break;
-
-    //     case 2:
-    //         break;
-    // }
+void Enemy::FireBullet() {
+    
 }
