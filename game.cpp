@@ -2,8 +2,11 @@
 #include <vector>
 #include <cstdlib>
 
-Game::Game() { 
-    vector<Enemy> enemies;
+using namespace std;
+
+Game::Game(int numEnemies) { 
+    this -> numEnemies = numEnemies;
+    enemies = CreateEnemies(numEnemies);
 }
 
 Game::~Game() {
@@ -19,6 +22,11 @@ void Game::Update() {
         bullet.Update();
     }
 
+    for (auto& enemy: enemies) {
+        enemy.MoveDown();
+        enemy.Update();
+    }
+
     DeleteBullets();
     // enemy.MoveDown();
 }
@@ -31,6 +39,10 @@ void Game::Draw() {
 
     for (auto& bullet: player.bullets) {
         bullet.Draw();
+    }
+
+    for (auto& enemy: enemies) {
+        enemy.Draw();
     }
 }
 
@@ -49,10 +61,16 @@ void Game::HandleInput() {
     }
 }
 
-vector<Enemy> Game::CreateEnemies(vector<Enemy> enemies) {
-    int posx = rand() % (GetScreenWidth() + 1);
-    
-    enemies.push_back(Enemy({posx, 100}));
+vector<Enemy> Game::CreateEnemies(int numEnemies) {
+    vector<Enemy> enemies;
+    for (int i = 0; i < numEnemies; i++) {
+        float posHorizontal = rand() % (GetScreenWidth() + 1);
+        float posVertical = (rand() % (GetScreenWidth() + 1)) * -1;
+        
+        enemies.push_back(Enemy({posHorizontal, posVertical}));
+    }
+
+    return enemies;
 }
 
 /*

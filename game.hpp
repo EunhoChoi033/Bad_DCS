@@ -7,14 +7,15 @@ using namespace std;
 
 class Game {
     public:
-        Game();
+        Game(int numEnemies);
         ~Game();
         void Draw();
         void Update();
         void HandleInput();
-        vector<Enemy> CreateEnemies(vector<Enemy> enemies);
     private:
         void DeleteBullets();
+        int numEnemies;
         Player player;
         vector<Enemy> enemies;
+        vector<Enemy> CreateEnemies(int numEnemies);
 };

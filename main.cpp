@@ -14,9 +14,7 @@ int main () {
     InitWindow(windowWidth, windowHeight, "Bad DCS");
     SetTargetFPS(60);
 
-   Game game;
-   Enemy enemy = Enemy({100, 100});
-
+   Game game(2);
     while(!WindowShouldClose()) {
         
         BeginDrawing();
@@ -26,7 +24,6 @@ int main () {
         game.Update();
 
         game.Draw();
-        enemy.Draw();
         
         EndDrawing();
     }
