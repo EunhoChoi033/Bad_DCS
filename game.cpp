@@ -23,12 +23,18 @@ void Game::Update() {
     }
 
     for (auto& enemy: enemies) {
+        for (auto& bullet: enemy.bullets) {
+            bullet.Update();
+        }
+    }
+
+    for (auto& enemy: enemies) {
         enemy.MoveDown();
         enemy.Update();
+        enemy.FireBullet();
     }
 
     DeleteBullets();
-    // enemy.MoveDown();
 }
 
 /*
@@ -39,6 +45,12 @@ void Game::Draw() {
 
     for (auto& bullet: player.bullets) {
         bullet.Draw();
+    }
+
+    for (auto& enemy: enemies) {
+        for (auto& bullet: enemy.bullets) {
+            bullet.Draw();
+        }
     }
 
     for (auto& enemy: enemies) {
@@ -81,7 +93,7 @@ void Game::DeleteBullets() {
         if (!it -> active) {
             it = player.bullets.erase(it);
         } else {
-            ++ it;
+            it++;
         }
     }
 }

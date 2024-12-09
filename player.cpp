@@ -1,4 +1,5 @@
 #include "player.hpp"
+#include <iostream>
 
 Player::Player() {
     image = LoadTexture("Graphics/jet.png");
@@ -39,5 +40,6 @@ void Player::FireBullet() {
         bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y}, 
         -6));
         fireCooldown = GetTime();
+        // cout << bullets.size() << endl;
     }
 }

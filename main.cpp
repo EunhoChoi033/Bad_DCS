@@ -14,7 +14,7 @@ int main () {
     InitWindow(windowWidth, windowHeight, "Bad DCS");
     SetTargetFPS(60);
 
-   Game game(2);
+   Game game(5);
     while(!WindowShouldClose()) {
         
         BeginDrawing();
