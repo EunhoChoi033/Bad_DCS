@@ -13,6 +13,7 @@ Player::Player() {
 // Removes the plane once game ends
 Player::~Player() {
     UnloadTexture(image);
+    cout << "Cya" << endl;
 }
 
 // Draws player's plane
@@ -22,14 +23,14 @@ void Player::Draw() {
 
 // Makes the player's plane move left
 void Player::MoveLeft() {
-    if (position.x != 0) {
+    if (position.x >= 0) {
        position.x -= 5; 
     }
 }
 
 // Makes the players plane move right
 void Player::MoveRight() {
-    if (position.x != GetScreenWidth() - image.width) {
+    if (position.x <= GetScreenWidth() - image.width) {
        position.x += 5; 
     }
 }
@@ -38,7 +39,7 @@ void Player::MoveRight() {
 void Player::FireBullet() {
     if (GetTime() - fireCooldown >= 0.1) {
         bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y}, 
-        -6));
+        -6, 0));
         fireCooldown = GetTime();
         // cout << bullets.size() << endl;
     }

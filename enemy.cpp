@@ -8,8 +8,8 @@ Enemy::Enemy(Vector2 position) {
     this -> position = position;
     
     image = LoadTexture("Graphics/jet2.png");
-    image.height /= 25;
-    image.width /= 25;
+    image.height /= 30;
+    image.width /= 30;
     movementCooldown = 0.0;
     fireCooldown = 0.0;
 }
@@ -22,10 +22,14 @@ void Enemy::Draw() {
 // Moves the plane down
 void Enemy::MoveDown() {
     if (position.y < GetScreenHeight()) {
-        position.y += 2;
+        position.y += 1;
     }
 }
 
+/*
+Randomly makes the enemy move to the left, right, or continue down straight
+after a certain period of time
+*/
 void Enemy::Update() {
     if (GetTime() - movementCooldown >= 0.5) {
         movementDecider = rand() % 3;
@@ -53,9 +57,9 @@ void Enemy::Update() {
 
 void Enemy::FireBullet() {
     if (GetTime() - fireCooldown >= 1) {
-        bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y}, 
-        6));
+        bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y +
+        image.height/2 - 7}, 6, 1));
         fireCooldown = GetTime();
-        cout << "FIRE" << endl;
+        // cout << "FIRE" << endl;
     }
 }

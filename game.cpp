@@ -77,7 +77,7 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
     vector<Enemy> enemies;
     for (int i = 0; i < numEnemies; i++) {
         float posHorizontal = rand() % (GetScreenWidth() + 1);
-        float posVertical = (rand() % (GetScreenWidth() + 1)) * -1;
+        float posVertical = (rand() % (GetScreenWidth() + 1)) * -2;
         
         enemies.push_back(Enemy({posHorizontal, posVertical}));
     }
@@ -86,7 +86,8 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
 }
 
 /*
-Removes bullets when they are out of sight
+Removes bullets when they are out of sight, one for player bullets and
+the other for enemy bullets
 */
 void Game::DeleteBullets() {
     for (auto it = player.bullets.begin(); it != player.bullets.end();) {
@@ -94,6 +95,16 @@ void Game::DeleteBullets() {
             it = player.bullets.erase(it);
         } else {
             it++;
+        }
+    }
+
+    for (auto& enemy: enemies) {
+        for (auto it = enemy.bullets.begin(); it != enemy.bullets.end();) {
+            if (!it -> active) {
+                it = enemy.bullets.erase(it);
+            } else {
+                it++;
+            }
         }
     }
 }
