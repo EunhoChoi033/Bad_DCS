@@ -13,10 +13,13 @@ int main () {
     InitWindow(windowWidth, windowHeight, "Game Window C++");
     SetTargetFPS(60);
 
+    Aircraft aircraft;
+
     while(!WindowShouldClose()) {
         
         BeginDrawing();
         ClearBackground(grey);
+        aircraft.Draw();
         
         EndDrawing();
     }
