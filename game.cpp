@@ -117,7 +117,7 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
 }
 
 /*
-Removes bullets when they are out of sight, one for player bullets and
+Removes bullets when they are not active, one for player bullets and
 the other for enemy bullets
 */
 void Game::DeleteBullets() {
