@@ -89,6 +89,7 @@ void Game::CheckCollisions() {
     for (auto& bullet: enemyBullets) {
         if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
             bullet.active = false;
+            player.playerHit();
             cout << "Player hit" << endl;
         }
     }

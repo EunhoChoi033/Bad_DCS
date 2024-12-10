@@ -9,6 +9,7 @@ Player::Player() {
     position.y = GetScreenHeight() - image.height;
     fireCooldown = 0.0;
     damageCooldown = 0.0;
+    Color color = WHITE;
 }
 
 // Removes the plane once game ends
@@ -18,7 +19,7 @@ Player::~Player() {
 
 // Draws player's plane
 void Player::Draw() {
-    DrawTextureV(image, position, WHITE);
+    DrawTextureV(image, position, color);
 }
 
 // Makes the player's plane move left
@@ -47,4 +48,11 @@ void Player::FireBullet() {
 
 Rectangle Player::getRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
+}
+
+void Player::playerHit() {
+    while(GetTime() - damageCooldown <= 3) {
+        color = RED;
+    }
+    color = WHITE;
 }

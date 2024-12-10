@@ -14,10 +14,12 @@ class Player{
         void MoveRight();
         void FireBullet();
         Rectangle getRect();
+        void playerHit();
         vector<Bullet> bullets;
     private:
         Texture2D image;
         Vector2 position;
         double fireCooldown;
         double damageCooldown;
+        Color color;
 };
