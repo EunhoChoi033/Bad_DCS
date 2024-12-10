@@ -13,9 +13,11 @@ class Player{
         void MoveLeft();
         void MoveRight();
         void FireBullet();
+        Rectangle getRect();
         vector<Bullet> bullets;
     private:
         Texture2D image;
         Vector2 position;
         double fireCooldown;
+        double damageCooldown;
 };

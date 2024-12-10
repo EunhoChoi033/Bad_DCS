@@ -6,6 +6,7 @@ class Bullet {
         Bullet(Vector2 position, int speed, int id);
         void Update();
         void Draw();
+        Rectangle getRect();
         bool active;
     private:
         // Texture2D image;

@@ -14,10 +14,18 @@ Bullet::Bullet(Vector2 position, int speed, int id) {
 
 // Draws bullets
 void Bullet::Draw() {
-    // DrawTextureV(image, position, WHITE);
     if (active) {
         DrawRectangle(position.x, position.y, 4, 15, {245, 184, 105, 255});
     }
+}
+
+Rectangle Bullet::getRect() {
+    Rectangle rect;
+    rect.x = position.x;
+    rect.y = position.y;
+    rect.width = 4;
+    rect.height = 15;
+    return rect;
 }
 
 void Bullet::Update() {

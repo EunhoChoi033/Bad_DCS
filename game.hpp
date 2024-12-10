@@ -12,10 +12,13 @@ class Game {
         void Draw();
         void Update();
         void HandleInput();
+        void CheckCollisions();
     private:
         void DeleteBullets();
         int numEnemies;
+        int enemyFireCooldown;
         Player player;
         vector<Enemy> enemies;
         vector<Enemy> CreateEnemies(int numEnemies);
+        vector<Bullet> enemyBullets;
 };

@@ -10,7 +10,9 @@ Game::Game(int numEnemies) {
 }
 
 Game::~Game() {
-
+    for (auto& enemy: enemies) {
+        enemy.UnloadImages();
+    }
 }
 
 /*
@@ -22,19 +24,18 @@ void Game::Update() {
         bullet.Update();
     }
 
-    for (auto& enemy: enemies) {
-        for (auto& bullet: enemy.bullets) {
-            bullet.Update();
-        }
+    for (auto& bullet: enemyBullets) {
+        bullet.Update();
     }
 
     for (auto& enemy: enemies) {
         enemy.MoveDown();
         enemy.Update();
-        enemy.FireBullet();
+        enemy.FireBullet(enemyBullets);
     }
 
     DeleteBullets();
+    CheckCollisions();
 }
 
 /*
@@ -47,10 +48,8 @@ void Game::Draw() {
         bullet.Draw();
     }
 
-    for (auto& enemy: enemies) {
-        for (auto& bullet: enemy.bullets) {
-            bullet.Draw();
-        }
+    for (auto& bullet: enemyBullets) {
+        bullet.Draw();
     }
 
     for (auto& enemy: enemies) {
@@ -73,8 +72,40 @@ void Game::HandleInput() {
     }
 }
 
+void Game::CheckCollisions() {
+    // Player's bullets
+    for (auto& bullet: player.bullets) {
+        for(auto it = enemies.begin(); it != enemies.end();) {
+            if(CheckCollisionRecs(it -> getRect(), bullet.getRect())) {
+                it = enemies.erase(it);
+                bullet.active = false;
+            } else {
+                it++;
+            }
+        }
+    }
+
+    // Enemy's bullets
+    for (auto& bullet: enemyBullets) {
+        if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
+            bullet.active = false;
+            cout << "Player hit" << endl;
+        }
+    }
+
+    // Enemy collides with Player, or vice versa
+    for (auto it = enemies.begin(); it != enemies.end();) {
+        if(CheckCollisionRecs(it -> getRect(), player.getRect())) {
+            it = enemies.erase(it);
+            cout << "Spaceship done" << endl;
+        } else {
+            it++;
+        }
+    }
+}
+
 vector<Enemy> Game::CreateEnemies(int numEnemies) {
-    vector<Enemy> enemies;
+
     for (int i = 0; i < numEnemies; i++) {
         float posHorizontal = rand() % (GetScreenWidth() + 1);
         float posVertical = (rand() % (GetScreenWidth() + 1)) * -2;
@@ -98,13 +129,11 @@ void Game::DeleteBullets() {
         }
     }
 
-    for (auto& enemy: enemies) {
-        for (auto it = enemy.bullets.begin(); it != enemy.bullets.end();) {
-            if (!it -> active) {
-                it = enemy.bullets.erase(it);
-            } else {
-                it++;
-            }
+    for (auto it = enemyBullets.begin(); it != enemyBullets.end();) {
+        if (!it -> active) {
+            it = enemyBullets.erase(it);
+        } else {
+            it++;
         }
     }
 }

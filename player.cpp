@@ -8,12 +8,12 @@ Player::Player() {
     position.x = (GetScreenWidth() - image.width)/2;
     position.y = GetScreenHeight() - image.height;
     fireCooldown = 0.0;
+    damageCooldown = 0.0;
 }
 
 // Removes the plane once game ends
 Player::~Player() {
     UnloadTexture(image);
-    cout << "Cya" << endl;
 }
 
 // Draws player's plane
@@ -43,4 +43,8 @@ void Player::FireBullet() {
         fireCooldown = GetTime();
         // cout << bullets.size() << endl;
     }
+}
+
+Rectangle Player::getRect() {
+    return {position.x, position.y, float(image.width), float(image.height)};
 }

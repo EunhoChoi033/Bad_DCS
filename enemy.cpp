@@ -6,7 +6,7 @@ using namespace std;
 
 Enemy::Enemy(Vector2 position) {
     this -> position = position;
-    
+
     image = LoadTexture("Graphics/jet2.png");
     image.height /= 30;
     image.width /= 30;
@@ -49,17 +49,22 @@ void Enemy::Update() {
             position.x += 3;
         }
         break;
-
-    // case 2:
-    //     break;
     }
 }
 
-void Enemy::FireBullet() {
+void Enemy::FireBullet(vector<Bullet>& enemyBullets) {
     if (GetTime() - fireCooldown >= 1) {
-        bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y +
-        image.height/2 - 7}, 6, 1));
+        enemyBullets.push_back(Bullet({position.x + image.width/2 - 2, 
+        position.y + image.height/2 - 7}, 6, 1));
         fireCooldown = GetTime();
         // cout << "FIRE" << endl;
     }
+}
+
+void Enemy::UnloadImages() {
+    UnloadTexture(image);
+}
+
+Rectangle Enemy::getRect() {
+    return {position.x, position.y, float(image.width), float(image.height)};
 }
