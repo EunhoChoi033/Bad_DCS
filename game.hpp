@@ -12,12 +12,19 @@ class Game {
         void Draw();
         void Update();
         void HandleInput();
-        void CheckCollisions();
+        bool run;
+
     private:
         void DeleteBullets();
+        void GameOver();
+        void CheckCollisions();
+        void Reset();
+        void InitGame();
         int numEnemies;
         int enemyFireCooldown;
+        int playerHealth;
         Player player;
+        Color playerColor;
         vector<Enemy> enemies;
         vector<Enemy> CreateEnemies(int numEnemies);
         vector<Bullet> enemyBullets;

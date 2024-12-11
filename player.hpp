@@ -13,13 +13,14 @@ class Player{
         void MoveLeft();
         void MoveRight();
         void FireBullet();
+        void damageGraphic();
+        void InitPlayer();
         Rectangle getRect();
-        void playerHit();
         vector<Bullet> bullets;
     private:
         Texture2D image;
         Vector2 position;
         double fireCooldown;
         double damageCooldown;
-        Color color;
+        Color planeColor;
 };

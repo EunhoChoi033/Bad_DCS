@@ -4,9 +4,9 @@
 
 using namespace std;
 
-Game::Game(int numEnemies) { 
-    this -> numEnemies = numEnemies;
-    enemies = CreateEnemies(numEnemies);
+Game::Game(int numEnemies) {
+    this -> numEnemies = numEnemies; 
+    InitGame();
 }
 
 Game::~Game() {
@@ -20,28 +20,33 @@ Automatically updating if the bullets are active or not and deleting those which
 are not active
 */
 void Game::Update() {
-    for (auto& bullet: player.bullets) {
-        bullet.Update();
-    }
+    if (run) {
+        for (auto& bullet: player.bullets) {
+            bullet.Update();
+        }
 
-    for (auto& bullet: enemyBullets) {
-        bullet.Update();
-    }
+        for (auto& bullet: enemyBullets) {
+            bullet.Update();
+        }
 
-    for (auto& enemy: enemies) {
-        enemy.MoveDown();
-        enemy.Update();
-        enemy.FireBullet(enemyBullets);
-    }
+        for (auto& enemy: enemies) {
+            enemy.MoveDown();
+            enemy.Update();
+            enemy.FireBullet(enemyBullets);
+        }
 
-    DeleteBullets();
-    CheckCollisions();
+        DeleteBullets();
+        CheckCollisions();
+    } else if (IsKeyDown(KEY_ENTER)) {
+        Reset();
+    }
 }
 
 /*
 Draws player aircraft and bullets
 */
 void Game::Draw() {
+    
     player.Draw();
 
     for (auto& bullet: player.bullets) {
@@ -62,13 +67,15 @@ Moves the player left or right if they press the left or right keys and makes
 them fire a bullet when they press spacebar
 */
 void Game::HandleInput() {
-    if(IsKeyDown(KEY_LEFT)) {
-        player.MoveLeft();
-    } else if (IsKeyDown(KEY_RIGHT)) {
-        player.MoveRight();
-    }
-    if (IsKeyDown(KEY_SPACE)) {
-        player.FireBullet();
+    if (run) {
+        if(IsKeyDown(KEY_LEFT)) {
+            player.MoveLeft();
+        } else if (IsKeyDown(KEY_RIGHT)) {
+            player.MoveRight();
+        }
+        if (IsKeyDown(KEY_SPACE)) {
+            player.FireBullet();
+        }
     }
 }
 
@@ -89,7 +96,12 @@ void Game::CheckCollisions() {
     for (auto& bullet: enemyBullets) {
         if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
             bullet.active = false;
-            player.playerHit();
+            playerHealth--;
+            if (playerHealth == 0) {
+                GameOver();
+            }
+            // playerColor = {232, 35, 35, 255};
+            player.damageGraphic();
             cout << "Player hit" << endl;
         }
     }
@@ -103,6 +115,21 @@ void Game::CheckCollisions() {
             it++;
         }
     }
+}
+
+void Game::Reset() {
+    enemies.clear();
+    enemyBullets.clear();
+    player.bullets.clear();
+    player.InitPlayer();
+    InitGame();
+}
+
+void Game::InitGame() {
+    enemies = CreateEnemies(numEnemies);
+    playerColor = WHITE;
+    playerHealth = 5;
+    run = true;
 }
 
 vector<Enemy> Game::CreateEnemies(int numEnemies) {
@@ -137,4 +164,8 @@ void Game::DeleteBullets() {
             it++;
         }
     }
+}
+
+void Game::GameOver() {
+    run = false;
 }

@@ -2,14 +2,7 @@
 #include <iostream>
 
 Player::Player() {
-    image = LoadTexture("Graphics/jet.png");
-    image.height /= 25;
-    image.width /= 25;
-    position.x = (GetScreenWidth() - image.width)/2;
-    position.y = GetScreenHeight() - image.height;
-    fireCooldown = 0.0;
-    damageCooldown = 0.0;
-    Color color = WHITE;
+    InitPlayer();
 }
 
 // Removes the plane once game ends
@@ -19,7 +12,7 @@ Player::~Player() {
 
 // Draws player's plane
 void Player::Draw() {
-    DrawTextureV(image, position, color);
+    DrawTextureV(image, position, planeColor);
 }
 
 // Makes the player's plane move left
@@ -42,17 +35,24 @@ void Player::FireBullet() {
         bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y}, 
         -6, 0));
         fireCooldown = GetTime();
-        // cout << bullets.size() << endl;
     }
+}
+
+void Player::damageGraphic() {
+    ColorTint(planeColor, {0, 0, 0, 10});
+}
+
+void Player::InitPlayer() {
+    image = LoadTexture("Graphics/jet.png");
+    image.height /= 25;
+    image.width /= 25;
+    position.x = (GetScreenWidth() - image.width)/2;
+    position.y = GetScreenHeight() - image.height;
+    fireCooldown = 0.0;
+    // damageCooldown = 0.0;
+    planeColor = {230, 40, 55, 255};
 }
 
 Rectangle Player::getRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
-}
-
-void Player::playerHit() {
-    while(GetTime() - damageCooldown <= 3) {
-        color = RED;
-    }
-    color = WHITE;
 }
