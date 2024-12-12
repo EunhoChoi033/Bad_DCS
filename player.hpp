@@ -21,6 +21,5 @@ class Player{
         Texture2D image;
         Vector2 position;
         double fireCooldown;
-        double damageCooldown;
         Color planeColor;
 };

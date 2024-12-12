@@ -49,8 +49,8 @@ void Player::InitPlayer() {
     position.x = (GetScreenWidth() - image.width)/2;
     position.y = GetScreenHeight() - image.height;
     fireCooldown = 0.0;
-    // damageCooldown = 0.0;
-    planeColor = {230, 40, 55, 255};
+    planeColor = WHITE;
+    // planeColor = {230, 40, 55, 255};
 }
 
 Rectangle Player::getRect() {
