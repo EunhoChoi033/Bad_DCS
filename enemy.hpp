@@ -15,9 +15,9 @@ class Enemy {
         void UnloadImages();
         Rectangle getRect();
         bool alive;
+        Texture2D image;
         // vector<Bullet> bullets;
     private:
-        Texture2D image;
         Vector2 position;
         double movementCooldown;
         int movementDecider;

@@ -30,16 +30,20 @@ void Player::MoveRight() {
 }
 
 // Makes the player's plane fire a bullet and ensures a cooldown between shots
-void Player::FireBullet() {
+void Player::FireBullet(Sound gunfire) {
     if (GetTime() - fireCooldown >= 0.1) {
         bullets.push_back(Bullet({position.x + image.width/2 - 2, position.y}, 
         -6, 0));
         fireCooldown = GetTime();
+        PlaySound(gunfire);
     }
 }
 
-void Player::damageGraphic() {
-    ColorTint(planeColor, {0, 0, 0, 10});
+void Player::damagePlayer(Sound bulletHit) {
+    playerHealth--;
+    planeColor = {planeColor.r, (unsigned char)(23 * playerHealth), 
+    (unsigned char)(23 * playerHealth), planeColor.a};
+    PlaySound(bulletHit);
 }
 
 void Player::InitPlayer() {
@@ -47,10 +51,12 @@ void Player::InitPlayer() {
     image.height /= 25;
     image.width /= 25;
     position.x = (GetScreenWidth() - image.width)/2;
-    position.y = GetScreenHeight() - image.height;
+    position.y = GetScreenHeight() - image.height - 75;
     fireCooldown = 0.0;
-    planeColor = WHITE;
-    // planeColor = {230, 40, 55, 255};
+    planeColor = {230, (unsigned char)(23 * playerHealth), (unsigned char)(23 * 
+    playerHealth), 255};
+    // cout << playerHealth << endl;
+    // cout << (int)planeColor.g << endl;
 }
 
 Rectangle Player::getRect() {

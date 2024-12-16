@@ -8,8 +8,8 @@ Enemy::Enemy(Vector2 position) {
     this -> position = position;
 
     image = LoadTexture("Graphics/jet2.png");
-    image.height /= 30;
-    image.width /= 30;
+    image.height /= 25;
+    image.width /= 25;
     movementCooldown = 0.0;
     fireCooldown = 0.0;
 }

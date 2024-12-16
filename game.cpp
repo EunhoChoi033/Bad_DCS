@@ -4,15 +4,17 @@
 
 using namespace std;
 
-Game::Game(int numEnemies) {
-    this -> numEnemies = numEnemies; 
-    InitGame();
+Game::Game(int numEnemies, int playerHealth) {
+    gunfire = LoadSound("Sounds/gunfire.wav");
+    bulletHit = LoadSound("Sounds/bullet_hit.wav");
+    InitGame(numEnemies, playerHealth); 
 }
 
 Game::~Game() {
     for (auto& enemy: enemies) {
         enemy.UnloadImages();
     }
+    UnloadSound(gunfire);
 }
 
 /*
@@ -37,7 +39,13 @@ void Game::Update() {
 
         DeleteBullets();
         CheckCollisions();
-    } else if (IsKeyDown(KEY_ENTER)) {
+    }
+    
+    if (enemies.size() == 0) {
+        run = false;
+    }
+
+    if (IsKeyDown(KEY_ENTER)) {
         Reset();
     }
 }
@@ -48,6 +56,7 @@ Draws player aircraft and bullets
 void Game::Draw() {
     
     player.Draw();
+    playerRadar.Draw();
 
     for (auto& bullet: player.bullets) {
         bullet.Draw();
@@ -74,7 +83,7 @@ void Game::HandleInput() {
             player.MoveRight();
         }
         if (IsKeyDown(KEY_SPACE)) {
-            player.FireBullet();
+            player.FireBullet(gunfire);
         }
     }
 }
@@ -96,13 +105,11 @@ void Game::CheckCollisions() {
     for (auto& bullet: enemyBullets) {
         if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
             bullet.active = false;
-            playerHealth--;
-            if (playerHealth == 0) {
+            player.damagePlayer(bulletHit);
+            if (player.playerHealth == 0) {
                 GameOver();
             }
-            // playerColor = {232, 35, 35, 255};
-            player.damageGraphic();
-            cout << "Player hit" << endl;
+            // cout << "Player hit" << endl;
         }
     }
 
@@ -110,7 +117,7 @@ void Game::CheckCollisions() {
     for (auto it = enemies.begin(); it != enemies.end();) {
         if(CheckCollisionRecs(it -> getRect(), player.getRect())) {
             it = enemies.erase(it);
-            cout << "Spaceship done" << endl;
+            // cout << "Spaceship done" << endl;
         } else {
             it++;
         }
@@ -121,22 +128,28 @@ void Game::Reset() {
     enemies.clear();
     enemyBullets.clear();
     player.bullets.clear();
-    player.InitPlayer();
-    InitGame();
+    // player.InitPlayer(playerHealth);
+    InitGame(numEnemies, playerHealth);
 }
 
-void Game::InitGame() {
+void Game::InitGame(int numEnemies, int playerHealth) {
+    this -> numEnemies = numEnemies; 
+    this -> playerHealth = playerHealth;
     enemies = CreateEnemies(numEnemies);
-    playerColor = WHITE;
-    playerHealth = 5;
+    player.playerHealth = playerHealth;
+    player.InitPlayer();
+    Radar radar({100, 100}, GREEN);
+    // cout << "Game " << playerHealth << endl;
+
     run = true;
 }
 
 vector<Enemy> Game::CreateEnemies(int numEnemies) {
 
     for (int i = 0; i < numEnemies; i++) {
-        float posHorizontal = rand() % (GetScreenWidth() + 1);
-        float posVertical = (rand() % (GetScreenWidth() + 1)) * -2;
+        float posHorizontal = rand() % (GetScreenWidth() - player.image.width);
+        float posVertical = ((rand() % GetScreenWidth()) * -2)
+        - player.image.height;
         
         enemies.push_back(Enemy({posHorizontal, posVertical}));
     }

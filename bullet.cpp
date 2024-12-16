@@ -30,7 +30,7 @@ Rectangle Bullet::getRect() {
 
 void Bullet::Update() {
     position.y += speed;
-    if (active && (position.y < 0) && id == 0) {
+    if (active && ((position.y + 15) < 0) && id == 0) {
         active = false;
     }
     if (active && (position.y > GetScreenHeight()) && id == 1) {
