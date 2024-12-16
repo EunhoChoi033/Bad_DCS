@@ -12,6 +12,9 @@
 		"iostream": "cpp",
 		"random": "cpp",
 		"ostream": "cpp",
-		"cstdlib": "cpp"
+		"cstdlib": "cpp",
+		"deque": "cpp",
+		"string": "cpp",
+		"vector": "cpp"
 	}
 }

@@ -16,7 +16,6 @@ class Enemy {
         Rectangle getRect();
         bool alive;
         Texture2D image;
-        // vector<Bullet> bullets;
     private:
         Vector2 position;
         double movementCooldown;

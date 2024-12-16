@@ -8,7 +8,7 @@ using namespace std;
 
 class Game {
     public:
-        Game(int numEnemies, int playerHealth);
+        Game(int numEnemies, int playerHealth, Color colorMain);
         ~Game();
         void Draw();
         void Update();
@@ -19,17 +19,17 @@ class Game {
         Sound bulletHit;
         vector<Enemy> enemies;
         Player player;
+        Color colorMain;
+        Radar playerRadar;
 
     private:
         void DeleteBullets();
         void GameOver();
         void CheckCollisions();
         void Reset();
-        void InitGame(int numEnemies, int playerHealth);
+        void InitGame(int numEnemies, int playerHealth, Color colorMain);
         int enemyFireCooldown;
         int playerHealth;
-        Radar playerRadar;
-        Color playerColor;
         vector<Enemy> CreateEnemies(int numEnemies);
         vector<Bullet> enemyBullets;
 };

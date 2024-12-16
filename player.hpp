@@ -13,14 +13,15 @@ class Player{
         void MoveLeft();
         void MoveRight();
         void FireBullet(Sound gunfire);
-        void damagePlayer(Sound bulletHit);
+        void DamagePlayer(Sound hitSound, int damageAmount);
         void InitPlayer();
         Rectangle getRect();
         vector<Bullet> bullets;
         Color planeColor;
         int playerHealth;
         Texture2D image;
-    private:
         Vector2 position;
+
+    private:
         double fireCooldown;
 };

@@ -39,11 +39,11 @@ void Player::FireBullet(Sound gunfire) {
     }
 }
 
-void Player::damagePlayer(Sound bulletHit) {
-    playerHealth--;
+void Player::DamagePlayer(Sound hitSound, int damageAmount) {
+    playerHealth -= damageAmount;
     planeColor = {planeColor.r, (unsigned char)(23 * playerHealth), 
     (unsigned char)(23 * playerHealth), planeColor.a};
-    PlaySound(bulletHit);
+    PlaySound(hitSound);
 }
 
 void Player::InitPlayer() {
@@ -55,8 +55,6 @@ void Player::InitPlayer() {
     fireCooldown = 0.0;
     planeColor = {230, (unsigned char)(23 * playerHealth), (unsigned char)(23 * 
     playerHealth), 255};
-    // cout << playerHealth << endl;
-    // cout << (int)planeColor.g << endl;
 }
 
 Rectangle Player::getRect() {

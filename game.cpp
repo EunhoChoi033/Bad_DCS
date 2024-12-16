@@ -4,10 +4,13 @@
 
 using namespace std;
 
-Game::Game(int numEnemies, int playerHealth) {
+Game::Game(int numEnemies, int playerHealth, Color colorMain) {
     gunfire = LoadSound("Sounds/gunfire.wav");
     bulletHit = LoadSound("Sounds/bullet_hit.wav");
-    InitGame(numEnemies, playerHealth); 
+    SetSoundVolume(gunfire, 0.5f);
+    SetSoundVolume(bulletHit, 0.25f);
+    InitGame(numEnemies, playerHealth, colorMain);    
+    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, colorMain);
 }
 
 Game::~Game() {
@@ -23,18 +26,18 @@ are not active
 */
 void Game::Update() {
     if (run) {
-        for (auto& bullet: player.bullets) {
-            bullet.Update();
-        }
-
-        for (auto& bullet: enemyBullets) {
-            bullet.Update();
-        }
-
         for (auto& enemy: enemies) {
             enemy.MoveDown();
             enemy.Update();
             enemy.FireBullet(enemyBullets);
+        }
+
+        for (auto& bullet: player.bullets) {
+            bullet.Update();
+        }
+        
+        for (auto& bullet: enemyBullets) {
+            bullet.Update();
         }
 
         DeleteBullets();
@@ -105,8 +108,8 @@ void Game::CheckCollisions() {
     for (auto& bullet: enemyBullets) {
         if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
             bullet.active = false;
-            player.damagePlayer(bulletHit);
-            if (player.playerHealth == 0) {
+            player.DamagePlayer(bulletHit, 1);
+            if (player.playerHealth <= 0) {
                 GameOver();
             }
             // cout << "Player hit" << endl;
@@ -117,7 +120,11 @@ void Game::CheckCollisions() {
     for (auto it = enemies.begin(); it != enemies.end();) {
         if(CheckCollisionRecs(it -> getRect(), player.getRect())) {
             it = enemies.erase(it);
-            // cout << "Spaceship done" << endl;
+            player.DamagePlayer(bulletHit, 5);
+            // Need to change sound
+            if (player.playerHealth <= 0) {
+                GameOver();
+            }
         } else {
             it++;
         }
@@ -129,16 +136,15 @@ void Game::Reset() {
     enemyBullets.clear();
     player.bullets.clear();
     // player.InitPlayer(playerHealth);
-    InitGame(numEnemies, playerHealth);
+    InitGame(numEnemies, playerHealth, colorMain);
 }
 
-void Game::InitGame(int numEnemies, int playerHealth) {
+void Game::InitGame(int numEnemies, int playerHealth, Color colorMain) {
     this -> numEnemies = numEnemies; 
     this -> playerHealth = playerHealth;
     enemies = CreateEnemies(numEnemies);
     player.playerHealth = playerHealth;
     player.InitPlayer();
-    Radar radar({100, 100}, GREEN);
     // cout << "Game " << playerHealth << endl;
 
     run = true;
@@ -148,7 +154,7 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
 
     for (int i = 0; i < numEnemies; i++) {
         float posHorizontal = rand() % (GetScreenWidth() - player.image.width);
-        float posVertical = ((rand() % GetScreenWidth()) * -2)
+        float posVertical = ((rand() % GetScreenWidth()) * -1.5)
         - player.image.height;
         
         enemies.push_back(Enemy({posHorizontal, posVertical}));

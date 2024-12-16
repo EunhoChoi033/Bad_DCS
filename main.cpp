@@ -14,8 +14,8 @@ int main () {
 
     Color grey = {29, 29, 27, 255};
     Color green = {57, 255, 20, 255};
-    int windowWidth = 750;
-    int windowHeight = 750;
+    int windowWidth = 900;
+    int windowHeight = 900;
 
     InitWindow(windowWidth, windowHeight, "Bad DCS");
     InitAudioDevice();
@@ -27,8 +27,9 @@ int main () {
     GameState currentState = TITLE;
 
     int numEnemies = 5;
-    Game game(numEnemies, 10);
+    Game game(numEnemies, 10, green);
     Music titleMusic = LoadMusicStream("Sounds/Wild_Blue_Yonder.mp3");
+    SetMusicVolume(titleMusic, 0.25f);
     PlayMusicStream(titleMusic);
 
     while(!WindowShouldClose()) {
@@ -65,30 +66,33 @@ int main () {
                 break;
             }
             case GAME: {
-                game.HandleInput();
-                game.Update();
 
-                game.Draw();
-
-                DrawLineEx({25, 680}, {725, 680}, 3, green);
+                DrawLineEx({25, windowHeight - 70.0f}, {windowWidth - 25.0f, windowHeight - 70.0f}, 3, green);
                 if (game.run) {
+                    game.HandleInput();
+                    game.Update();
+
+                    game.Draw();
+
                     string playerHealthDisplay = "Health: " + 
                     to_string(game.player.playerHealth) + " / 10";
                     const char* healthMessage = playerHealthDisplay.c_str();
-                    DrawTextEx(regularFont, healthMessage, {25, 710}, 16, 1, green);
+                    Vector2 offsetHealth = MeasureTextEx(regularFont, healthMessage, 16, 1);
+                    DrawTextEx(regularFont, healthMessage, {25, windowHeight - 70.0f + 70.0f / 2 - (offsetHealth.y / 2)}, 16, 1, green);
 
                     string numEnemiesDisplay = "Enemies: " + 
                     to_string(game.enemies.size()) + " / " + to_string(numEnemies);
                     const char* numEnemiesMessage = numEnemiesDisplay.c_str();
-                    Vector2 offset = MeasureTextEx(regularFont, numEnemiesMessage, 16, 1);
-                    DrawTextEx(regularFont, numEnemiesMessage, {(windowWidth - offset.x - 25), 
-                    (windowHeight - 680.f) / 2 + 680 - (offset.y / 2)}, 16, 1, green);
+                    Vector2 offsetDamage = MeasureTextEx(regularFont, numEnemiesMessage, 16, 1);
+                    DrawTextEx(regularFont, numEnemiesMessage, {(windowWidth - offsetDamage.x - 25), windowHeight - 70.0f + 70.0f / 2 - (offsetDamage.y / 2)}, 16, 1, green);
                 } else if (game.enemies.size() == 0) {
+                    game.player.Draw();
                     const char* winningMessage = "YOU WON";
                     Vector2 offset = MeasureTextEx(regularFont, winningMessage, 64, 1);
                     DrawTextEx(regularFont, winningMessage, {(windowWidth - offset.x) / 2,
                     (windowWidth - offset.y) / 2}, 64, 1, green);           
                 } else {
+                    game.player.Draw();
                     const char* losingMessage = "GAME OVER";
                     Vector2 offset = MeasureTextEx(regularFont, losingMessage, 64, 1);
                     DrawTextEx(regularFont, losingMessage, {(windowWidth - offset.x) / 2,

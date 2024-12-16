@@ -57,7 +57,6 @@ void Enemy::FireBullet(vector<Bullet>& enemyBullets) {
         enemyBullets.push_back(Bullet({position.x + image.width/2 - 2, 
         position.y + image.height/2 - 7}, 6, 1));
         fireCooldown = GetTime();
-        // cout << "FIRE" << endl;
     }
 }
 
