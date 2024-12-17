@@ -40,7 +40,12 @@ void Player::FireBullet(Sound gunfire) {
 }
 
 void Player::DamagePlayer(Sound hitSound, int damageAmount) {
-    playerHealth -= damageAmount;
+    if ((playerHealth - damageAmount) < 0) {
+        playerHealth = 0;
+    } else {
+        playerHealth -= damageAmount;
+    }
+    
     planeColor = {planeColor.r, (unsigned char)(23 * playerHealth), 
     (unsigned char)(23 * playerHealth), planeColor.a};
     PlaySound(hitSound);

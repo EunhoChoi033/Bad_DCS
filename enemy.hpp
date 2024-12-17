@@ -16,8 +16,8 @@ class Enemy {
         Rectangle getRect();
         bool alive;
         Texture2D image;
-    private:
         Vector2 position;
+    private:
         double movementCooldown;
         int movementDecider;
         double fireCooldown;

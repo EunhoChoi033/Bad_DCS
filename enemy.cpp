@@ -34,7 +34,6 @@ void Enemy::Update() {
     if (GetTime() - movementCooldown >= 0.5) {
         movementDecider = rand() % 3;
         movementCooldown = GetTime();
-        // cout << "Movement decider changed to " << movementDecider << endl;
     }
     
     switch(movementDecider) {

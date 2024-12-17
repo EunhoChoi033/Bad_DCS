@@ -26,6 +26,7 @@ are not active
 */
 void Game::Update() {
     if (run) {
+
         for (auto& enemy: enemies) {
             enemy.MoveDown();
             enemy.Update();
@@ -109,10 +110,9 @@ void Game::CheckCollisions() {
         if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
             bullet.active = false;
             player.DamagePlayer(bulletHit, 1);
-            if (player.playerHealth <= 0) {
+            if (player.playerHealth == 0) {
                 GameOver();
             }
-            // cout << "Player hit" << endl;
         }
     }
 
@@ -122,7 +122,7 @@ void Game::CheckCollisions() {
             it = enemies.erase(it);
             player.DamagePlayer(bulletHit, 5);
             // Need to change sound
-            if (player.playerHealth <= 0) {
+            if (player.playerHealth == 0) {
                 GameOver();
             }
         } else {
@@ -135,7 +135,6 @@ void Game::Reset() {
     enemies.clear();
     enemyBullets.clear();
     player.bullets.clear();
-    // player.InitPlayer(playerHealth);
     InitGame(numEnemies, playerHealth, colorMain);
 }
 
@@ -145,7 +144,6 @@ void Game::InitGame(int numEnemies, int playerHealth, Color colorMain) {
     enemies = CreateEnemies(numEnemies);
     player.playerHealth = playerHealth;
     player.InitPlayer();
-    // cout << "Game " << playerHealth << endl;
 
     run = true;
 }
