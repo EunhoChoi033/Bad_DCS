@@ -10,7 +10,7 @@ Game::Game(int numEnemies, int playerHealth, Color colorMain) {
     SetSoundVolume(gunfire, 0.5f);
     SetSoundVolume(bulletHit, 0.25f);
     InitGame(numEnemies, playerHealth, colorMain);    
-    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, colorMain);
+    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, player.image.width, colorMain);
 }
 
 Game::~Game() {
@@ -26,6 +26,8 @@ are not active
 */
 void Game::Update() {
     if (run) {
+
+        playerRadar.Update(player.position, enemies);
 
         for (auto& enemy: enemies) {
             enemy.MoveDown();

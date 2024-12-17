@@ -2,9 +2,10 @@
 
 using namespace std;
 
-Radar::Radar(Vector2 position, Color color) {
+Radar::Radar(Vector2 position, float playerWidth, Color color) {
     this -> position = position;
     this -> color = color;
+    this -> playerWidth = playerWidth;
     radarFont = LoadFontEx("Fonts/Oxanium-SemiBold.ttf", 256, 0, 0);
     outerRadius = 100.0f;
     innerRadius = 20.0f;
@@ -13,7 +14,7 @@ Radar::Radar(Vector2 position, Color color) {
     grey = {29, 29, 27, 255};
     radarRangeX = GetScreenWidth() / 3;
     radarRangeY = 2 * GetScreenHeight();
-    oneReturn = EnemyReturn({170, (GetScreenHeight() / 2.0f) + 50.0f}, color, radarFont);
+    // oneReturn = EnemyReturn({170, (GetScreenHeight() / 2.0f) + 50.0f}, color, radarFont);
 }
 
 Radar::Radar() {
@@ -36,20 +37,26 @@ void Radar::Draw() {
         enemyReturn.Draw();
     }
 
-    oneReturn.Draw();  
+    // oneReturn.Draw();  
     
     DrawRing(position, outerRadius + 10.0f, outerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawRing(position, innerRadius + 10.0f, innerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
 }  
 
 void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
-    Rectangle radarRange = {playerPos.x - radarRangeX, playerPos.y, radarRangeX, -radarRangeY};
+    Rectangle radarRange = {playerPos.x - (radarRangeX / 2) + (playerWidth / 2), playerPos.y, radarRangeX, -radarRangeY};
+    // DrawRectangle(playerPos.x - (radarRangeX / 2) + (playerWidth / 2), playerPos.y - radarRangeY, radarRangeX, radarRangeY, WHITE);
     enemyReturns.clear();
     
+    // enemyReturns.push_back(EnemyReturn({170, (GetScreenHeight() / 2.0f) + 50.0f}, color, radarFont));
+
     for (auto& enemy: enemies) {
-        if (CheckCollisionPointRec(enemy.position, radarRange)) {
-            Vector2 distance = {position.x + outerRadius / (), position.y};
+        if (CheckCollisionRecs(enemy.getRect(), radarRange)) {
+            Vector2 radarPos = {position.x + (((2 * outerRadius) / (radarRangeX)) * (enemy.position.x - playerPos.x)), position.y + (((2 * outerRadius) / (radarRangeY)) * (enemy.position.y - playerPos.y))};
+            cout << enemyReturns.size() << endl;
+            enemyReturns.push_back(EnemyReturn(radarPos, color, radarFont));
         }
+        cout << "None" << endl;
     }
 }
 

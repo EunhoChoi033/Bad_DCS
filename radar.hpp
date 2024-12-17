@@ -2,11 +2,12 @@
 #include <raylib.h>
 #include <vector>
 #include "enemy.hpp"
+#include "player.hpp"
 #include "enemyReturn.hpp"
 
 class Radar {
     public:
-        Radar(Vector2 position, Color color);
+        Radar(Vector2 position, float playerWidth, Color color);
         Radar();
         // ~Radar();
         void Draw();
@@ -26,6 +27,7 @@ class Radar {
         float outerRadius;
         float innerRadius;
         float thickness;
+        float playerWidth;
         Color fadedColor;
         Color grey;
 };

@@ -20,13 +20,13 @@ EnemyReturn::EnemyReturn() {
 
 void EnemyReturn::Draw() {
     
-    // DrawPolyLinesEx(position, 4, radius, 0.0f, thickness, color);
-    // DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
-    
+    DrawPolyLinesEx(position, 4, radius, 0.0f, thickness, color);
     DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
-    const char* missileMessage = "M";
-    Vector2 offset = MeasureTextEx(font, missileMessage, 10, 1);
-    DrawTextEx(font, missileMessage, {position.x - (offset.x / 2), position.y - (offset.y / 2)}, 10, 1, color);
+    
+    // DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
+    // const char* missileMessage = "M";
+    // Vector2 offset = MeasureTextEx(font, missileMessage, 10, 1);
+    // DrawTextEx(font, missileMessage, {position.x - (offset.x / 2), position.y - (offset.y / 2)}, 10, 1, color);
 }
 
 void EnemyReturn::Update(Vector2 newPosition) {
