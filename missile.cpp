@@ -1,27 +1,45 @@
 #include "missile.hpp"
 
-Missile::Missile(Vector2 position, float missileSpeed, float missileTurnRate, int id) {
+Missile::Missile(Vector2 position, float speed, int id) {
     this -> position = position;
-    this -> missileSpeed = missileSpeed;
-    this -> missileTurnRate = missileTurnRate;
+    this -> speed = speed;
     this -> id = id;
     
+    image = LoadTexture("Graphics/missile.png");
+    image.width /= 4;
+    image.height /= 4;
     active = true;
 }
 
+Missile::Missile() {
+}
 
 void Missile::Draw() {
     if (active) {
-        DrawRectangle(position.x, position.y, 10, 30, WHITE);
+        DrawTextureV(image, position, WHITE);
     }
 }
 
-void Missile::Update() {
-    position.y += missileSpeed;
-    if (active && (position.y < 0) && id == 0) {
-        active = false;
-    }
-    if (active && (position.y > GetScreenHeight()) && id == 1) {
-        active = false;
-    }
+void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
+    direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
+    normalizeVector();
+    Vector2 velocity = {direction.x * speed, direction.y * speed};
+
+    position.x += velocity.x;
+    position.y += velocity.y;
+}
+
+Rectangle Missile::getRect() {
+    Rectangle rect{position.x, position.y, (float)image.width, (float)image.height};
+    return rect;
+}
+
+int Missile::getId() {
+    return id;
+}
+
+void Missile::normalizeVector() {
+    float magnitude = hypot(direction.x, direction.y);
+    direction.x /= magnitude;
+    direction.y /= magnitude;
 }

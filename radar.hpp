@@ -1,33 +1,42 @@
 #pragma once
 #include <raylib.h>
 #include <vector>
+#include <cmath>
+#include <algorithm>
 #include "enemy.hpp"
 #include "player.hpp"
+#include "missile.hpp"
 #include "enemyReturn.hpp"
 
 class Radar {
     public:
-        Radar(Vector2 position, float playerWidth, Color color);
+        Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing);
         Radar();
         // ~Radar();
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
         Font radarFont;
+        // vector<Missile> playerMissiles;
+        // Missile oneMissile;
 
     private:
         int limiter(int value, int min, int max);
         Vector2 position;
         Color color;
-        Vector2 playerPos;
+        Vector2 initPlayerPos;
         vector<Enemy> enemies;
-        EnemyReturn oneReturn;
         vector<EnemyReturn> enemyReturns;
+        Texture2D planeImage;
         float radarRangeX;
         float radarRangeY;
         float outerRadius;
         float innerRadius;
         float thickness;
         float playerWidth;
+        float playerHeight;
+        float radarUpdateCooldown;
+        float radarReturnSelectCooldown;
         Color fadedColor;
         Color grey;
+        Sound radarPing;
 };

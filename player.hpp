@@ -17,11 +17,11 @@ class Player{
         void InitPlayer();
         Rectangle getRect();
         vector<Bullet> bullets;
-        Color planeColor;
         int playerHealth;
         Texture2D image;
         Vector2 position;
 
     private:
+        Color planeColor;
         double fireCooldown;
 };

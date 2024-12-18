@@ -17,6 +17,7 @@ class Game {
         int numEnemies;
         Sound gunfire;
         Sound bulletHit;
+        Sound radarPing;
         vector<Enemy> enemies;
         Player player;
         Color colorMain;

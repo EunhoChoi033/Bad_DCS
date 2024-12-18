@@ -7,10 +7,12 @@ using namespace std;
 Game::Game(int numEnemies, int playerHealth, Color colorMain) {
     gunfire = LoadSound("Sounds/gunfire.wav");
     bulletHit = LoadSound("Sounds/bullet_hit.wav");
+    radarPing = LoadSound("Sounds/radar_update_blip.wav");
     SetSoundVolume(gunfire, 0.5f);
     SetSoundVolume(bulletHit, 0.25f);
+    SetSoundVolume(radarPing, 0.15f);
     InitGame(numEnemies, playerHealth, colorMain);    
-    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, player.image.width, colorMain);
+    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, player.position, player.image.width, player.image.height, colorMain, radarPing);
 }
 
 Game::~Game() {
@@ -27,8 +29,6 @@ are not active
 void Game::Update() {
     if (run) {
 
-        playerRadar.Update(player.position, enemies);
-
         for (auto& enemy: enemies) {
             enemy.MoveDown();
             enemy.Update();
@@ -42,6 +42,8 @@ void Game::Update() {
         for (auto& bullet: enemyBullets) {
             bullet.Update();
         }
+
+        playerRadar.Update(player.position, enemies);
 
         DeleteBullets();
         CheckCollisions();
@@ -99,8 +101,13 @@ void Game::CheckCollisions() {
     for (auto& bullet: player.bullets) {
         for(auto it = enemies.begin(); it != enemies.end();) {
             if(CheckCollisionRecs(it -> getRect(), bullet.getRect())) {
-                it = enemies.erase(it);
                 bullet.active = false;
+                it -> DamageEnemy(bulletHit, 1);
+                if (it -> enemyHealth == 0) {
+                    it = enemies.erase(it);
+                } else {
+                    it++;
+                }
             } else {
                 it++;
             }
@@ -131,6 +138,15 @@ void Game::CheckCollisions() {
             it++;
         }
     }
+
+    // for (auto it = enemies.begin(); it != enemies.end();) {
+    //     if(CheckCollisionRecs(it -> getRect(), playerRadar.oneMissile.getRect())) {
+    //         it = enemies.erase(it);
+    //         playerRadar.oneMissile.active = false;
+    //     } else {
+    //         it++;
+    //     }
+    // }
 }
 
 void Game::Reset() {
@@ -154,10 +170,9 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
 
     for (int i = 0; i < numEnemies; i++) {
         float posHorizontal = rand() % (GetScreenWidth() - player.image.width);
-        float posVertical = ((rand() % GetScreenWidth()) * -1.5)
-        - player.image.height;
+        float posVertical = ((rand() % GetScreenWidth()) * -1.5) - player.image.height;
         
-        enemies.push_back(Enemy({posHorizontal, posVertical}));
+        enemies.push_back(Enemy({posHorizontal, posVertical}, i));
     }
 
     return enemies;

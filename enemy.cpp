@@ -4,9 +4,12 @@
 
 using namespace std;
 
-Enemy::Enemy(Vector2 position) {
+Enemy::Enemy(Vector2 position, int enemyNum) {
     this -> position = position;
+    this -> enemyNum = enemyNum;
 
+    enemyHealth = 2;
+    planeColor = {230, (unsigned char)(115 * enemyHealth), (unsigned char)(115 * enemyHealth), 255};
     image = LoadTexture("Graphics/jet2.png");
     image.height /= 25;
     image.width /= 25;
@@ -16,7 +19,7 @@ Enemy::Enemy(Vector2 position) {
 
 // Draws enemy plane
 void Enemy::Draw() {
-    DrawTextureV(image, position, WHITE);
+    DrawTextureV(image, position, planeColor);
 }
 
 // Moves the plane down
@@ -39,13 +42,13 @@ void Enemy::Update() {
     switch(movementDecider) {
     case 0:
         if (position.x > 0) {
-            position.x -= 3;
+            position.x -= 1;
         }
         break;
     
     case 1:
         if (position.x < (GetScreenWidth() - image.width)) {
-            position.x += 3;
+            position.x += 1;
         }
         break;
     }
@@ -61,6 +64,19 @@ void Enemy::FireBullet(vector<Bullet>& enemyBullets) {
 
 void Enemy::UnloadImages() {
     UnloadTexture(image);
+}
+
+void Enemy::DamageEnemy(Sound hitSound, int damageAmount) {
+    if ((enemyHealth - damageAmount) < 0) {
+        enemyHealth = 0;
+    } else {
+        enemyHealth -= damageAmount;
+    }
+
+    planeColor = {planeColor.r, (unsigned char)(115 * enemyHealth), 
+    (unsigned char)(115 * enemyHealth), planeColor.a};
+    PlaySound(hitSound);
+    cout << enemyHealth << endl;
 }
 
 Rectangle Enemy::getRect() {

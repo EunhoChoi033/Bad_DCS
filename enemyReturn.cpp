@@ -1,9 +1,15 @@
 #include "enemyReturn.hpp"
 
-EnemyReturn::EnemyReturn(Vector2 position, Color color, Font font) {
+// enum RadarTargetState {
+//     LIVE, LOCKED, LOCKING, MISSILE, MISSILE_LAUNCH
+// };
+
+EnemyReturn::EnemyReturn(Vector2 position, Color color, Font font, int enemyNum) {
     this -> position = position;
     this -> color = color;
     this -> font = font;
+    this -> enemyNum = enemyNum;
+    selected = false;
     radius = 10.0f;
     thickness = 2.0f;
 }
@@ -11,12 +17,6 @@ EnemyReturn::EnemyReturn(Vector2 position, Color color, Font font) {
 EnemyReturn::EnemyReturn() {
     
 }
-
-
-
-// EnemyReturn::~EnemyReturn() {
-//     UnloadFont(font);
-// }
 
 void EnemyReturn::Draw() {
     
@@ -31,4 +31,24 @@ void EnemyReturn::Draw() {
 
 void EnemyReturn::Update(Vector2 newPosition) {
     position = newPosition;
+}
+
+void EnemyReturn::setColor(Color newColor) {
+    color = newColor;
+}
+
+bool EnemyReturn::getSelected() {
+    return selected;
+}
+
+void EnemyReturn::setSelected(bool selected) {
+    selected = true;
+}
+
+bool EnemyReturn::isPressed(Vector2 mousePos, bool mousePressed) {
+    if (CheckCollisionPointCircle(mousePos, position, radius) && mousePressed) {
+        return true;
+    } else {
+        return false;
+    }
 }

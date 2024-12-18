@@ -15,6 +15,14 @@
 		"cstdlib": "cpp",
 		"deque": "cpp",
 		"string": "cpp",
-		"vector": "cpp"
+		"vector": "cpp",
+		"cmath": "cpp",
+		"array": "cpp",
+		"unordered_map": "cpp",
+		"string_view": "cpp",
+		"format": "cpp",
+		"initializer_list": "cpp",
+		"span": "cpp",
+		"text_encoding": "cpp"
 	}
 }
