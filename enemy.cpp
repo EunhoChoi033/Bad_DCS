@@ -76,7 +76,6 @@ void Enemy::DamageEnemy(Sound hitSound, int damageAmount) {
     planeColor = {planeColor.r, (unsigned char)(115 * enemyHealth), 
     (unsigned char)(115 * enemyHealth), planeColor.a};
     PlaySound(hitSound);
-    cout << enemyHealth << endl;
 }
 
 Rectangle Enemy::getRect() {
