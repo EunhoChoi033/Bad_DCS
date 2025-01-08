@@ -21,6 +21,7 @@ class Radar {
 
     private:
         int limiter(int value, int min, int max);
+        int selectedEnemy;
         Vector2 position;
         Color color;
         Vector2 initPlayerPos;

@@ -9,6 +9,7 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     this -> playerHeight = playerHeight;
     this -> radarPing = radarPing;
     this -> initPlayerPos = initPlayerPos;
+    selectedEnemy = -1;
     planeImage = LoadTexture("Graphics/radar_jet.png");
     radarFont = LoadFontEx("Fonts/Oxanium-SemiBold.ttf", 256, 0, 0);
     outerRadius = 100.0f;
@@ -69,7 +70,11 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
                 float radarDistanceLength = hypot(radarPos.x - position.x, radarPos.y - position.y);
 
                 if (radarDistanceLength <= outerRadius) {
+                    if (enemy.enemyNum == selectedEnemy) {
+                        enemyReturns.push_back(EnemyReturn(radarPos, RED, radarFont, enemy.enemyNum));
+                    } else {
                     enemyReturns.push_back(EnemyReturn(radarPos, color, radarFont, enemy.enemyNum));
+                    }
                 }
             }
         }
@@ -84,11 +89,8 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
         for (auto& enemyReturn: enemyReturns) {
             if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT))) {
-                if (enemyReturn.getSelected() == false) {
-                    enemyReturn.setColor(RED);
-                } else {
-                    enemyReturn.setColor(color);
-                }
+                enemyReturn.setColor(RED);
+                selectedEnemy = enemyReturn.enemyNum;
                 radarReturnSelectCooldown = GetTime();
             }
         }

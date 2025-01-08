@@ -102,7 +102,7 @@ void Game::CheckCollisions() {
         for(auto it = enemies.begin(); it != enemies.end();) {
             if(CheckCollisionRecs(it -> getRect(), bullet.getRect())) {
                 bullet.active = false;
-                it -> DamageEnemy(bulletHit, 1);
+                it -> DamageEnemy(bulletHit, 0);
                 if (it -> enemyHealth == 0) {
                     it = enemies.erase(it);
                 } else {
@@ -118,7 +118,7 @@ void Game::CheckCollisions() {
     for (auto& bullet: enemyBullets) {
         if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
             bullet.active = false;
-            player.DamagePlayer(bulletHit, 1);
+            player.DamagePlayer(bulletHit, 0);
             if (player.playerHealth == 0) {
                 GameOver();
             }
@@ -129,7 +129,7 @@ void Game::CheckCollisions() {
     for (auto it = enemies.begin(); it != enemies.end();) {
         if(CheckCollisionRecs(it -> getRect(), player.getRect())) {
             it = enemies.erase(it);
-            player.DamagePlayer(bulletHit, 5);
+            player.DamagePlayer(bulletHit, 0);
             // Need to change sound
             if (player.playerHealth == 0) {
                 GameOver();

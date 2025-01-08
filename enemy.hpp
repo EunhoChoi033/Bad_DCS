@@ -7,7 +7,7 @@ using namespace std;
 
 class Enemy {
     public:
-        Enemy(Vector2 position, int id);
+        Enemy(Vector2 position, int enemyNum);
         void Draw();
         void MoveDown();
         void Update();
