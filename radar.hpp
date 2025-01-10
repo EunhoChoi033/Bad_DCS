@@ -26,6 +26,7 @@ class Radar {
         Color color;
         Vector2 initPlayerPos;
         vector<Enemy> enemies;
+        vector<Missile> missiles;
         vector<EnemyReturn> enemyReturns;
         Texture2D planeImage;
         float radarRangeX;
@@ -40,4 +41,5 @@ class Radar {
         Color fadedColor;
         Color grey;
         Sound radarPing;
+        // Missile oneMissile;
 };

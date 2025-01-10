@@ -21,8 +21,6 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     radarRangeY =  1.5 * GetScreenHeight();
     radarUpdateCooldown = 0.0;
     radarReturnSelectCooldown = 0.0;
-
-    // oneMissile = Missile({initPlayerPos.x + (playerWidth / 2), initPlayerPos.y}, 2.0f, 0);
 }
 
 Radar::Radar() {
@@ -47,12 +45,17 @@ void Radar::Draw() {
     DrawRing(position, outerRadius + 10.0f, outerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawRing(position, innerRadius + 10.0f, innerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawTextureV(planeImage, {position.x - (planeImage.width / 2), position.y - (planeImage.height / 2)}, WHITE);
-
-    // oneMissile.Draw();
 }  
 
 void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
-    if (GetTime() - radarUpdateCooldown > 0.75) {
+    // oneMissile.Update({enemies[1].position.x, enemies[1].position.y}, 20, 20);
+
+    for (auto& missile: missiles) {
+        Enemy enemyTargeting = enemies[missile.getId()];
+        missile.Update({enemyTargeting.position.x, enemyTargeting.position.y}, playerWidth, playerHeight);
+    }
+
+    if (GetTime() - radarUpdateCooldown > 0.75) {                
         Rectangle radarRange = {playerPos.x - (radarRangeX / 2) + (playerWidth / 2), playerPos.y - radarRangeY + (playerHeight / 2), radarRangeX, radarRangeY};
         enemyReturns.clear();
 
@@ -89,8 +92,13 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
         for (auto& enemyReturn: enemyReturns) {
             if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT))) {
+                if (enemyReturn.enemyNum == selectedEnemy) {
+                    enemyReturn.setColor(color);
+                    selectedEnemy = -1;
+                } else {
                 enemyReturn.setColor(RED);
                 selectedEnemy = enemyReturn.enemyNum;
+                }
                 radarReturnSelectCooldown = GetTime();
             }
         }
