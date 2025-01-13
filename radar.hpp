@@ -15,9 +15,11 @@ class Radar {
         // ~Radar();
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
+        bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
+        void clearMissiles();
         Font radarFont;
         // vector<Missile> playerMissiles;
-        // Missile oneMissile;
+        Missile oneMissile;
 
     private:
         int limiter(int value, int min, int max);

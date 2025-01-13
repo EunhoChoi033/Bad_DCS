@@ -55,7 +55,7 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
         missile.Update({enemyTargeting.position.x, enemyTargeting.position.y}, playerWidth, playerHeight);
     }
 
-    if (GetTime() - radarUpdateCooldown > 0.75) {                
+    if (GetTime() - radarUpdateCooldown > 0.6) {                
         Rectangle radarRange = {playerPos.x - (radarRangeX / 2) + (playerWidth / 2), playerPos.y - radarRangeY + (playerHeight / 2), radarRangeX, radarRangeY};
         enemyReturns.clear();
 
@@ -91,6 +91,9 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     
     if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
         for (auto& enemyReturn: enemyReturns) {
+            if (!enemyNumInList(enemyReturns, selectedEnemy)) {
+                selectedEnemy = -1;
+            }
             if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT))) {
                 if (enemyReturn.enemyNum == selectedEnemy) {
                     enemyReturn.setColor(color);
@@ -109,6 +112,19 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     //     return enemies.enemyNum == missileID;
     // });
     // oneMissile.Update(it -> position, it -> image.width, it -> image.height);
+}
+
+bool Radar::enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
+    for (auto& enemyReturn: enemyReturns) {
+        if (enemyReturn.enemyNum == enemyNum) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Radar::clearMissiles() {
+    missiles.clear();
 }
 
 int Radar::limiter(int value, int min, int max) {
