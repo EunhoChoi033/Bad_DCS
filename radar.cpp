@@ -42,6 +42,11 @@ void Radar::Draw() {
     for (auto& enemyReturn: enemyReturns) {
         enemyReturn.Draw();
     }
+
+    for (auto& missile: missiles) {
+        missile.Draw();
+    }
+
     DrawRing(position, outerRadius + 10.0f, outerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawRing(position, innerRadius + 10.0f, innerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawTextureV(planeImage, {position.x - (planeImage.width / 2), position.y - (planeImage.height / 2)}, WHITE);
@@ -49,6 +54,10 @@ void Radar::Draw() {
 
 void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     // oneMissile.Update({enemies[1].position.x, enemies[1].position.y}, 20, 20);
+
+    if (IsKeyPressed(KEY_M) && selectedEnemy != -1) {
+        missiles.push_back(Missile(playerPos, 2.0, selectedEnemy));
+    }
 
     for (auto& missile: missiles) {
         Enemy enemyTargeting = enemies[missile.getId()];

@@ -153,6 +153,7 @@ void Game::Reset() {
     enemies.clear();
     enemyBullets.clear();
     player.bullets.clear();
+    playerRadar.clearMissiles();
     InitGame(numEnemies, playerHealth, colorMain);
 }
 
