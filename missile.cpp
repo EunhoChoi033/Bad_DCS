@@ -30,8 +30,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
 }
 
 Rectangle Missile::getRect() {
-    Rectangle rect{position.x, position.y, (float)image.width, (float)image.height};
-    return rect;
+    return {position.x, position.y, float(image.width), float(image.height)};
 }
 
 int Missile::getId() {

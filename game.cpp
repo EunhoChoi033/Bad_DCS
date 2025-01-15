@@ -20,6 +20,8 @@ Game::~Game() {
         enemy.UnloadImages();
     }
     UnloadSound(gunfire);
+    UnloadSound(bulletHit);
+    UnloadSound(radarPing);
 }
 
 /*
@@ -45,7 +47,7 @@ void Game::Update() {
 
         playerRadar.Update(player.position, enemies);
 
-        DeleteBullets();
+        DeleteStuff();
         CheckCollisions();
     }
     
@@ -102,7 +104,7 @@ void Game::CheckCollisions() {
         for(auto it = enemies.begin(); it != enemies.end();) {
             if(CheckCollisionRecs(it -> getRect(), bullet.getRect())) {
                 bullet.active = false;
-                it -> DamageEnemy(bulletHit, 0);
+                it -> DamageEnemy(bulletHit, 1);
                 if (it -> enemyHealth == 0) {
                     it = enemies.erase(it);
                 } else {
@@ -139,13 +141,31 @@ void Game::CheckCollisions() {
         }
     }
 
-    // for (auto it = enemies.begin(); it != enemies.end();) {
-    //     if(CheckCollisionRecs(it -> getRect(), playerRadar.oneMissile.getRect())) {
-    //         it = enemies.erase(it);
-    //         playerRadar.oneMissile.active = false;
-    //     } else {
-    //         it++;
+    // Player Missile Collision
+
+    for (auto& missile: playerRadar.missiles) {
+        for (auto it = enemies.begin(); it != enemies.end();){
+            if (CheckCollisionRecs(it -> getRect(), missile.getRect())) {
+                it = enemies.erase(it);
+                missile.active = false;
+                break;
+            } else {
+                it++;
+            }
+        }
+    }
+
+    // for (auto iter = playerRadar.missiles.begin(); iter != playerRadar.missiles.end();) {
+    //     for (auto it = enemies.begin(); it != enemies.end();) {
+    //         if (CheckCollisionRecs(it -> getRect(), iter -> getRect())) {
+    //             it = enemies.erase(it);
+    //             iter = playerRadar.missiles.erase(iter);
+    //             break;
+    //         } else {
+    //             it++;
+    //         }
     //     }
+    //     iter++;
     // }
 }
 
@@ -183,7 +203,7 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
 Removes bullets when they are not active, one for player bullets and
 the other for enemy bullets
 */
-void Game::DeleteBullets() {
+void Game::DeleteStuff() {
     for (auto it = player.bullets.begin(); it != player.bullets.end();) {
         if (!it -> active) {
             it = player.bullets.erase(it);
@@ -195,6 +215,14 @@ void Game::DeleteBullets() {
     for (auto it = enemyBullets.begin(); it != enemyBullets.end();) {
         if (!it -> active) {
             it = enemyBullets.erase(it);
+        } else {
+            it++;
+        }
+    }
+
+    for (auto it = playerRadar.missiles.begin(); it != playerRadar.missiles.end();) {
+        if (!it -> active) {
+            it = playerRadar.missiles.erase(it);
         } else {
             it++;
         }

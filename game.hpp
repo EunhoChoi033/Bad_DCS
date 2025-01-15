@@ -18,13 +18,14 @@ class Game {
         Sound gunfire;
         Sound bulletHit;
         Sound radarPing;
+        Music missileLocking;
         vector<Enemy> enemies;
         Player player;
         Color colorMain;
         Radar playerRadar;
 
     private:
-        void DeleteBullets();
+        void DeleteStuff();
         void GameOver();
         void CheckCollisions();
         void Reset();

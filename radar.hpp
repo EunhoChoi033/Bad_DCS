@@ -12,14 +12,13 @@ class Radar {
     public:
         Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing);
         Radar();
-        // ~Radar();
+        ~Radar();
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
         bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
         void clearMissiles();
         Font radarFont;
-        // vector<Missile> playerMissiles;
-        Missile oneMissile;
+        vector<Missile> missiles;
 
     private:
         int limiter(int value, int min, int max);
@@ -28,7 +27,6 @@ class Radar {
         Color color;
         Vector2 initPlayerPos;
         vector<Enemy> enemies;
-        vector<Missile> missiles;
         vector<EnemyReturn> enemyReturns;
         Texture2D planeImage;
         float radarRangeX;
@@ -43,5 +41,6 @@ class Radar {
         Color fadedColor;
         Color grey;
         Sound radarPing;
+        Music missileLocking;
         // Missile oneMissile;
 };
