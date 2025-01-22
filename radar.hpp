@@ -16,9 +16,12 @@ class Radar {
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
         bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
+        int findEnemyIndex(Vector<Enemy> enemies);
         void clearMissiles();
         Font radarFont;
         vector<Missile> missiles;
+        Sound missileLockVWS;
+        Music missileLocking;
 
     private:
         int limiter(int value, int min, int max);
@@ -38,9 +41,9 @@ class Radar {
         float playerHeight;
         float radarUpdateCooldown;
         float radarReturnSelectCooldown;
+        float missileLockMessageCooldown;
         Color fadedColor;
         Color grey;
         Sound radarPing;
-        Music missileLocking;
         // Missile oneMissile;
 };

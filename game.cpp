@@ -22,7 +22,10 @@ Game::~Game() {
     UnloadSound(gunfire);
     UnloadSound(bulletHit);
     UnloadSound(radarPing);
+    UnloadSound(playerRadar.missileLockVWS);
+    UnloadMusicStream(playerRadar.missileLocking);
 }
+
 
 /*
 Automatically updating if the bullets are active or not and deleting those which

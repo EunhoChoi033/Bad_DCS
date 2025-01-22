@@ -12,7 +12,9 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     selectedEnemy = -1;
     planeImage = LoadTexture("Graphics/radar_jet.png");
     radarFont = LoadFontEx("Fonts/Oxanium-SemiBold.ttf", 256, 0, 0);
+    missileLockVWS = LoadSound("Sounds/missile_lock_VWS.wav");
     missileLocking = LoadMusicStream("Sounds/missile_locking.mp3");
+    SetSoundVolume(missileLockVWS, 1.0f);
     SetMusicVolume(missileLocking, 1.0f);
     PlayMusicStream(missileLocking);
     outerRadius = 100.0f;
@@ -24,6 +26,7 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     radarRangeY =  1.5 * GetScreenHeight();
     radarUpdateCooldown = 0.0;
     radarReturnSelectCooldown = 0.0;
+    missileLockMessageCooldown = 0.0;
 }
 
 Radar::Radar() {
@@ -33,7 +36,7 @@ Radar::Radar() {
 }
 
 Radar::~Radar() {
-    // UnloadMusicStream(missileLocking);
+//     UnloadMusicStream(missileLocking);
 }
 
 void Radar::Draw() {
@@ -55,7 +58,6 @@ void Radar::Draw() {
     DrawRing(position, outerRadius + 10.0f, outerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawRing(position, innerRadius + 10.0f, innerRadius + thickness + 10.0f, 0.0f, 360.0f, 128, color);
     DrawTextureV(planeImage, {position.x - (planeImage.width / 2), position.y - (planeImage.height / 2)}, WHITE);
-    cout << "Selected: " << selectedEnemy << endl;
 }  
 
 void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
@@ -63,6 +65,7 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
 
     if (IsKeyPressed(KEY_M) && selectedEnemy != -1) {
         missiles.push_back(Missile(playerPos, 2.0, selectedEnemy));
+        selectedEnemy = -1;
     }
 
     for (auto& missile: missiles) {
@@ -103,10 +106,23 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
 
         radarUpdateCooldown = GetTime();
     }
-
+ 
     if (selectedEnemy != -1) {
+        // PlaySound(missileLockVWS);
         UpdateMusicStream(missileLocking);
-    } 
+        // PlaySound(missileLockVWS);
+        // Locking ~0.96 seconds
+
+        // missileLockMessageCooldown = 1.0;
+        if (GetTime() - missileLockMessageCooldown >= 1.0 && missileLockMessageCooldown != 0) {
+            PlaySound(missileLockVWS);
+            missileLockMessageCooldown = 0;
+        }
+
+    } else {
+        SeekMusicStream(missileLocking, 0.0f);
+        missileLockMessageCooldown = GetTime();
+    }
     
     if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
         for (auto& enemyReturn: enemyReturns) {
@@ -140,6 +156,13 @@ bool Radar::enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
         }
     }
     return false;
+}
+
+int Radar::findEnemyIndex(Vector<Enemy> enemies) {
+          if (enemyReturn.enemyNum == enemyNum) {
+            return true;
+        }
+    }  
 }
 
 void Radar::clearMissiles() {
