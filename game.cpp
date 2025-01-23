@@ -12,7 +12,7 @@ Game::Game(int numEnemies, int playerHealth, Color colorMain) {
     SetSoundVolume(bulletHit, 0.25f);
     SetSoundVolume(radarPing, 0.15f);
     InitGame(numEnemies, playerHealth, colorMain);    
-    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, player.position, player.image.width, player.image.height, colorMain, radarPing);
+    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, player.position, player.image.width, player.image.height, colorMain, radarPing, enemies);
 }
 
 Game::~Game() {
@@ -61,6 +61,14 @@ void Game::Update() {
     if (IsKeyDown(KEY_ENTER)) {
         Reset();
     }
+
+    // Printing
+    // if (IsMouseButtonPressed(KEY_Q)) {
+    //     size_t i = 0;
+    //     for (i = 0; i < enemies.size(); i++) {
+    //         cout << "At Index:" << i << " there is Enemy #" << enemies[i].enemyNum << endl;
+    //     }
+    // }
 }
 
 /*
@@ -81,7 +89,9 @@ void Game::Draw() {
 
     for (auto& enemy: enemies) {
         enemy.Draw();
+        cout << enemy.getEnemyNum() << ", ";
     }
+    cout << endl;
 }
 
 /*
@@ -150,6 +160,7 @@ void Game::CheckCollisions() {
         for (auto it = enemies.begin(); it != enemies.end();){
             if (CheckCollisionRecs(it -> getRect(), missile.getRect())) {
                 it = enemies.erase(it);
+                cout << "Destroyed Enemy #" << it -> getEnemyNum() << endl;
                 missile.active = false;
                 break;
             } else {
@@ -197,6 +208,7 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
         float posVertical = ((rand() % GetScreenWidth()) * -1.5) - player.image.height;
         
         enemies.push_back(Enemy({posHorizontal, posVertical}, i));
+        // cout << "Enemy #" << i << " created" << endl;
     }
 
     return enemies;

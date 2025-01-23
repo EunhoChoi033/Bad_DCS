@@ -10,13 +10,13 @@
 
 class Radar {
     public:
-        Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing);
+        Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies);
         Radar();
         ~Radar();
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
         bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
-        int findEnemyIndex(Vector<Enemy> enemies);
+        Enemy findEnemyIndex(int id);
         void clearMissiles();
         Font radarFont;
         vector<Missile> missiles;

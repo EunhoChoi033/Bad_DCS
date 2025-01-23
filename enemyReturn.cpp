@@ -3,7 +3,7 @@
 // enum RadarTargetState {
 //     LIVE, LOCKED, LOCKING, MISSILE, MISSILE_LAUNCH
 //
-//     Locking sound effects: https://youtu.be/hok2D_9Y6Ic
+//     Locking sound effects: 
 //     https://youtu.be/LtyxrdLwVsU
 //     https://youtu.be/Jqt2kg7IUt8 
 // };
@@ -48,4 +48,8 @@ bool EnemyReturn::isPressed(Vector2 mousePos, bool mousePressed) {
     } else {
         return false;
     }
+}
+
+int EnemyReturn::getEnemyReturnNum() {
+    return enemyNum;
 }

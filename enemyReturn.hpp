@@ -14,8 +14,10 @@ class EnemyReturn {
         void Update(Vector2 newPosition);
         void setColor(Color newColor);
         bool isPressed(Vector2 mousePos, bool mousePressed);
-        int enemyNum;
+        int getEnemyReturnNum();
+
     private:
+        int enemyNum;
         Font font;
         Vector2 position;
         Color color;

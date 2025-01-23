@@ -78,6 +78,10 @@ void Enemy::DamageEnemy(Sound hitSound, int damageAmount) {
     PlaySound(hitSound);
 }
 
+int Enemy::getEnemyNum() {
+    return enemyNum;
+}
+
 Rectangle Enemy::getRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
 }

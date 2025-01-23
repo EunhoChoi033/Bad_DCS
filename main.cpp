@@ -27,7 +27,7 @@ int main () {
 
     GameState currentState = TITLE;
 
-    int numEnemies = 5;
+    int numEnemies = 3;
     Game game(numEnemies, 10, green);
     Music titleMusic = LoadMusicStream("Sounds/Wild_Blue_Yonder.mp3");
     // Music missileLocking = LoadMusicStream("Sounds/missile_locking.mp3");
