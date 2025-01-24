@@ -89,9 +89,9 @@ void Game::Draw() {
 
     for (auto& enemy: enemies) {
         enemy.Draw();
-        cout << enemy.getEnemyNum() << ", ";
+        // cout << enemy.getEnemyNum() << ", ";
     }
-    cout << endl;
+    // cout << endl;
 }
 
 /*
@@ -188,6 +188,7 @@ void Game::Reset() {
     enemyBullets.clear();
     player.bullets.clear();
     playerRadar.clearMissiles();
+    playerRadar.setSelectedEnemy(-1);
     InitGame(numEnemies, playerHealth, colorMain);
 }
 

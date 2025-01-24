@@ -62,13 +62,18 @@ void Radar::Draw() {
 }  
 
 void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
-
-    for (auto& missile: missiles) {
-        // int enemyIndex = findEnemyIndex(missile.getId());
-        // cout << "Missile ID: " << missile.getId() << " but Homing: " << enemyIndex << endl; 
-        // Enemy enemyTargeting = findEnemyIndex(missile.getId());
-        Enemy enemyTargeting = findEnemyIndex(missile.getId());
-        missile.Update({enemyTargeting.position.x, enemyTargeting.position.y}, playerWidth, playerHeight);
+    if (missiles.size() > 0) {
+        for (auto& missile: missiles) {
+            // Enemy enemyTargeting = enemies[0];
+            // for (int i = 0; i < (int)enemies.size(); i++) {
+            //     if (enemies[i].getEnemyNum() == missile.getId()) {
+            //         enemyTargeting = enemies[i];
+            //     }
+            // }
+            Enemy enemyTargeting = findEnemy(missile);
+            cout << "Tracking Enemy# " << enemyTargeting.getEnemyNum() << " at x position " << enemyTargeting.getEnemyXPos() << " and y position " << enemyTargeting.getEnemyYPos() << endl;
+            missile.Update({enemyTargeting.getEnemyXPos(), enemyTargeting.getEnemyYPos()}, playerWidth, playerHeight);
+        }
     }
 
     if (GetTime() - radarUpdateCooldown > 0.6) {                
@@ -79,7 +84,7 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
 
         for (auto& enemy: enemies) {
             if (CheckCollisionRecs(enemy.getRect(), radarRange)) {
-                Vector2 actualDistance = {enemy.position.x - playerPos.x, enemy.position.y - playerPos.y};
+                Vector2 actualDistance = {enemy.getEnemyXPos() - playerPos.x, enemy.getEnemyYPos() - playerPos.y};
                 float actualDistanceLength = sqrt((actualDistance.x * actualDistance.x) + (actualDistance.y * actualDistance.y));
                 float scaleDownX = (outerRadius - innerRadius) / (radarRangeX / 2);
                 float scaleDownY = (outerRadius - innerRadius) / radarRangeY;
@@ -107,6 +112,10 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     }
 
     if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
+        if (enemyReturns.size() == 0) {
+            selectedEnemy = -1;
+        }
+        
         for (auto& enemyReturn: enemyReturns) {
             if (!enemyNumInList(enemyReturns, selectedEnemy)) {
                 selectedEnemy = -1;
@@ -118,7 +127,7 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
                 } else {
                 enemyReturn.setColor(RED);
                 selectedEnemy = enemyReturn.getEnemyReturnNum();
-                cout << "Selected: " << selectedEnemy << endl;
+                // cout << "Selected: " << selectedEnemy << endl;
                 }
                 radarReturnSelectCooldown = GetTime();
             }
@@ -156,32 +165,22 @@ bool Radar::enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
     }
     return false;
 }
-
-Enemy Radar::findEnemyIndex(int id) {
-    // size_t index = 5;
-    // while (index < enemies.size()) {
-    //     if (enemies[index].enemyNum == id) {
-    //         return index;
-    //     }
-    // }
-    // size_t i = 5;
-    // for (i = 0; i < enemies.size(); i++) {
-    //     if (enemies[i].enemyNum == id) {
-    //         return i;
-    //     }
-    // }
-    // return -1;
-
-    for (auto& enemy: enemies) {
-        if (enemy.getEnemyNum() == id) {
-            return enemy;
+Enemy Radar::findEnemy(Missile missile) {
+    Enemy enemyTarget = enemies[0];
+    for (int i = 0; i < (int)enemies.size(); i++) {
+        if (enemies[i].getEnemyNum() == missile.getId()) {
+            enemyTarget = enemies[i];
         }
     }
-    return enemies[0];
-}  
+    return enemyTarget;
+}
 
 void Radar::clearMissiles() {
     missiles.clear();
+}
+
+void Radar::setSelectedEnemy(int newSelectedEnemy) {
+    selectedEnemy = newSelectedEnemy;
 }
 
 int Radar::limiter(int value, int min, int max) {

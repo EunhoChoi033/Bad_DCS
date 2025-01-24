@@ -16,8 +16,9 @@ class Radar {
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
         bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
-        Enemy findEnemyIndex(int id);
+        Enemy findEnemy(Missile missile);
         void clearMissiles();
+        void setSelectedEnemy(int newSelectedEnemy);
         Font radarFont;
         vector<Missile> missiles;
         Sound missileLockVWS;

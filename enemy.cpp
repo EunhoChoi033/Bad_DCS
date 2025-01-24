@@ -82,6 +82,14 @@ int Enemy::getEnemyNum() {
     return enemyNum;
 }
 
+float Enemy::getEnemyXPos() {
+    return position.x;
+}
+
+float Enemy::getEnemyYPos() {
+    return position.y;
+}
+
 Rectangle Enemy::getRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
 }

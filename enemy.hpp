@@ -15,12 +15,14 @@ class Enemy {
         void UnloadImages();
         void DamageEnemy(Sound hitSound, int damageAmount);
         int getEnemyNum();
+        float getEnemyXPos();
+        float getEnemyYPos();
         Rectangle getRect();
         bool alive;
         Texture2D image;
-        Vector2 position;
         int enemyHealth;
     private:
+        Vector2 position;
         int enemyNum;
         double movementCooldown;
         int movementDecider;
