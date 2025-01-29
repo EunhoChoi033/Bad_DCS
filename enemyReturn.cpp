@@ -13,6 +13,7 @@ EnemyReturn::EnemyReturn(Vector2 position, Color color, Font font, int enemyNum)
     this -> color = color;
     this -> font = font;
     this -> enemyNum = enemyNum;
+    lockable = false;
     radius = 10.0f;
     thickness = 2.0f;
 }
@@ -24,8 +25,9 @@ EnemyReturn::EnemyReturn() {
 void EnemyReturn::Draw() {
     
     DrawPolyLinesEx(position, 4, radius, 0.0f, thickness, color);
-    DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
-    
+    if (lockable) {
+        DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
+    }
     // Other stuff to draw on the radar:
 
     // DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
@@ -40,6 +42,14 @@ void EnemyReturn::Update(Vector2 newPosition) {
 
 void EnemyReturn::setColor(Color newColor) {
     color = newColor;
+}
+
+void EnemyReturn::setLockable(bool newLockable) {
+    lockable = newLockable;
+}
+
+bool EnemyReturn::getLockable() {
+    return lockable;
 }
 
 bool EnemyReturn::isPressed(Vector2 mousePos, bool mousePressed) {

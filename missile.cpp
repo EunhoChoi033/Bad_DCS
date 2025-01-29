@@ -21,12 +21,16 @@ void Missile::Draw() {
 }
 
 void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
-    direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
-    normalizeVector();
-    Vector2 velocity = {direction.x * speed, direction.y * speed};
+    if (targetPos.y < position.x - 50) {
+        direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
+        normalizeVector();
+        Vector2 velocity = {direction.x * speed, direction.y * speed};
 
-    position.x += velocity.x;
-    position.y += velocity.y;
+        position.x += velocity.x;
+        position.y += velocity.y;
+    } else {
+        position.y -= speed;
+    }
 }
 
 Rectangle Missile::getRect() {

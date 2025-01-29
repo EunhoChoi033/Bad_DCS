@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <cstdlib>
 #include "enemy.hpp"
 #include "player.hpp"
 #include "missile.hpp"
@@ -15,8 +16,9 @@ class Radar {
         ~Radar();
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
+        void HandleInput(Vector2 playerPos);
         bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
-        Enemy findEnemy(Missile missile);
+        Enemy findEnemy(Missile missile, vector<Enemy> enemyList);
         void clearMissiles();
         void setSelectedEnemy(int newSelectedEnemy);
         Font radarFont;
@@ -27,6 +29,7 @@ class Radar {
     private:
         int limiter(int value, int min, int max);
         int selectedEnemy;
+        int previousSelectedEnemy;
         Vector2 position;
         Color color;
         Vector2 initPlayerPos;
@@ -42,7 +45,8 @@ class Radar {
         float playerHeight;
         float radarUpdateCooldown;
         float radarReturnSelectCooldown;
-        float missileLockMessageCooldown;
+        float missileLockedCooldown;
+        bool canFire;
         Color fadedColor;
         Color grey;
         Sound radarPing;

@@ -13,6 +13,8 @@ class EnemyReturn {
         void Draw();
         void Update(Vector2 newPosition);
         void setColor(Color newColor);
+        void setLockable(bool newLockable);
+        bool getLockable();
         bool isPressed(Vector2 mousePos, bool mousePressed);
         int getEnemyReturnNum();
 
@@ -23,5 +25,6 @@ class EnemyReturn {
         Color color;
         float radius;
         float thickness;
+        bool lockable;
         // int state;
 };

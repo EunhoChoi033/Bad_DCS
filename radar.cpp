@@ -10,7 +10,9 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     this -> radarPing = radarPing;
     this -> initPlayerPos = initPlayerPos;
     this -> enemies = enemies;
+    canFire = false;
     selectedEnemy = -1;
+    previousSelectedEnemy = -1;
     planeImage = LoadTexture("Graphics/radar_jet.png");
     radarFont = LoadFontEx("Fonts/Oxanium-SemiBold.ttf", 256, 0, 0);
     missileLockVWS = LoadSound("Sounds/missile_lock_VWS.wav");
@@ -27,7 +29,7 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     radarRangeY =  1.5 * GetScreenHeight();
     radarUpdateCooldown = 0.0;
     radarReturnSelectCooldown = 0.0;
-    missileLockMessageCooldown = 0.0;
+    missileLockedCooldown = 0.0;
 }
 
 Radar::Radar() {
@@ -62,6 +64,8 @@ void Radar::Draw() {
 }  
 
 void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
+    srand(time(0));
+
     if (missiles.size() > 0) {
         for (auto& missile: missiles) {
             // Enemy enemyTargeting = enemies[0];
@@ -70,13 +74,13 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
             //         enemyTargeting = enemies[i];
             //     }
             // }
-            Enemy enemyTargeting = findEnemy(missile);
-            cout << "Tracking Enemy# " << enemyTargeting.getEnemyNum() << " at x position " << enemyTargeting.getEnemyXPos() << " and y position " << enemyTargeting.getEnemyYPos() << endl;
+            Enemy enemyTargeting = findEnemy(missile, enemies);
+            // cout << "Tracking Enemy# " << enemyTargeting.getEnemyNum() << " at x position " << enemyTargeting.getEnemyXPos() << " and y position " << enemyTargeting.getEnemyYPos() << endl;
             missile.Update({enemyTargeting.getEnemyXPos(), enemyTargeting.getEnemyYPos()}, playerWidth, playerHeight);
         }
     }
 
-    if (GetTime() - radarUpdateCooldown > 0.6) {                
+    if (GetTime() - radarUpdateCooldown > 1) {                
         Rectangle radarRange = {playerPos.x - (radarRangeX / 2) + (playerWidth / 2), playerPos.y - radarRangeY + (playerHeight / 2), radarRangeX, radarRangeY};
         enemyReturns.clear();
 
@@ -96,7 +100,7 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
                 if (radarDistanceLength <= outerRadius) {
                     if (enemy.getEnemyNum() == selectedEnemy) {
                         enemyReturns.push_back(EnemyReturn(radarPos, RED, radarFont, enemy.getEnemyNum()));
-                        cout << "Enemy Return: " << enemy.getEnemyNum() << endl;
+                        // cout << "Enemy Return: " << enemy.getEnemyNum() << endl;
                     } else {
                     enemyReturns.push_back(EnemyReturn(radarPos, color, radarFont, enemy.getEnemyNum()));
                     }
@@ -111,16 +115,82 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
         radarUpdateCooldown = GetTime();
     }
 
+    HandleInput(playerPos);
+    // if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
+    //     if (enemyReturns.size() == 0) {
+    //         selectedEnemy = -1;
+    //     }
+        
+    //     for (auto& enemyReturn: enemyReturns) {        
+    //         if ((rand() % 100) < 90) {
+    //             enemyReturn.setLockable(true);
+    //         } else {
+    //             enemyReturn.setLockable(false);
+    //         }
+
+    //         if (!enemyNumInList(enemyReturns, selectedEnemy)) {
+    //             selectedEnemy = -1;
+    //         }
+
+    //         if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && enemyReturn.getLockable()) {
+    //             if (enemyReturn.getEnemyReturnNum() == selectedEnemy) {
+    //                 enemyReturn.setColor(color);
+    //                 selectedEnemy = -1;
+    //             } else {
+    //             enemyReturn.setColor(RED);
+    //             selectedEnemy = enemyReturn.getEnemyReturnNum();
+    //             // cout << "Selected: " << selectedEnemy << endl;
+    //             }
+    //             radarReturnSelectCooldown = GetTime();
+    //         }
+
+    //         if (!enemyReturn.getLockable() && (selectedEnemy == enemyReturn.getEnemyReturnNum())) {
+    //             selectedEnemy = -1;
+    //         }
+    //     }
+    // }
+
+    // if (IsKeyPressed(KEY_M) && selectedEnemy != -1 && canFire) {
+    //     missiles.push_back(Missile(playerPos, 3.0, selectedEnemy));
+    //     // cout << "Missile Launched at Enemy #" << selectedEnemy << endl;
+    //     selectedEnemy = -1;
+    //     canFire = false;
+    // }
+
+    if (selectedEnemy != -1 && (selectedEnemy == previousSelectedEnemy)) {
+        UpdateMusicStream(missileLocking);
+        // Locking ~0.96 seconds
+        if (GetTime() - missileLockedCooldown >= 1.0 && missileLockedCooldown != 0) {
+            PlaySound(missileLockVWS);
+            missileLockedCooldown = 0.0;
+            canFire = true;
+        }
+    } else {
+        SeekMusicStream(missileLocking, 0.0f);
+        missileLockedCooldown = GetTime();
+        previousSelectedEnemy = selectedEnemy;
+        canFire = false;
+    }
+}
+
+void Radar::HandleInput(Vector2 playerPos) {
     if (GetTime() - radarReturnSelectCooldown >= 0.1f) {
         if (enemyReturns.size() == 0) {
             selectedEnemy = -1;
         }
         
-        for (auto& enemyReturn: enemyReturns) {
+        for (auto& enemyReturn: enemyReturns) {        
+            if ((rand() % 100) < 90) {
+                enemyReturn.setLockable(true);
+            } else {
+                enemyReturn.setLockable(false);
+            }
+
             if (!enemyNumInList(enemyReturns, selectedEnemy)) {
                 selectedEnemy = -1;
             }
-            if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT))) {
+
+            if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && enemyReturn.getLockable()) {
                 if (enemyReturn.getEnemyReturnNum() == selectedEnemy) {
                     enemyReturn.setColor(color);
                     selectedEnemy = -1;
@@ -131,29 +201,18 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
                 }
                 radarReturnSelectCooldown = GetTime();
             }
+
+            if (!enemyReturn.getLockable() && (selectedEnemy == enemyReturn.getEnemyReturnNum())) {
+                selectedEnemy = -1;
+            }
         }
     }
 
-    if (IsKeyPressed(KEY_M) && selectedEnemy != -1) {
+    if (IsKeyPressed(KEY_M) && selectedEnemy != -1 && canFire) {
         missiles.push_back(Missile(playerPos, 3.0, selectedEnemy));
-        cout << "Missile Launched at Enemy #" << selectedEnemy << endl;
+        // cout << "Missile Launched at Enemy #" << selectedEnemy << endl;
         selectedEnemy = -1;
-    }
-
-    if (selectedEnemy != -1) {
-        // PlaySound(missileLockVWS);
-        UpdateMusicStream(missileLocking);
-        // Locking ~0.96 seconds
-
-        // missileLockMessageCooldown = 1.0;
-        if (GetTime() - missileLockMessageCooldown >= 1.0 && missileLockMessageCooldown != 0) {
-            PlaySound(missileLockVWS);
-            missileLockMessageCooldown = 0;
-        }
-
-    } else {
-        SeekMusicStream(missileLocking, 0.0f);
-        missileLockMessageCooldown = GetTime();
+        canFire = false;
     }
 }
 
@@ -165,14 +224,15 @@ bool Radar::enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
     }
     return false;
 }
-Enemy Radar::findEnemy(Missile missile) {
-    Enemy enemyTarget = enemies[0];
-    for (int i = 0; i < (int)enemies.size(); i++) {
-        if (enemies[i].getEnemyNum() == missile.getId()) {
-            enemyTarget = enemies[i];
+Enemy Radar::findEnemy(Missile missile, vector<Enemy> enemyList) {
+    // cout << "Finding Enemy" << endl;
+    Enemy enemyTargeting = enemyList[0];
+    for (int i = 0; i < (int)enemyList.size(); i++) {
+        if (enemyList[i].getEnemyNum() == missile.getId()) {
+            enemyTargeting = enemyList[i];
         }
     }
-    return enemyTarget;
+    return enemyTargeting;
 }
 
 void Radar::clearMissiles() {

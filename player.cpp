@@ -56,7 +56,7 @@ void Player::InitPlayer() {
     image.height /= 25;
     image.width /= 25;
     position.x = (GetScreenWidth() - image.width)/2;
-    position.y = GetScreenHeight() - image.height - 75;
+    position.y = GetScreenHeight() - image.height - 100;
     fireCooldown = 0.0;
     planeColor = {230, (unsigned char)(23 * playerHealth), (unsigned char)(23 * 
     playerHealth), 255};
