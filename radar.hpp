@@ -9,6 +9,8 @@
 #include "missile.hpp"
 #include "enemyReturn.hpp"
 
+using namespace std;
+
 class Radar {
     public:
         Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies);

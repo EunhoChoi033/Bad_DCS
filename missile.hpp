@@ -1,6 +1,10 @@
 #pragma once
 #include <raylib.h>
 #include <cmath>
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
 
 class Missile {
     public:
@@ -8,6 +12,7 @@ class Missile {
         Missile();
         void Draw();
         void Update(Vector2 targetPos, float targetWidth, float targetHeight);
+        float toDegrees(float radians);
         Rectangle getRect();
         int getId();
         bool active;
@@ -20,5 +25,6 @@ class Missile {
         Vector2 targetPos;
         Vector2 direction;
         float speed;
+        float rotation;
         int id;
 };

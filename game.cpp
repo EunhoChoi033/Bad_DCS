@@ -1,6 +1,4 @@
 #include "game.hpp"
-#include <vector>
-#include <cstdlib>
 
 using namespace std;
 

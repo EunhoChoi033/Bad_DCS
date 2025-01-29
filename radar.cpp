@@ -1,7 +1,5 @@
 #include "radar.hpp"
 
-using namespace std;
-
 Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies) {
     this -> position = position;
     this -> color = color;
@@ -70,7 +68,7 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
         for (auto& missile: missiles) {
             // Enemy enemyTargeting = enemies[0];
             // for (int i = 0; i < (int)enemies.size(); i++) {
-            //     if (enemies[i].getEnemyNum() == missile.getId()) {
+            //    if (enemies[i].getEnemyNum() == missile.getId()) {
             //         enemyTargeting = enemies[i];
             //     }
             // }

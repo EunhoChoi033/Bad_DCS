@@ -3,6 +3,8 @@
 #include "enemy.hpp"
 #include "radar.hpp"
 #include <iostream>
+#include <vector>
+#include <cstdlib>
 
 using namespace std;
 
