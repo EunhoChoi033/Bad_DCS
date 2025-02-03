@@ -31,6 +31,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         }
     }
     
+    // MISSILE DEVIATION: If the enemy is 250 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the continue on its previously given course
     if ((position.y - 250) > targetPos.y) {
         direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
         normalizeVector();

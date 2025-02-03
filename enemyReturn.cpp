@@ -28,6 +28,7 @@ void EnemyReturn::Draw() {
     if (lockable) {
         DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
     }
+    
     // Other stuff to draw on the radar:
 
     // DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
