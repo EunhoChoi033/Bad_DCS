@@ -153,13 +153,12 @@ void Game::CheckCollisions() {
     }
 
     // Enemy-Missile Collision
-
     for (auto& missile: playerRadar.missiles) {
         for (auto it = enemies.begin(); it != enemies.end();){
             if (CheckCollisionRecs(it -> getRect(), missile.getRect())) {
                 player.DamagePlayer(bulletHit, 0);
                 it = enemies.erase(it);
-                cout << "Destroyed Enemy #" << it -> getEnemyNum() << endl;
+                // cout << "Destroyed Enemy #" << it -> getEnemyNum() << endl;
                 missile.active = false;
                 break;
             } else {

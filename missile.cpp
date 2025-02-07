@@ -31,16 +31,17 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         }
     }
     
-    // MISSILE DEVIATION: If the enemy is 250 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the continue on its previously given course
-    if ((position.y - 250) > targetPos.y) {
+    // MISSILE DEVIATION: If the enemy is 200 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the target and continue on its previously given course
+    if ((position.y - 200) > targetPos.y) {
         direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
         normalizeVector();
         rotation = atan2((double)direction.y, (double)direction.x);
+       
         Vector2 velocity = {direction.x * speed, direction.y * speed};
-
         position.x += velocity.x;
         position.y += velocity.y;
     } else {
+        cout << "Not Tracking" << endl;
         Vector2 velocity;
         if (direction.x == 0 && direction.y == 0) {
             position.y -= speed;
