@@ -15,6 +15,8 @@ class Player{
         void FireBullet(Sound gunfire);
         void DamagePlayer(Sound hitSound, int damageAmount);
         void InitPlayer();
+        // float getPlayerWidth();
+        float getPlayerHeight();
         Rectangle getRect();
         vector<Bullet> bullets;
         int playerHealth;

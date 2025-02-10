@@ -62,6 +62,11 @@ void Player::InitPlayer() {
     playerHealth), 255};
 }
 
-Rectangle Player::getRect() {
+float Player::getPlayerHeight() {
+    return float(image.height);
+}
+
+Rectangle Player::getRect()
+{
     return {position.x, position.y, float(image.width), float(image.height)};
 }
