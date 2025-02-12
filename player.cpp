@@ -60,6 +60,11 @@ void Player::InitPlayer() {
     fireCooldown = 0.0;
     planeColor = {230, (unsigned char)(23 * playerHealth), (unsigned char)(23 * 
     playerHealth), 255};
+    playerCountermeasures = Countermeasures();
+}
+
+void Player::setNumEnemies(int numEnemies) {
+    
 }
 
 float Player::getPlayerHeight() {
