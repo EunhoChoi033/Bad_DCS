@@ -28,5 +28,6 @@ class Countermeasures{
         // bool active;
 };
 
-// const float HORIZONTAL_VARIATION = 20;
-const float INIT_VARIATION = 50;
+const float FLARE_HORIZONTAL_VARIATION = 5;
+const float FLARE_VERTICAL_VARIATION = 5;
+const float INIT_VARIATION = 5;

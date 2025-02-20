@@ -30,7 +30,7 @@ void Countermeasures::Update() {
     if (countermeasures.size() > 0) { 
         for (auto it = countermeasures.begin(); it != countermeasures.end();) {
             it -> Update();
-            if (it -> getHealth() == 0) {
+            if (it -> GetHealth() == 0) {
                 it = countermeasures.erase(it);
             } else {
                 it++;
@@ -42,10 +42,10 @@ void Countermeasures::Update() {
 void Countermeasures::AddFlare(Vector2 entityPosition) {
     int centerX = entityPosition.x + (entityWidth/2);
     if (id == numEnemies) {
-        countermeasures.push_back(Flare(Vector2 {centerX + entityWidth + INIT_VARIATION, entityPosition.y + entityHeight + INIT_VARIATION}, WHITE, flareHealth));
+        countermeasures.push_back(Flare(Vector2 {centerX + entityWidth/2 + INIT_VARIATION, entityPosition.y + entityHeight + INIT_VARIATION}, WHITE, flareHealth, FLARE_HORIZONTAL_VARIATION, FLARE_VERTICAL_VARIATION));
     } else {
         // positions.push_back(Vector2 {initPosition.x - INIT_VARIATION, initPosition.y - INIT_VARIATION});
-        countermeasures.push_back(Flare(Vector2 {centerX + entityWidth + INIT_VARIATION, entityPosition.y + entityHeight + INIT_VARIATION}, WHITE, flareHealth));
+        countermeasures.push_back(Flare(Vector2 {centerX + entityWidth/2 + INIT_VARIATION, entityPosition.y + entityHeight + INIT_VARIATION}, WHITE, flareHealth, FLARE_HORIZONTAL_VARIATION, FLARE_VERTICAL_VARIATION));
     }
 }
 
