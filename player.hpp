@@ -1,8 +1,9 @@
 #pragma once
 #include <raylib.h>
+#include <vector>
 #include "bullet.hpp"
 #include "countermeasures.hpp"
-#include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -11,14 +12,16 @@ class Player{
         Player();
         ~Player();
         void Draw();
+        void Update();
         void MoveLeft();
         void MoveRight();
         void FireBullet(Sound gunfire);
         void DamagePlayer(Sound hitSound, int damageAmount);
         void InitPlayer();
-        void setNumEnemies(int numEnemies);
+        void SetNumEnemies(int numEnemies);
+        void HandleInput();
         // float getPlayerWidth();
-        float getPlayerHeight();
+        // float getPlayerHeight();
         Rectangle getRect();
         vector<Bullet> bullets;
         int playerHealth;
@@ -27,7 +30,7 @@ class Player{
 
     private:
         Color planeColor;
-        double fireCooldown;
         Countermeasures playerCountermeasures;
+        double fireCooldown;
         int numEnemies;
 };

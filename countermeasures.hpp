@@ -8,17 +8,14 @@ using namespace std;
 
 class Countermeasures{
     public:
+        Countermeasures();
         Countermeasures(int id, int numEnemies, float entityWidth, float entityHeight);
         void Draw();
         void Update();
-        void setNumEnemies(int newNumEnemies);
-        void AddFlares(Vector2 entityPosition);
+        void AddFlare(Vector2 entityPosition);
         // bool getActive();
-        const float INIT_VARIATION = 50;
-        const float HORIZONTAL_VARIATION = 20;
         
         private:
-        Vector2 initPosition;
         vector<Flare> countermeasures;
         int numEnemies;
         int id;
@@ -30,3 +27,6 @@ class Countermeasures{
         int coolingCooldown;
         // bool active;
 };
+
+// const float HORIZONTAL_VARIATION = 20;
+const float INIT_VARIATION = 50;

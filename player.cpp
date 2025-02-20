@@ -1,5 +1,4 @@
 #include "player.hpp"
-#include <iostream>
 
 Player::Player() {
     InitPlayer();
@@ -13,6 +12,13 @@ Player::~Player() {
 // Draws player's plane
 void Player::Draw() {
     DrawTextureV(image, position, planeColor);
+    playerCountermeasures.Draw();
+}
+
+
+// This function doesn't update anything regarding the player model; it only updates the player's countermeasures
+void Player::Update() {
+    playerCountermeasures.Update();
 }
 
 // Makes the player's plane move left
@@ -60,16 +66,22 @@ void Player::InitPlayer() {
     fireCooldown = 0.0;
     planeColor = {230, (unsigned char)(23 * playerHealth), (unsigned char)(23 * 
     playerHealth), 255};
-    playerCountermeasures = Countermeasures();
+    playerCountermeasures = Countermeasures(numEnemies, numEnemies, image.width, image.height);
 }
 
-void Player::setNumEnemies(int numEnemies) {
-    
+void Player::SetNumEnemies(int numEnemies) {
+    this -> numEnemies = numEnemies;
 }
 
-float Player::getPlayerHeight() {
-    return float(image.height);
+void Player::HandleInput() {
+    if(IsKeyDown(KEY_Q)) {
+        playerCountermeasures.AddFlare(position);
+    }
 }
+
+// float Player::getPlayerHeight() {
+//     return float(image.height);
+// }
 
 Rectangle Player::getRect()
 {

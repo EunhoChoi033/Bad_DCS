@@ -46,6 +46,8 @@ void Game::Update() {
             bullet.Update();
         }
 
+        player.HandleInput();
+        player.Update();
         playerRadar.Update(player.position, enemies);
 
         DeleteStuff();
@@ -106,6 +108,7 @@ void Game::HandleInput() {
         if (IsKeyDown(KEY_SPACE)) {
             player.FireBullet(gunfire);
         }
+        player.HandleInput();
     }
 }
 
@@ -183,7 +186,7 @@ void Game::InitGame(int numEnemies, int playerHealth, Color colorMain) {
     enemies = CreateEnemies(numEnemies);
     player.playerHealth = playerHealth;
     player.InitPlayer();
-
+    player.SetNumEnemies(numEnemies);
     run = true;
 }
 
@@ -194,15 +197,13 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
         float posVertical = ((rand() % GetScreenWidth()) * -1.5) - player.image.height;
         
         enemies.push_back(Enemy({posHorizontal, posVertical}, i));
-        // cout << "Enemy #" << i << " created" << endl;
     }
 
     return enemies;
 }
 
 /*
-Removes bullets when they are not active, one for player bullets and
-the other for enemy bullets
+Removes bullets and missiles when they are not active, one for player bullets and the other for enemy bullets
 */
 void Game::DeleteStuff() {
     for (auto it = player.bullets.begin(); it != player.bullets.end();) {
