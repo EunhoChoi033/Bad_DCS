@@ -24,14 +24,16 @@ void Player::Update() {
 // Makes the player's plane move left
 void Player::MoveLeft() {
     if (position.x >= 0) {
-       position.x -= 5; 
+       position.x -= HORIZONTAL_MOVEMENT_MAGNITUDE; 
+       playerCountermeasures.SetEntityHorizontalCompensation(-HORIZONTAL_MOVEMENT_MAGNITUDE);
     }
 }
 
 // Makes the players plane move right
 void Player::MoveRight() {
     if (position.x <= GetScreenWidth() - image.width) {
-       position.x += 5; 
+       position.x += HORIZONTAL_MOVEMENT_MAGNITUDE; 
+       playerCountermeasures.SetEntityHorizontalCompensation(HORIZONTAL_MOVEMENT_MAGNITUDE);
     }
 }
 
@@ -83,7 +85,7 @@ void Player::HandleInput() {
 //     return float(image.height);
 // }
 
-Rectangle Player::getRect()
+Rectangle Player::GetRect()
 {
     return {position.x, position.y, float(image.width), float(image.height)};
 }

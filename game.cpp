@@ -132,7 +132,7 @@ void Game::CheckCollisions() {
 
     // Enemy's bullets
     for (auto& bullet: enemyBullets) {
-        if (CheckCollisionRecs(bullet.getRect(), player.getRect())) {
+        if (CheckCollisionRecs(bullet.getRect(), player.GetRect())) {
             bullet.active = false;
             player.DamagePlayer(bulletHit, 0);
             if (player.playerHealth == 0) {
@@ -143,7 +143,7 @@ void Game::CheckCollisions() {
 
     // Enemy collides with Player, or vice versa
     for (auto it = enemies.begin(); it != enemies.end();) {
-        if(CheckCollisionRecs(it -> getRect(), player.getRect())) {
+        if(CheckCollisionRecs(it -> getRect(), player.GetRect())) {
             it = enemies.erase(it);
             player.DamagePlayer(bulletHit, 0);
             // Need to change sound

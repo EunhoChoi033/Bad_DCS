@@ -22,7 +22,7 @@ class Player{
         void HandleInput();
         // float getPlayerWidth();
         // float getPlayerHeight();
-        Rectangle getRect();
+        Rectangle GetRect();
         vector<Bullet> bullets;
         int playerHealth;
         Texture2D image;
@@ -34,3 +34,5 @@ class Player{
         double fireCooldown;
         int numEnemies;
 };
+
+const float HORIZONTAL_MOVEMENT_MAGNITUDE = 5;

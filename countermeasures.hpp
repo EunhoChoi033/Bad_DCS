@@ -13,6 +13,7 @@ class Countermeasures{
         void Draw();
         void Update();
         void AddFlare(Vector2 entityPosition);
+        void SetEntityHorizontalCompensation(float horizontalSpeed);
         // bool getActive();
         
         private:
@@ -25,6 +26,7 @@ class Countermeasures{
         int flareHealth;
         Color flareColor;
         int coolingCooldown;
+        float entityHorizontalCompensation;
         // bool active;
 };
 

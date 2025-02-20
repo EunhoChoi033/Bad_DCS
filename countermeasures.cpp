@@ -49,6 +49,10 @@ void Countermeasures::AddFlare(Vector2 entityPosition) {
     }
 }
 
+void Countermeasures::SetEntityHorizontalCompensation(float horizontalSpeed) {
+    this -> entityHorizontalCompensation = horizontalSpeed;
+}
+
 // bool Flares::getActive() {
 //     return active;
 // }
