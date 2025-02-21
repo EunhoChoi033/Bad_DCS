@@ -66,6 +66,7 @@ void Player::InitPlayer() {
     position.x = (GetScreenWidth() - image.width)/2;
     position.y = GetScreenHeight() - image.height - 100;
     fireCooldown = 0.0;
+    countermeasureCooldown = 0.0;
     planeColor = {230, (unsigned char)(23 * playerHealth), (unsigned char)(23 * 
     playerHealth), 255};
     playerCountermeasures = Countermeasures(numEnemies, numEnemies, image.width, image.height);
@@ -76,8 +77,9 @@ void Player::SetNumEnemies(int numEnemies) {
 }
 
 void Player::HandleInput() {
-    if(IsKeyDown(KEY_Q)) {
+    if(IsKeyDown(KEY_Q) && (GetTime() - countermeasureCooldown >= 0.5)) {
         playerCountermeasures.AddFlare(position);
+        countermeasureCooldown = GetTime();
     }
 }
 

@@ -32,6 +32,7 @@ class Player{
         Color planeColor;
         Countermeasures playerCountermeasures;
         double fireCooldown;
+        double countermeasureCooldown;
         int numEnemies;
 };
 
