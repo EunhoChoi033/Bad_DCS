@@ -30,6 +30,8 @@ class Countermeasures{
         // bool active;
 };
 
-const float FLARE_HORIZONTAL_VARIATION = 5;
-const float FLARE_VERTICAL_VARIATION = 5;
+const int FLARE_HEALTH = 50;
+const float FLARE_HORIZONTAL_VELOCITY = 4;
+const float FLARE_VERTICAL_VELOCITY = 1;
+const float FLARE_VERTICAL_ACCELERATION = 0.2;
 const float INIT_VARIATION = 5;

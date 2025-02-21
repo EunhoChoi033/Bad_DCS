@@ -5,7 +5,7 @@
 
 class Flare{
     public:
-    Flare(Vector2 position, Color initColor, int initHealth, float horizontalVariation, float verticalVariation);
+    Flare(Vector2 position, Color initColor, int initHealth, float healthMultiplier, float horizontalVariation, float verticalVariation, float verticalAcceleration, float entityHorizontalCompensation);
     void Draw();
     void Update();
     void SetPosition(Vector2 newPosition);
@@ -15,6 +15,9 @@ class Flare{
     Vector2 position;
     Color color;
     int health;
-    float horizontalVariation;
-    float verticalVariation;
+    float xVelocity;
+    float yVelocity;
+    float yAcceleration;
+    float entityHorizontalCompensation;
+    float healthMultiplier;
 };

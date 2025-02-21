@@ -15,6 +15,7 @@ class Game {
         void Draw();
         void Update();
         void HandleInput();
+        int GetNumEnemies();
         bool run;
         int numEnemies;
         Sound gunfire;

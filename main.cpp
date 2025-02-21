@@ -87,7 +87,7 @@ int main () {
                     const char* numEnemiesMessage = numEnemiesDisplay.c_str();
                     Vector2 offsetDamage = MeasureTextEx(regularFont, numEnemiesMessage, 16, 1);
                     DrawTextEx(regularFont, numEnemiesMessage, {(windowWidth - offsetDamage.x - 25), windowHeight - 70.0f + 70.0f / 2 - (offsetDamage.y / 2)}, 16, 1, green);
-                } else if (game.enemies.size() == 0) {
+                } else if (game.GetNumEnemies() == 0) {
                     game.Update();
                     game.player.Draw();
                     

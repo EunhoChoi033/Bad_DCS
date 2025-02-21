@@ -77,10 +77,14 @@ void Player::SetNumEnemies(int numEnemies) {
 }
 
 void Player::HandleInput() {
-    if(IsKeyDown(KEY_Q) && (GetTime() - countermeasureCooldown >= 0.5)) {
+    if(IsKeyDown(KEY_Q) && (GetTime() - countermeasureCooldown >= 0.2)) {
         playerCountermeasures.AddFlare(position);
         countermeasureCooldown = GetTime();
     }
+}
+
+void Player::ResetEntityHorizontalCompensation() {
+    playerCountermeasures.SetEntityHorizontalCompensation(0.0f);
 }
 
 // float Player::getPlayerHeight() {

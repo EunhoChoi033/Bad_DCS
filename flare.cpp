@@ -1,11 +1,14 @@
 #include "flare.hpp"
 
-Flare::Flare(Vector2 position, Color initColor, int initHealth, float horizontalVariation, float verticalVariation) {
+Flare::Flare(Vector2 position, Color initColor, int initHealth, float healthMultiplier, float horizontalVariation, float verticalVariation, float verticalAcceleration, float entityHorizontalCompensation) {
     this -> position = position;
     this -> color = initColor;
     this -> health = initHealth;
-    this -> horizontalVariation = horizontalVariation;
-    this -> verticalVariation = verticalVariation;
+    this -> healthMultiplier = healthMultiplier;
+    this -> xVelocity = horizontalVariation;
+    this -> yVelocity = verticalVariation;
+    this -> yAcceleration = verticalAcceleration;
+    this -> entityHorizontalCompensation = entityHorizontalCompensation;
 }
 
 void Flare::Draw() {
@@ -14,9 +17,11 @@ void Flare::Draw() {
 
 void Flare::Update() {
     health--;
-    position.x += horizontalVariation;
-    position.y += verticalVariation;
-    color = Color{color.r, color.g, color.b, (unsigned char)(15 * health)};
+    position.x += xVelocity + entityHorizontalCompensation;
+    yVelocity += yAcceleration;
+    position.y += yVelocity;
+    // color = Color{color.r, color.g, color.b, (unsigned char)(15 * health)};
+    color = Color{color.r, color.g, color.b, (unsigned char)(healthMultiplier * health)};
 }
 
 void Flare::SetPosition(Vector2 newPosition) {

@@ -46,7 +46,6 @@ void Game::Update() {
             bullet.Update();
         }
 
-        player.HandleInput();
         player.Update();
         playerRadar.Update(player.position, enemies);
 
@@ -61,14 +60,6 @@ void Game::Update() {
     if (IsKeyDown(KEY_ENTER)) {
         Reset();
     }
-
-    // Printing
-    // if (IsMouseButtonPressed(KEY_Q)) {
-    //     size_t i = 0;
-    //     for (i = 0; i < enemies.size(); i++) {
-    //         cout << "At Index:" << i << " there is Enemy #" << enemies[i].enemyNum << endl;
-    //     }
-    // }
 }
 
 /*
@@ -104,12 +95,18 @@ void Game::HandleInput() {
             player.MoveLeft();
         } else if (IsKeyDown(KEY_RIGHT)) {
             player.MoveRight();
+        } else {
+            player.ResetEntityHorizontalCompensation();
         }
         if (IsKeyDown(KEY_SPACE)) {
             player.FireBullet(gunfire);
         }
         player.HandleInput();
     }
+}
+
+int Game::GetNumEnemies() {
+    return enemies.size();
 }
 
 void Game::CheckCollisions() {

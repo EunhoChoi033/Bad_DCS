@@ -20,6 +20,7 @@ class Player{
         void InitPlayer();
         void SetNumEnemies(int numEnemies);
         void HandleInput();
+        void ResetEntityHorizontalCompensation();
         // float getPlayerWidth();
         // float getPlayerHeight();
         Rectangle GetRect();
