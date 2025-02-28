@@ -8,13 +8,12 @@ using namespace std;
 
 class Countermeasures{
     public:
-        Countermeasures();
         Countermeasures(int id, int numEnemies, float entityWidth, float entityHeight);
+        Countermeasures();
         void Draw();
         void Update();
         void AddFlare(Vector2 entityPosition);
         void SetEntityHorizontalCompensation(float horizontalSpeed);
-        // bool getActive();
         
         private:
         vector<Flare> countermeasures;
@@ -27,11 +26,10 @@ class Countermeasures{
         Color flareColor;
         int coolingCooldown;
         float entityHorizontalCompensation;
-        // bool active;
 };
 
-const int FLARE_HEALTH = 5;
-const float FLARE_HORIZONTAL_VELOCITY = 6;
+const int FLARE_HEALTH = 20;
+const float FLARE_HORIZONTAL_VELOCITY = 5;
 const float FLARE_VERTICAL_VELOCITY = 1;
 const float FLARE_VERTICAL_ACCELERATION = 0.2;
 const float INIT_VARIATION = 5;
