@@ -1,18 +1,23 @@
 #include "flare.hpp"
 
-Flare::Flare(/* Vector2 initPosition */int centerX, float entityWidth, float entityHeight, Color initColor, int initHealth, float healthMultiplier, float horizontalVariation, float verticalVariation, float verticalAcceleration, float entityHorizontalCompensation) {
+Flare::Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float initVariation) {
     this -> centerX = centerX;
     this -> entityWidth = entityWidth;
     this -> entityHeight = entityHeight;
+    this -> entityYPosition = entityYPosition;
     this -> color = initColor;
     this -> health = initHealth;
     this -> healthMultiplier = healthMultiplier;
-    this -> xVelocity = horizontalVariation;
-    this -> yVelocity = verticalVariation;
+    this -> xVelocity = horizontalVelocity;
+    this -> yVelocity = verticalVelocity;
     this -> yAcceleration = verticalAcceleration;
-    this -> entityHorizontalCompensation = entityHorizontalCompensation;
+    this -> initVariation = initVariation;
+
+    currentPosition = Vector2 {centerX + entityWidth/2 + initVariation, entityYPosition + entityHeight + initVariation};
+    // currentPositionLeft = Vector2 {centerX - entityWidth/2 - initVariation, entityYPosition + entityHeight + initVariation};
     
     positions.insert(positions.begin(), currentPosition);
+    // positions.insert(positions.begin(), currentPositionLeft);
 }
 
 void Flare::Draw() {
@@ -20,6 +25,7 @@ void Flare::Draw() {
         Vector2 currentPos = positions[i];
         color = Color{color.r, color.g, color.b, (unsigned char)(healthMultiplier * (health - i))};
         DrawRectangle(currentPos.x, currentPos.y, FLARE_SIZE, FLARE_SIZE, color);
+        DrawRectangle(centerX - (currentPos.x - centerX), currentPos.y, FLARE_SIZE, FLARE_SIZE, color);
     }
 }
 
@@ -27,23 +33,17 @@ void Flare::Update() {
     if ((int)positions.size() == health) {
         positions.pop_back();
     }
-    // for (int i = 0; i < (int)positions.size();) {
-    //     Vector2 currentPos = positions[i];
-    //     if ((currentPos.x + FLARE_SIZE) >= GetScreenWidth() || currentPos.x <= 0 || (currentPos.y - FLARE_SIZE) <= 0 || currentPos.y >= GetScreenHeight()) {
-    //         positions.erase(positions.begin() + i);
-    //         // cout << "ERASE" << endl;
-    //         // i++;
-    //     } else {
-    //         i++;
-    //     }
-    // }
-
-    // Vector2 lastPosition = positions[positions.size()];
 
     currentPosition.x += xVelocity;
+    // currentPositionLeft.x -= xVelocity;
+    
     yVelocity += yAcceleration;
     currentPosition.y += yVelocity;
+
+    // currentPositionLeft.y += yVelocity;
+
     positions.insert(positions.begin(), currentPosition);
+    // positions.insert(positions.begin(), currentPositionLeft);
     
     Vector2 lastPosition = positions[positions.size() - 1];
     

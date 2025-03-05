@@ -95,8 +95,6 @@ void Game::HandleInput() {
             player.MoveLeft();
         } else if (IsKeyDown(KEY_RIGHT)) {
             player.MoveRight();
-        } else {
-            player.ResetEntityHorizontalCompensation();
         }
         if (IsKeyDown(KEY_SPACE)) {
             player.FireBullet(gunfire);

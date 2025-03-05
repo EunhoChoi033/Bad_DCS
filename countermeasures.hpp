@@ -13,7 +13,7 @@ class Countermeasures{
         void Draw();
         void Update();
         void AddFlare(Vector2 entityPosition);
-        void SetEntityHorizontalCompensation(float horizontalSpeed);
+        // void SetEntityHorizontalCompensation(float horizontalSpeed);
         
         private:
         vector<Flare> countermeasures;
@@ -25,10 +25,10 @@ class Countermeasures{
         int flareHealth;
         Color flareColor;
         int coolingCooldown;
-        float entityHorizontalCompensation;
+        // float entityHorizontalCompensation;
 };
 
-const int FLARE_HEALTH = 20;
+const int FLARE_HEALTH = 15;
 const float FLARE_HORIZONTAL_VELOCITY = 5;
 const float FLARE_VERTICAL_VELOCITY = 1;
 const float FLARE_VERTICAL_ACCELERATION = 0.2;

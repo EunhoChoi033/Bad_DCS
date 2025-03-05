@@ -8,13 +8,15 @@ using namespace std;
 
 class Flare{
     public:
-    Flare::Flare(/* Vector2 initPosition */int centerX, float entityWidth, float entityHeight, Color initColor, int initHealth, float healthMultiplier, float horizontalVariation, float verticalVariation, float verticalAcceleration, float entityHorizontalCompensation);
+    Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float initVariation);
     void Draw();
     void Update();
     int GetNumPositions();
 
     private:
-    // Vector2 currentPosition;
+    Vector2 currentPosition;
+    // Vector2 currentPositionRight;
+    // Vector2 currentPositionLeft;
     int centerX;
     float entityWidth;
     float entityHeight;
@@ -24,8 +26,9 @@ class Flare{
     float xVelocity;
     float yVelocity;
     float yAcceleration;
-    float entityHorizontalCompensation;
     float healthMultiplier;
+    float initVariation;
+    float entityYPosition;
     // bool run;
 };
 

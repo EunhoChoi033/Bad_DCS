@@ -25,15 +25,13 @@ void Player::Update() {
 void Player::MoveLeft() {
     if (position.x >= 0) {
        position.x -= HORIZONTAL_MOVEMENT_MAGNITUDE; 
-       playerCountermeasures.SetEntityHorizontalCompensation(-HORIZONTAL_MOVEMENT_MAGNITUDE);
     }
 }
 
 // Makes the players plane move right
 void Player::MoveRight() {
     if (position.x <= GetScreenWidth() - image.width) {
-       position.x += HORIZONTAL_MOVEMENT_MAGNITUDE; 
-       playerCountermeasures.SetEntityHorizontalCompensation(HORIZONTAL_MOVEMENT_MAGNITUDE);
+       position.x += HORIZONTAL_MOVEMENT_MAGNITUDE;
     }
 }
 
@@ -83,9 +81,9 @@ void Player::HandleInput() {
     }
 }
 
-void Player::ResetEntityHorizontalCompensation() {
-    playerCountermeasures.SetEntityHorizontalCompensation(0.0f);
-}
+// void Player::ResetEntityHorizontalCompensation() {
+//     playerCountermeasures.SetEntityHorizontalCompensation(0.0f);
+// }
 
 // float Player::getPlayerHeight() {
 //     return float(image.height);
