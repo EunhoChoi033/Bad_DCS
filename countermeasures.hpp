@@ -28,8 +28,9 @@ class Countermeasures{
         // float entityHorizontalCompensation;
 };
 
-const int FLARE_HEALTH = 15;
-const float FLARE_HORIZONTAL_VELOCITY = 5;
+const int FLARE_HEALTH = 13;
+const float FLARE_HORIZONTAL_VELOCITY = 4;
 const float FLARE_VERTICAL_VELOCITY = 1;
 const float FLARE_VERTICAL_ACCELERATION = 0.2;
-const float INIT_VARIATION = 5;
+const float INIT_VERTICAL_VARIATION = 5;
+const float INIT_HORIZONTAL_VARIATION = 5;

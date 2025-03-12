@@ -41,19 +41,19 @@ void EnemyReturn::Update(Vector2 newPosition) {
     position = newPosition;
 }
 
-void EnemyReturn::setColor(Color newColor) {
+void EnemyReturn::SetColor(Color newColor) {
     color = newColor;
 }
 
-void EnemyReturn::setLockable(bool newLockable) {
+void EnemyReturn::SetLockable(bool newLockable) {
     lockable = newLockable;
 }
 
-bool EnemyReturn::getLockable() {
+bool EnemyReturn::GetLockable() {
     return lockable;
 }
 
-bool EnemyReturn::isPressed(Vector2 mousePos, bool mousePressed) {
+bool EnemyReturn::IsPressed(Vector2 mousePos, bool mousePressed) {
     if (CheckCollisionPointCircle(mousePos, position, radius) && mousePressed) {
         return true;
     } else {
@@ -61,6 +61,6 @@ bool EnemyReturn::isPressed(Vector2 mousePos, bool mousePressed) {
     }
 }
 
-int EnemyReturn::getEnemyReturnNum() {
+int EnemyReturn::GetEnemyReturnNum() {
     return enemyNum;
 }

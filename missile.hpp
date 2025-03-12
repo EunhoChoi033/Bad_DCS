@@ -12,14 +12,14 @@ class Missile {
         Missile();
         void Draw();
         void Update(Vector2 targetPos, float targetWidth, float targetHeight);
-        float toDegrees(float radians);
-        Rectangle getRect();
-        int getId();
+        float ToDegrees(float radians);
+        Rectangle GetRect();
+        int GetId();
         bool active;
+        void NormalizeVector();
         // bool forward;
 
     private:
-        void normalizeVector();
         Texture2D image;
         Vector2 position;
         Vector2 targetPos;

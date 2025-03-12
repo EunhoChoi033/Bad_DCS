@@ -12,11 +12,11 @@ class EnemyReturn {
         // ~EnemyReturn();
         void Draw();
         void Update(Vector2 newPosition);
-        void setColor(Color newColor);
-        void setLockable(bool newLockable);
-        bool getLockable();
-        bool isPressed(Vector2 mousePos, bool mousePressed);
-        int getEnemyReturnNum();
+        void SetColor(Color newColor);
+        void SetLockable(bool newLockable);
+        bool GetLockable();
+        bool IsPressed(Vector2 mousePos, bool mousePressed);
+        int GetEnemyReturnNum();
 
     private:
         int enemyNum;

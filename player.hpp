@@ -38,3 +38,4 @@ class Player{
 };
 
 const float HORIZONTAL_MOVEMENT_MAGNITUDE = 5;
+const float PLAYER_COUNTERMEASURE_COOLDOWN_TIME = 0.3f;

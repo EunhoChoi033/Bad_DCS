@@ -19,7 +19,7 @@ void Bullet::Draw() {
     }
 }
 
-Rectangle Bullet::getRect() {
+Rectangle Bullet::GetRect() {
     Rectangle rect;
     rect.x = position.x;
     rect.y = position.y;

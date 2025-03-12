@@ -75,7 +75,7 @@ void Player::SetNumEnemies(int numEnemies) {
 }
 
 void Player::HandleInput() {
-    if(IsKeyDown(KEY_Q) && (GetTime() - countermeasureCooldown >= 0.2)) {
+    if(IsKeyDown(KEY_Q) && (GetTime() - countermeasureCooldown >= PLAYER_COUNTERMEASURE_COOLDOWN_TIME)) {
         playerCountermeasures.AddFlare(position);
         countermeasureCooldown = GetTime();
     }

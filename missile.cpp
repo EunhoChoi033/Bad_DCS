@@ -19,7 +19,7 @@ Missile::Missile() {
 void Missile::Draw() {
     if (active) {
         // DrawTextureV(image, position, WHITE);
-        DrawTextureEx(image, position, toDegrees(rotation) + 90.0f, 1.0f, WHITE);
+        DrawTextureEx(image, position, ToDegrees(rotation) + 90.0f, 1.0f, WHITE);
     }
 }
 
@@ -34,7 +34,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     // MISSILE DEVIATION: If the enemy is 200 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the target and continue on its previously given course
     if ((position.y - 200) > targetPos.y) {
         direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
-        normalizeVector();
+        NormalizeVector();
         rotation = atan2((double)direction.y, (double)direction.x);
        
         Vector2 velocity = {direction.x * speed, direction.y * speed};
@@ -55,19 +55,19 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     }
 }
 
-float Missile::toDegrees(float radians) {
+float Missile::ToDegrees(float radians) {
     return radians * (180.0 / (2 * acos(0.0)));
 }
 
-Rectangle Missile::getRect() {
+Rectangle Missile::GetRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
 }
 
-int Missile::getId() {
+int Missile::GetId() {
     return id;
 }
 
-void Missile::normalizeVector() {
+void Missile::NormalizeVector() {
     float magnitude = hypot(direction.x, direction.y);
     direction.x /= magnitude;
     direction.y /= magnitude;

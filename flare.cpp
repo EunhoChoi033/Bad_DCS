@@ -1,6 +1,6 @@
 #include "flare.hpp"
 
-Flare::Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float initVariation) {
+Flare::Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float xInitVariation, float yInitVariation) {
     this -> centerX = centerX;
     this -> entityWidth = entityWidth;
     this -> entityHeight = entityHeight;
@@ -11,9 +11,10 @@ Flare::Flare(int centerX, float entityWidth, float entityHeight, float entityYPo
     this -> xVelocity = horizontalVelocity;
     this -> yVelocity = verticalVelocity;
     this -> yAcceleration = verticalAcceleration;
-    this -> initVariation = initVariation;
+    this -> xInitVariation = xInitVariation;
+    this -> yInitVariation = yInitVariation;
 
-    currentPosition = Vector2 {centerX + entityWidth/2 + initVariation, entityYPosition + entityHeight + initVariation};
+    currentPosition = Vector2 {centerX + entityWidth/2 + xInitVariation, entityYPosition + entityHeight + yInitVariation};
     // currentPositionLeft = Vector2 {centerX - entityWidth/2 - initVariation, entityYPosition + entityHeight + initVariation};
     
     positions.insert(positions.begin(), currentPosition);

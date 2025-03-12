@@ -8,7 +8,7 @@ using namespace std;
 
 class Flare{
     public:
-    Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float initVariation);
+    Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float xInitVariation, float yInitVariation);
     void Draw();
     void Update();
     int GetNumPositions();
@@ -27,7 +27,8 @@ class Flare{
     float yVelocity;
     float yAcceleration;
     float healthMultiplier;
-    float initVariation;
+    float xInitVariation;
+    float yInitVariation;
     float entityYPosition;
     // bool run;
 };

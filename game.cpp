@@ -111,7 +111,7 @@ void Game::CheckCollisions() {
     // Player's bullets
     for (auto& bullet: player.bullets) {
         for(auto it = enemies.begin(); it != enemies.end();) {
-            if(CheckCollisionRecs(it -> getRect(), bullet.getRect())) {
+            if(CheckCollisionRecs(it -> GetRect(), bullet.GetRect())) {
                 bullet.active = false;
                 it -> DamageEnemy(bulletHit, 1);
                 if (it -> enemyHealth == 0) {
@@ -127,7 +127,7 @@ void Game::CheckCollisions() {
 
     // Enemy's bullets
     for (auto& bullet: enemyBullets) {
-        if (CheckCollisionRecs(bullet.getRect(), player.GetRect())) {
+        if (CheckCollisionRecs(bullet.GetRect(), player.GetRect())) {
             bullet.active = false;
             player.DamagePlayer(bulletHit, 0);
             if (player.playerHealth == 0) {
@@ -138,7 +138,7 @@ void Game::CheckCollisions() {
 
     // Enemy collides with Player, or vice versa
     for (auto it = enemies.begin(); it != enemies.end();) {
-        if(CheckCollisionRecs(it -> getRect(), player.GetRect())) {
+        if(CheckCollisionRecs(it -> GetRect(), player.GetRect())) {
             it = enemies.erase(it);
             player.DamagePlayer(bulletHit, 0);
             // Need to change sound
@@ -153,7 +153,7 @@ void Game::CheckCollisions() {
     // Enemy-Missile Collision
     for (auto& missile: playerRadar.missiles) {
         for (auto it = enemies.begin(); it != enemies.end();){
-            if (CheckCollisionRecs(it -> getRect(), missile.getRect())) {
+            if (CheckCollisionRecs(it -> GetRect(), missile.GetRect())) {
                 player.DamagePlayer(bulletHit, 0);
                 it = enemies.erase(it);
                 // cout << "Destroyed Enemy #" << it -> getEnemyNum() << endl;
@@ -170,8 +170,8 @@ void Game::Reset() {
     enemies.clear();
     enemyBullets.clear();
     player.bullets.clear();
-    playerRadar.clearMissiles();
-    playerRadar.setSelectedEnemy(-1);
+    playerRadar.ClearMissiles();
+    playerRadar.SetSelectedEnemy(-1);
     InitGame(numEnemies, playerHealth, colorMain);
 }
 
@@ -191,7 +191,7 @@ vector<Enemy> Game::CreateEnemies(int numEnemies) {
         float posHorizontal = rand() % (GetScreenWidth() - player.image.width);
         float posVertical = ((rand() % GetScreenWidth()) * -1.5) - player.image.height;
         
-        enemies.push_back(Enemy({posHorizontal, posVertical}, i));
+        enemies.push_back(Enemy({posHorizontal, posVertical}, i, numEnemies));
     }
 
     return enemies;

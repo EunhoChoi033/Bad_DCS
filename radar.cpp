@@ -21,7 +21,7 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     outerRadius = 100.0f;
     innerRadius = 20.0f;
     thickness = 2.0f;
-    fadedColor = {color.r, color.g, color.b, (unsigned char)limiter(color.a - 225, 0 , 255)};
+    fadedColor = {color.r, color.g, color.b, (unsigned char)Limiter(color.a - 225, 0 , 255)};
     grey = {29, 29, 27, 255};
     radarRangeX = GetScreenWidth() / 2;
     radarRangeY =  1.5 * GetScreenHeight();
@@ -67,8 +67,8 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
     // UPDATE MISSILE COURSE: When there are active missiles, update them with the proper coordinates of the enemies they are targeting
     if (missiles.size() > 0) {
         for (auto& missile: missiles) {
-            Enemy enemyTargeting = findEnemy(missile, enemies);
-            missile.Update({enemyTargeting.getEnemyXPos(), enemyTargeting.getEnemyYPos()}, playerWidth, playerHeight);
+            Enemy enemyTargeting = FindEnemy(missile, enemies);
+            missile.Update({enemyTargeting.GetEnemyXPos(), enemyTargeting.GetEnemyYPos()}, playerWidth, playerHeight);
         }
     }
 
@@ -78,8 +78,8 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
         enemyReturns.clear();
 
         for (auto& enemy: enemies) {
-            if (CheckCollisionRecs(enemy.getRect(), radarRange)) {
-                Vector2 actualDistance = {enemy.getEnemyXPos() - playerPos.x, enemy.getEnemyYPos() - playerPos.y};
+            if (CheckCollisionRecs(enemy.GetRect(), radarRange)) {
+                Vector2 actualDistance = {enemy.GetEnemyXPos() - playerPos.x, enemy.GetEnemyYPos() - playerPos.y};
                 float actualDistanceLength = sqrt((actualDistance.x * actualDistance.x) + (actualDistance.y * actualDistance.y));
                 float scaleDownX = (outerRadius - innerRadius) / (radarRangeX / 2);
                 float scaleDownY = (outerRadius - innerRadius) / radarRangeY;
@@ -89,10 +89,10 @@ void Radar::Update(Vector2 playerPos, vector<Enemy> enemies) {
                 float radarDistanceLength = hypot(radarPos.x - position.x, radarPos.y - position.y);
 
                 if (radarDistanceLength <= outerRadius) {
-                    if (enemy.getEnemyNum() == selectedEnemy) {
-                        enemyReturns.push_back(EnemyReturn(radarPos, RED, radarFont, enemy.getEnemyNum()));
+                    if (enemy.GetEnemyNum() == selectedEnemy) {
+                        enemyReturns.push_back(EnemyReturn(radarPos, RED, radarFont, enemy.GetEnemyNum()));
                     } else {
-                    enemyReturns.push_back(EnemyReturn(radarPos, color, radarFont, enemy.getEnemyNum()));
+                    enemyReturns.push_back(EnemyReturn(radarPos, color, radarFont, enemy.GetEnemyNum()));
                     }
                 }
             }
@@ -132,28 +132,28 @@ void Radar::HandleInput(Vector2 playerPos) {
         // LOSING LOCK POSSIBILITY: There's a 10% chance that an enemy return isn't lockable with the missile, although they will still appear on radar
         for (auto& enemyReturn: enemyReturns) {        
             if ((rand() % 100) < 90) {
-                enemyReturn.setLockable(true);
+                enemyReturn.SetLockable(true);
             } else {
-                enemyReturn.setLockable(false);
+                enemyReturn.SetLockable(false);
             }
 
-            if (!enemyNumInList(enemyReturns, selectedEnemy)) {
+            if (!EnemyNumInList(enemyReturns, selectedEnemy)) {
                 selectedEnemy = -1;
             }
 
-            if (enemyReturn.isPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && enemyReturn.getLockable()) {
-                if (enemyReturn.getEnemyReturnNum() == selectedEnemy) {
-                    enemyReturn.setColor(color);
+            if (enemyReturn.IsPressed(GetMousePosition(), IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) && enemyReturn.GetLockable()) {
+                if (enemyReturn.GetEnemyReturnNum() == selectedEnemy) {
+                    enemyReturn.SetColor(color);
                     selectedEnemy = -1;
                 } else {
-                enemyReturn.setColor(RED);
-                selectedEnemy = enemyReturn.getEnemyReturnNum();
+                enemyReturn.SetColor(RED);
+                selectedEnemy = enemyReturn.GetEnemyReturnNum();
                 // cout << "Selected: " << selectedEnemy << endl;
                 }
                 radarReturnSelectCooldown = GetTime();
             }
 
-            if (!enemyReturn.getLockable() && (selectedEnemy == enemyReturn.getEnemyReturnNum())) {
+            if (!enemyReturn.GetLockable() && (selectedEnemy == enemyReturn.GetEnemyReturnNum())) {
                 selectedEnemy = -1;
             }
         }
@@ -167,33 +167,33 @@ void Radar::HandleInput(Vector2 playerPos) {
     }
 }
 
-bool Radar::enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
+bool Radar::EnemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
     for (auto& enemyReturn: enemyReturns) {
-        if (enemyReturn.getEnemyReturnNum() == enemyNum) {
+        if (enemyReturn.GetEnemyReturnNum() == enemyNum) {
             return true;
         }
     }
     return false;
 }
-Enemy Radar::findEnemy(Missile missile, vector<Enemy> enemyList) {
+Enemy Radar::FindEnemy(Missile missile, vector<Enemy> enemyList) {
     // cout << "Finding Enemy" << endl;
     Enemy enemyTargeting = enemyList[0];
     for (int i = 0; i < (int)enemyList.size(); i++) {
-        if (enemyList[i].getEnemyNum() == missile.getId()) {
+        if (enemyList[i].GetEnemyNum() == missile.GetId()) {
             enemyTargeting = enemyList[i];
         }
     }
     return enemyTargeting;
 }
 
-void Radar::clearMissiles() {
+void Radar::ClearMissiles() {
     missiles.clear();
 }
 
-void Radar::setSelectedEnemy(int newSelectedEnemy) {
+void Radar::SetSelectedEnemy(int newSelectedEnemy) {
     selectedEnemy = newSelectedEnemy;
 }
 
-int Radar::limiter(int value, int min, int max) {
+int Radar::Limiter(int value, int min, int max) {
     return value < min ? min : value > max ? max : value;
 }

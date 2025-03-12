@@ -19,17 +19,17 @@ class Radar {
         void Draw();
         void Update(Vector2 playerPos, vector<Enemy> enemies);
         void HandleInput(Vector2 playerPos);
-        bool enemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
-        Enemy findEnemy(Missile missile, vector<Enemy> enemyList);
-        void clearMissiles();
-        void setSelectedEnemy(int newSelectedEnemy);
+        bool EnemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum);
+        Enemy FindEnemy(Missile missile, vector<Enemy> enemyList);
+        void ClearMissiles();
+        void SetSelectedEnemy(int newSelectedEnemy);
         Font radarFont;
         vector<Missile> missiles;
         Sound missileLockVWS;
         Music missileLocking;
 
     private:
-        int limiter(int value, int min, int max);
+        int Limiter(int value, int min, int max);
         int selectedEnemy;
         int previousSelectedEnemy;
         Vector2 position;

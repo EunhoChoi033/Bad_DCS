@@ -4,9 +4,10 @@
 
 using namespace std;
 
-Enemy::Enemy(Vector2 position, int enemyNum) {
+Enemy::Enemy(Vector2 position, int enemyNum, int numEnemies) {
     this -> position = position;
     this -> enemyNum = enemyNum;
+    this -> numEnemies = numEnemies;
 
     enemyHealth = 2;
     planeColor = {230, (unsigned char)(115 * enemyHealth), (unsigned char)(115 * enemyHealth), 255};
@@ -15,17 +16,27 @@ Enemy::Enemy(Vector2 position, int enemyNum) {
     image.width /= 25;
     movementCooldown = 0.0;
     fireCooldown = 0.0;
+    countermeasureCooldown = 0.0;
+    enemyCountermeasures = Countermeasures(enemyNum, numEnemies, image.width, image.height);
 }
 
 // Draws enemy plane
 void Enemy::Draw() {
     DrawTextureV(image, position, planeColor);
+    enemyCountermeasures.Draw();
 }
 
 // Moves the plane down
 void Enemy::MoveDown() {
     if (position.y < GetScreenHeight()) {
         position.y += 1;
+    }
+}
+
+void Enemy::FireCountermeasure() { 
+    if(GetTime() - countermeasureCooldown >= ENEMY_COUNTERMEASURE_COOLDOWN_TIME) {
+        enemyCountermeasures.AddFlare(position);
+        countermeasureCooldown = GetTime();
     }
 }
 
@@ -52,6 +63,8 @@ void Enemy::Update() {
         }
         break;
     }
+    enemyCountermeasures.Update();
+    FireCountermeasure();
 }
 
 void Enemy::FireBullet(vector<Bullet>& enemyBullets) {
@@ -78,18 +91,18 @@ void Enemy::DamageEnemy(Sound hitSound, int damageAmount) {
     PlaySound(hitSound);
 }
 
-int Enemy::getEnemyNum() {
+int Enemy::GetEnemyNum() {
     return enemyNum;
 }
 
-float Enemy::getEnemyXPos() {
+float Enemy::GetEnemyXPos() {
     return position.x;
 }
 
-float Enemy::getEnemyYPos() {
+float Enemy::GetEnemyYPos() {
     return position.y;
 }
 
-Rectangle Enemy::getRect() {
+Rectangle Enemy::GetRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
 }
