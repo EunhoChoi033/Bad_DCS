@@ -17,6 +17,7 @@ class Missile {
         int GetId();
         bool active;
         void NormalizeVector();
+        void LoseLockOpportunity();
         // bool forward;
 
     private:
@@ -27,4 +28,8 @@ class Missile {
         float speed;
         float rotation;
         int id;
+        bool tracking;
 };
+
+const int LOSING_LOCK_PROBABILITY_TOTAL = 100;
+const int LOSING_LOCK_PROBABILITY = 90; /* Probability = 0 - 100 */

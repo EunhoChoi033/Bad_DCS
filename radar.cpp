@@ -131,7 +131,7 @@ void Radar::HandleInput(Vector2 playerPos) {
         
         // LOSING LOCK POSSIBILITY: There's a 10% chance that an enemy return isn't lockable with the missile, although they will still appear on radar
         for (auto& enemyReturn: enemyReturns) {        
-            if ((rand() % 100) < 90) {
+            if ((rand() % 100) < 89) {
                 enemyReturn.SetLockable(true);
             } else {
                 enemyReturn.SetLockable(false);
@@ -167,23 +167,22 @@ void Radar::HandleInput(Vector2 playerPos) {
     }
 }
 
-bool Radar::EnemyNumInList(vector<EnemyReturn> enemyReturns, int enemyNum) {
-    for (auto& enemyReturn: enemyReturns) {
-        if (enemyReturn.GetEnemyReturnNum() == enemyNum) {
+bool Radar::EnemyNumInList(vector<EnemyReturn> enemyList, int enemyNum) {
+    for (auto& enemy: enemyReturns) {
+        if (enemy.GetEnemyReturnNum() == enemyNum) {
             return true;
         }
     }
     return false;
 }
 Enemy Radar::FindEnemy(Missile missile, vector<Enemy> enemyList) {
-    // cout << "Finding Enemy" << endl;
-    Enemy enemyTargeting = enemyList[0];
     for (int i = 0; i < (int)enemyList.size(); i++) {
         if (enemyList[i].GetEnemyNum() == missile.GetId()) {
-            enemyTargeting = enemyList[i];
+            // Enemy enemyTargeting = enemyList[i];
+            return enemyList[i];
         }
     }
-    return enemyTargeting;
+    return Enemy({(float)GetScreenWidth(), (float)GetScreenHeight()}, -1, 0);
 }
 
 void Radar::ClearMissiles() {

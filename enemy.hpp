@@ -9,6 +9,7 @@ using namespace std;
 class Enemy {
     public:
         Enemy(Vector2 position, int enemyNum, int numEnemies);
+        void InitEnemy();
         void Draw();
         void MoveDown();
         void FireCountermeasure();

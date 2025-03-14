@@ -10,6 +10,7 @@ Missile::Missile(Vector2 position, float speed, int id) {
     image.height /= 4;
     rotation = 0.0f;
     active = true;
+    tracking = true;
     direction = {0, 0};
 }
 
@@ -32,7 +33,11 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     }
     
     // MISSILE DEVIATION: If the enemy is 200 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the target and continue on its previously given course
-    if ((position.y - 200) > targetPos.y) {
+    if (tracking && (!((position.y - 200) > targetPos.y) || (targetPos.x == (float)GetScreenWidth() && targetPos.y == (float)GetScreenHeight()))) {
+    // if (!((position.y - 200) > targetPos.y) && tracking) {
+        tracking = false;
+    }
+    if (tracking) {
         direction = {targetPos.x + (targetWidth / 2) - position.x - (image.width / 2), targetPos.y + (targetHeight / 2) - position.y - (image.height / 2)};
         NormalizeVector();
         rotation = atan2((double)direction.y, (double)direction.x);
@@ -71,4 +76,12 @@ void Missile::NormalizeVector() {
     float magnitude = hypot(direction.x, direction.y);
     direction.x /= magnitude;
     direction.y /= magnitude;
+}
+
+void Missile::LoseLockOpportunity() {
+    srand(time(0));
+
+    if ((rand() % LOSING_LOCK_PROBABILITY_TOTAL) < LOSING_LOCK_PROBABILITY) {
+        tracking = false;
+    }
 }

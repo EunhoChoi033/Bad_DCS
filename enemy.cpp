@@ -9,6 +9,12 @@ Enemy::Enemy(Vector2 position, int enemyNum, int numEnemies) {
     this -> enemyNum = enemyNum;
     this -> numEnemies = numEnemies;
 
+    if (position.x != GetScreenWidth() && position.y != GetScreenHeight()) {
+        InitEnemy();
+    }
+}
+
+void Enemy::InitEnemy() {
     enemyHealth = 2;
     planeColor = {230, (unsigned char)(115 * enemyHealth), (unsigned char)(115 * enemyHealth), 255};
     image = LoadTexture("Graphics/jet2.png");
