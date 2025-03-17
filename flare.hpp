@@ -11,16 +11,17 @@ class Flare{
     Flare(int centerX, float entityWidth, float entityHeight, float entityYPosition, Color initColor, int initHealth, float healthMultiplier, float horizontalVelocity, float verticalVelocity, float verticalAcceleration, float xInitVariation, float yInitVariation);
     void Draw();
     void Update();
-    int GetNumPositions();
+    int GetNumPositionsRight();
+    int GetNumPositionsLeft();
 
     private:
-    Vector2 currentPosition;
-    // Vector2 currentPositionRight;
-    // Vector2 currentPositionLeft;
+    Vector2 currentPositionRight;
+    Vector2 currentPositionLeft;
     int centerX;
     float entityWidth;
     float entityHeight;
-    vector<Vector2> positions;
+    vector<Vector2> positionsLeft;
+    vector<Vector2> positionsRight;
     Color color;
     int health;
     float xVelocity;
@@ -30,7 +31,6 @@ class Flare{
     float xInitVariation;
     float yInitVariation;
     float entityYPosition;
-    // bool run;
 };
 
 const int FLARE_SIZE = 10;

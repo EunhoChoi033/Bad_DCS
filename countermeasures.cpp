@@ -24,7 +24,7 @@ void Countermeasures::Update() {
     if (countermeasures.size() > 0) { 
         for (auto it = countermeasures.begin(); it != countermeasures.end();) {
             it -> Update();
-            if (it -> GetNumPositions() == 0) {
+            if (it -> GetNumPositionsLeft() == 0 && it -> GetNumPositionsRight() == 0) {
                 it = countermeasures.erase(it);
             } else {
                 it++;

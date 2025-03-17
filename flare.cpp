@@ -14,46 +14,61 @@ Flare::Flare(int centerX, float entityWidth, float entityHeight, float entityYPo
     this -> xInitVariation = xInitVariation;
     this -> yInitVariation = yInitVariation;
 
-    currentPosition = Vector2 {centerX + entityWidth/2 + xInitVariation, entityYPosition + entityHeight + yInitVariation};
-    // currentPositionLeft = Vector2 {centerX - entityWidth/2 - initVariation, entityYPosition + entityHeight + initVariation};
+    currentPositionRight = Vector2 {centerX + entityWidth/2 + xInitVariation, entityYPosition + entityHeight + yInitVariation};
+    currentPositionLeft = Vector2 {centerX - entityWidth/2 - xInitVariation, entityYPosition + entityHeight + yInitVariation};
     
-    positions.insert(positions.begin(), currentPosition);
-    // positions.insert(positions.begin(), currentPositionLeft);
+    positionsRight.insert(positionsRight.begin(), currentPositionRight);
+    positionsLeft.insert(positionsLeft.begin(), currentPositionLeft);
 }
 
 void Flare::Draw() {
-    for (int i = 0; i < (int)positions.size(); i++) {
-        Vector2 currentPos = positions[i];
+    for (int i = 0; i < (int)positionsRight.size(); i++) {
+        Vector2 currentPosRight = positionsRight[i];
         color = Color{color.r, color.g, color.b, (unsigned char)(healthMultiplier * (health - i))};
-        DrawRectangle(currentPos.x, currentPos.y, FLARE_SIZE, FLARE_SIZE, color);
-        DrawRectangle(centerX - (currentPos.x - centerX), currentPos.y, FLARE_SIZE, FLARE_SIZE, color);
+        DrawRectangle(currentPosRight.x, currentPosRight.y, FLARE_SIZE, FLARE_SIZE, color);
+    }
+    for (int i = 0; i < (int)positionsLeft.size(); i++) {
+        Vector2 currentPosLeft = positionsLeft[i];
+        color = Color{color.r, color.g, color.b, (unsigned char)(healthMultiplier * (health - i))};
+        DrawRectangle(currentPosLeft.x, currentPosLeft.y, FLARE_SIZE, FLARE_SIZE, color);
     }
 }
 
 void Flare::Update() {
-    if ((int)positions.size() == health) {
-        positions.pop_back();
+
+    if ((int)positionsRight.size() == health) {
+        positionsRight.pop_back();
+    }
+    if ((int)positionsLeft.size() == health) {
+        positionsLeft.pop_back();
     }
 
-    currentPosition.x += xVelocity;
-    // currentPositionLeft.x -= xVelocity;
+    currentPositionRight.x += xVelocity;
+    currentPositionLeft.x -= xVelocity;
     
     yVelocity += yAcceleration;
-    currentPosition.y += yVelocity;
-
-    // currentPositionLeft.y += yVelocity;
-
-    positions.insert(positions.begin(), currentPosition);
-    // positions.insert(positions.begin(), currentPositionLeft);
+    currentPositionRight.y += yVelocity;
+    currentPositionLeft.y += yVelocity;
     
-    Vector2 lastPosition = positions[positions.size() - 1];
+    positionsRight.insert(positionsRight.begin(), currentPositionRight);
+    positionsLeft.insert(positionsLeft.begin(), currentPositionLeft);
     
-    if ((lastPosition.x + FLARE_SIZE) >= GetScreenWidth() || lastPosition.x <= 0 || (lastPosition.y - FLARE_SIZE) <= 0 || lastPosition.y >= GetScreenHeight()) {
-        positions.clear();
+    Vector2 lastPositionRight = positionsRight[positionsRight.size() - 1];
+    Vector2 lastPositionLeft = positionsLeft[positionsLeft.size() - 1];
+    
+    if ((lastPositionRight.x + FLARE_SIZE) >= GetScreenWidth() || lastPositionRight.x <= 0 || (lastPositionRight.y - FLARE_SIZE) <= 0 || lastPositionRight.y >= GetScreenHeight()) {
+        positionsRight.clear();
+    }
+    if ((lastPositionLeft.x + FLARE_SIZE) >= GetScreenWidth() || lastPositionLeft.x <= 0 || (lastPositionLeft.y - FLARE_SIZE) <= 0 || lastPositionLeft.y >= GetScreenHeight()) {
+        positionsLeft.clear();
     }
 
 }
 
-int Flare::GetNumPositions() {
-    return (int)positions.size();
+int Flare::GetNumPositionsRight() {
+    return (int)positionsRight.size();
+}
+
+int Flare::GetNumPositionsLeft() {
+    return (int)positionsLeft.size();
 }
