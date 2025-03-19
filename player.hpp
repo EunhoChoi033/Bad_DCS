@@ -17,12 +17,9 @@ class Player{
         void MoveRight();
         void FireBullet(Sound gunfire);
         void DamagePlayer(Sound hitSound, int damageAmount);
-        void InitPlayer();
+        void InitPlayer(float horizontalVariationLeft);
         void SetNumEnemies(int numEnemies);
         void HandleInput();
-        // void ResetEntityHorizontalCompensation();
-        // float getPlayerWidth();
-        // float getPlayerHeight();
         Rectangle GetRect();
         vector<Bullet> bullets;
         int playerHealth;
@@ -35,6 +32,7 @@ class Player{
         double fireCooldown;
         double countermeasureCooldown;
         int numEnemies;
+        float horizontalVariationLeft;
 };
 
 const float HORIZONTAL_MOVEMENT_MAGNITUDE = 5;

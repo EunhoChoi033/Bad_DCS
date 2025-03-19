@@ -1,6 +1,6 @@
 #include "radar.hpp"
 
-Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies) {
+Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies, float horizontalVariationLeft) {
     this -> position = position;
     this -> color = color;
     this -> playerWidth = playerWidth;
@@ -8,6 +8,8 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     this -> radarPing = radarPing;
     this -> initPlayerPos = initPlayerPos;
     this -> enemies = enemies;
+    this -> horizontalVariationLeft = horizontalVariationLeft;
+    
     canFire = false;
     selectedEnemy = -1;
     previousSelectedEnemy = -1;
@@ -182,7 +184,7 @@ Enemy Radar::FindEnemy(Missile missile, vector<Enemy> enemyList) {
             return enemyList[i];
         }
     }
-    return Enemy({(float)GetScreenWidth(), (float)GetScreenHeight()}, -1, 0);
+    return Enemy({(float)GetScreenWidth(), (float)GetScreenHeight()}, -1, 0, horizontalVariationLeft);
 }
 
 void Radar::ClearMissiles() {

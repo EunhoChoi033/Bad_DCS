@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Game::Game(int numEnemies, int playerHealth, Color colorMain) {
+Game::Game(int numEnemies, int playerHealth, Color colorMain, float horizontalVariationLeft) {
+    this -> horizontalVariationLeft = horizontalVariationLeft;
     gunfire = LoadSound("Sounds/gunfire.wav");
     bulletHit = LoadSound("Sounds/bullet_hit.wav");
     radarPing = LoadSound("Sounds/radar_update_blip.wav");
@@ -10,7 +11,7 @@ Game::Game(int numEnemies, int playerHealth, Color colorMain) {
     SetSoundVolume(bulletHit, 0.25f);
     SetSoundVolume(radarPing, 0.15f);
     InitGame(numEnemies, playerHealth, colorMain);    
-    playerRadar = Radar({120, GetScreenHeight() / 2.0f}, player.position, player.image.width, player.image.height, colorMain, radarPing, enemies);
+    playerRadar = Radar({horizontalVariationLeft / 2, GetScreenHeight() / 2.0f}, player.position, player.image.width, player.image.height, colorMain, radarPing, enemies, horizontalVariationLeft);
 }
 
 Game::~Game() {
@@ -180,7 +181,7 @@ void Game::InitGame(int numEnemies, int playerHealth, Color colorMain) {
     this -> playerHealth = playerHealth;
     enemies = CreateEnemies(numEnemies);
     player.playerHealth = playerHealth;
-    player.InitPlayer();
+    player.InitPlayer(horizontalVariationLeft);
     player.SetNumEnemies(numEnemies);
     run = true;
 }
@@ -188,10 +189,10 @@ void Game::InitGame(int numEnemies, int playerHealth, Color colorMain) {
 vector<Enemy> Game::CreateEnemies(int numEnemies) {
 
     for (int i = 0; i < numEnemies; i++) {
-        float posHorizontal = rand() % (GetScreenWidth() - player.image.width);
+        float posHorizontal = (rand() % (GetScreenWidth() - player.image.width - (int)horizontalVariationLeft)) + horizontalVariationLeft;
         float posVertical = ((rand() % GetScreenWidth()) * -1.5) - player.image.height;
         
-        enemies.push_back(Enemy({posHorizontal, posVertical}, i, numEnemies));
+        enemies.push_back(Enemy({posHorizontal, posVertical}, i, numEnemies, horizontalVariationLeft));
     }
 
     return enemies;

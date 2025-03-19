@@ -13,7 +13,7 @@ using namespace std;
 
 class Radar {
     public:
-        Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies);
+        Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float playerHeight, Color color, Sound radarPing, vector<Enemy> enemies, float horizontalVariationLeft);
         Radar();
         ~Radar();
         void Draw();
@@ -48,6 +48,7 @@ class Radar {
         float radarUpdateCooldown;
         float radarReturnSelectCooldown;
         float missileLockedCooldown;
+        float horizontalVariationLeft;
         bool canFire;
         Color fadedColor;
         Color grey;

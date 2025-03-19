@@ -8,7 +8,7 @@ using namespace std;
 
 class Enemy {
     public:
-        Enemy(Vector2 position, int enemyNum, int numEnemies);
+        Enemy(Vector2 position, int enemyNum, int numEnemies, float horizontalVariationLeft);
         void InitEnemy();
         void Draw();
         void MoveDown();
@@ -35,6 +35,7 @@ class Enemy {
         int movementDecider;
         double fireCooldown;
         Color planeColor;
+        float horizontalVariationLeft;
 };
 
 const float ENEMY_COUNTERMEASURE_COOLDOWN_TIME = 0.3f;

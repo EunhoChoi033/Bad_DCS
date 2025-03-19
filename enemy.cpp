@@ -4,10 +4,11 @@
 
 using namespace std;
 
-Enemy::Enemy(Vector2 position, int enemyNum, int numEnemies) {
+Enemy::Enemy(Vector2 position, int enemyNum, int numEnemies, float horizontalVariationLeft) {
     this -> position = position;
     this -> enemyNum = enemyNum;
     this -> numEnemies = numEnemies;
+    this -> horizontalVariationLeft = horizontalVariationLeft;
 
     if (position.x != GetScreenWidth() && position.y != GetScreenHeight()) {
         InitEnemy();
@@ -58,7 +59,7 @@ void Enemy::Update() {
     
     switch(movementDecider) {
     case 0:
-        if (position.x > 0) {
+        if (position.x > horizontalVariationLeft) {
             position.x -= 1;
         }
         break;
@@ -70,7 +71,7 @@ void Enemy::Update() {
         break;
     }
     enemyCountermeasures.Update();
-    FireCountermeasure();
+    // FireCountermeasure();
 }
 
 void Enemy::FireBullet(vector<Bullet>& enemyBullets) {

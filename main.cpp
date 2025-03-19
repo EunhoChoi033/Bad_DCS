@@ -10,11 +10,23 @@ enum GameState {
     TITLE, GAME
 };
 
+const char* TITLE_MESSAGE = "Bad DCS";
+const int TITLE_MESSAGE_SIZE = 300;
+const char* START_BUTTON_MESSAGE = "START";
+const int START_BUTTON_MESSAGE_SIZE = 185;
+
+const int LINE_THICKNESS = 3;
+const float BOTTOM_BAR_HORIZONTAL_OFFSET = 25.0f;
+const float BOTTOM_BAR_VERTICAL_OFFSET = 70.0f;
+const float VERTICAL_BAR_HORIZONTAL_OFFSET = 300.0f;
+const float VERTICAL_BAR_VERTICAL_OFFSET = 20.0f;
+
 int main () {
 
     Color grey = {29, 29, 27, 255};
     Color green = {57, 255, 20, 255};
-    int windowWidth = 900;
+    // int windowWidth = 900;
+    int windowWidth = 1500;
     int windowHeight = 900;
 
     InitWindow(windowWidth, windowHeight, "Bad DCS");
@@ -28,7 +40,7 @@ int main () {
     GameState currentState = TITLE;
 
     int numEnemies = 5;
-    Game game(numEnemies, 10, green);
+    Game game(numEnemies, 10, green, VERTICAL_BAR_HORIZONTAL_OFFSET);
     Music titleMusic = LoadMusicStream("Sounds/Wild_Blue_Yonder.mp3");
     // Music missileLocking = LoadMusicStream("Sounds/missile_locking.mp3");
     SetMusicVolume(titleMusic, 0.3f);
@@ -43,22 +55,20 @@ int main () {
             case TITLE: {
                 UpdateMusicStream(titleMusic);
 
-                const char* titleMessage = "Bad DCS";
-                const char* startButtonMessage = "START";
+                Vector2 offsetTitle = MeasureTextEx(titleFont, TITLE_MESSAGE, 
+                TITLE_MESSAGE_SIZE, 1);
                 Vector2 offsetStart = MeasureTextEx(titleFont, 
-                startButtonMessage, 128, 1);
-                Vector2 offsetTitle = MeasureTextEx(titleFont, titleMessage, 
-                212, 1);
-                float buttonWidth = 400;
-                float buttonHeight = 150;
-                Vector2 buttonPos = {(windowWidth - buttonWidth) / 2, (windowWidth - buttonHeight) * 2 / 3};
+                START_BUTTON_MESSAGE, START_BUTTON_MESSAGE_SIZE, 1);
+                float buttonWidth = START_BUTTON_MESSAGE_SIZE * 3;
+                float buttonHeight = START_BUTTON_MESSAGE_SIZE * 1.1;
+                Vector2 buttonPos = {(windowWidth - buttonWidth) / 2, (windowHeight - buttonHeight) * 2 / 3};
                 
-                DrawTextEx(titleFont, titleMessage, 
+                DrawTextEx(titleFont, TITLE_MESSAGE, 
                 {(windowWidth - offsetTitle.x) / 2, 
-                (windowHeight - offsetTitle.y) / 3}, 212, 1, green);
-                DrawTextEx(titleFont, startButtonMessage, 
+                (windowHeight - offsetTitle.y) / 4}, TITLE_MESSAGE_SIZE, 1, green);
+                DrawTextEx(titleFont, START_BUTTON_MESSAGE, 
                 {(windowWidth - offsetStart.x) / 2, 
-                (windowHeight - offsetStart.y) * 2 / 3}, 128, 1, green);
+                (windowHeight - offsetStart.y) * 2 / 3}, START_BUTTON_MESSAGE_SIZE, 1, green);
                 Button startButton(buttonPos, buttonWidth, buttonHeight, green);
                 startButton.Draw();
 
@@ -69,7 +79,8 @@ int main () {
             }
             case GAME: {
 
-                DrawLineEx({25, windowHeight - 70.0f}, {windowWidth - 25.0f, windowHeight - 70.0f}, 3, green);
+                DrawLineEx({BOTTOM_BAR_HORIZONTAL_OFFSET, windowHeight - BOTTOM_BAR_VERTICAL_OFFSET}, {windowWidth - BOTTOM_BAR_HORIZONTAL_OFFSET, windowHeight - BOTTOM_BAR_VERTICAL_OFFSET}, LINE_THICKNESS, green);
+                DrawLineEx({VERTICAL_BAR_HORIZONTAL_OFFSET, VERTICAL_BAR_VERTICAL_OFFSET}, {VERTICAL_BAR_HORIZONTAL_OFFSET, windowHeight - BOTTOM_BAR_VERTICAL_OFFSET - LINE_THICKNESS - VERTICAL_BAR_VERTICAL_OFFSET}, LINE_THICKNESS, green);
                 if (game.run) {
                     game.HandleInput();
                     game.Update();

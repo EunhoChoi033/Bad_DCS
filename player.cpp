@@ -1,7 +1,7 @@
 #include "player.hpp"
 
 Player::Player() {
-    InitPlayer();
+    InitPlayer(horizontalVariationLeft);
 }
 
 // Removes the plane once game ends
@@ -23,7 +23,7 @@ void Player::Update() {
 
 // Makes the player's plane move left
 void Player::MoveLeft() {
-    if (position.x >= 0) {
+    if (position.x >= horizontalVariationLeft) {
        position.x -= HORIZONTAL_MOVEMENT_MAGNITUDE; 
     }
 }
@@ -57,7 +57,8 @@ void Player::DamagePlayer(Sound hitSound, int damageAmount) {
     PlaySound(hitSound);
 }
 
-void Player::InitPlayer() {
+void Player::InitPlayer(float horizontalVariationLeft) {
+    this -> horizontalVariationLeft = horizontalVariationLeft;
     image = LoadTexture("Graphics/jet.png");
     image.height /= 25;
     image.width /= 25;

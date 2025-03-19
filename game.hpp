@@ -10,7 +10,7 @@ using namespace std;
 
 class Game {
     public:
-        Game(int numEnemies, int playerHealth, Color colorMain);
+        Game(int numEnemies, int playerHealth, Color colorMain, float horizontalVariationLeft);
         ~Game();
         void Draw();
         void Update();
@@ -35,6 +35,7 @@ class Game {
         void InitGame(int numEnemies, int playerHealth, Color colorMain);
         int enemyFireCooldown;
         int playerHealth;
+        float horizontalVariationLeft;
         vector<Enemy> CreateEnemies(int numEnemies);
         vector<Bullet> enemyBullets;
 };
