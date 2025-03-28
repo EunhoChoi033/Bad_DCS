@@ -148,9 +148,8 @@ void Radar::HandleInput(Vector2 playerPos) {
                     enemyReturn.SetColor(color);
                     selectedEnemy = -1;
                 } else {
-                enemyReturn.SetColor(RED);
-                selectedEnemy = enemyReturn.GetEnemyReturnNum();
-                // cout << "Selected: " << selectedEnemy << endl;
+                    enemyReturn.SetColor(RED);
+                    selectedEnemy = enemyReturn.GetEnemyReturnNum();
                 }
                 radarReturnSelectCooldown = GetTime();
             }
@@ -163,7 +162,6 @@ void Radar::HandleInput(Vector2 playerPos) {
 
     if (IsKeyPressed(KEY_M) && selectedEnemy != -1 && canFire) {
         missiles.push_back(Missile(playerPos, 3.0, selectedEnemy));
-        // cout << "Missile Launched at Enemy #" << selectedEnemy << endl;
         selectedEnemy = -1;
         canFire = false;
     }
@@ -180,7 +178,6 @@ bool Radar::EnemyNumInList(vector<EnemyReturn> enemyList, int enemyNum) {
 Enemy Radar::FindEnemy(Missile missile, vector<Enemy> enemyList) {
     for (int i = 0; i < (int)enemyList.size(); i++) {
         if (enemyList[i].GetEnemyNum() == missile.GetId()) {
-            // Enemy enemyTargeting = enemyList[i];
             return enemyList[i];
         }
     }

@@ -157,7 +157,6 @@ void Game::CheckCollisions() {
             if (CheckCollisionRecs(it -> GetRect(), missile.GetRect())) {
                 player.DamagePlayer(bulletHit, 0);
                 it = enemies.erase(it);
-                // cout << "Destroyed Enemy #" << it -> getEnemyNum() << endl;
                 missile.active = false;
                 break;
             } else {

@@ -22,6 +22,7 @@ void Enemy::InitEnemy() {
     image.height /= 25;
     image.width /= 25;
     movementCooldown = 0.0;
+    fireMissileCooldown = 0.0;
     fireCooldown = 0.0;
     countermeasureCooldown = 0.0;
     enemyCountermeasures = Countermeasures(enemyNum, numEnemies, image.width, image.height);
@@ -31,6 +32,10 @@ void Enemy::InitEnemy() {
 void Enemy::Draw() {
     DrawTextureV(image, position, planeColor);
     enemyCountermeasures.Draw();
+
+    for (auto& missile: missiles) {
+        missile.Draw();
+    }
 }
 
 // Moves the plane down
@@ -52,25 +57,39 @@ Randomly makes the enemy move to the left, right, or continue down straight
 after a certain period of time
 */
 void Enemy::Update() {
+    
     if (GetTime() - movementCooldown >= 0.5) {
         movementDecider = rand() % 3;
         movementCooldown = GetTime();
     }
     
     switch(movementDecider) {
-    case 0:
+        case 0:
         if (position.x > horizontalVariationLeft) {
             position.x -= 1;
         }
         break;
-    
-    case 1:
+        
+        case 1:
         if (position.x < (GetScreenWidth() - image.width)) {
             position.x += 1;
         }
         break;
     }
+
+    if (GetTime() - fireMissileCooldown > FIRING_MISSILE_COOLDOWN_TIME) {
+        FireMissileOpportunity();
+        fireMissileCooldown = GetTime();
+    }
+
     enemyCountermeasures.Update();
+    
+    if (missiles.size() > 0) {
+        for (auto& missile: missiles) {
+            missile.Update({playerPos.x, playerPos.y}, image.width, image.height);
+        }
+    }
+
     // FireCountermeasure();
 }
 
@@ -110,6 +129,18 @@ float Enemy::GetEnemyYPos() {
     return position.y;
 }
 
+void Enemy::SetPlayerPos(Vector2 playerPos) {
+    this -> playerPos = playerPos;
+}
+
 Rectangle Enemy::GetRect() {
     return {position.x, position.y, float(image.width), float(image.height)};
+}
+
+void Enemy::FireMissileOpportunity() {
+    srand(time(0));
+
+    if ((rand() % FIRING_MISSILE_PROBABILITY_TOTAL) < FIRING_MISSILE_PROBABILITY) {
+        missiles.push_back(Missile(position, 3.0, numEnemies));
+    }
 }

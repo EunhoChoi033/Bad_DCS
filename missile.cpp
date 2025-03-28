@@ -34,7 +34,6 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     
     // MISSILE DEVIATION: If the enemy is 200 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the target and continue on its previously given course
     if (tracking && (!((position.y - 200) > targetPos.y) || (targetPos.x == (float)GetScreenWidth() && targetPos.y == (float)GetScreenHeight()))) {
-    // if (!((position.y - 200) > targetPos.y) && tracking) {
         tracking = false;
     }
     if (tracking) {
@@ -46,7 +45,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         position.x += velocity.x;
         position.y += velocity.y;
     } else {
-        cout << "Not Tracking" << endl;
+        // cout << "Not Tracking" << endl;
         Vector2 velocity;
         if (direction.x == 0 && direction.y == 0) {
             position.y -= speed;
