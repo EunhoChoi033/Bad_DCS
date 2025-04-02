@@ -82,6 +82,10 @@ void Player::HandleInput() {
     }
 }
 
+Vector2 Player::GetPlayerPos() {
+    return position;
+}
+
 // void Player::ResetEntityHorizontalCompensation() {
 //     playerCountermeasures.SetEntityHorizontalCompensation(0.0f);
 // }
@@ -93,4 +97,8 @@ void Player::HandleInput() {
 Rectangle Player::GetRect()
 {
     return {position.x, position.y, float(image.width), float(image.height)};
+}
+
+int Player::GetPlayerHealth() {
+    return playerHealth;
 }

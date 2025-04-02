@@ -2,6 +2,7 @@
 #include "player.hpp"
 #include "enemy.hpp"
 #include "radar.hpp"
+#include "missile.hpp"
 #include <iostream>
 #include <vector>
 #include <cstdlib>
@@ -35,6 +36,7 @@ class Game {
         void InitGame(int numEnemies, int playerHealth, Color colorMain);
         int enemyFireCooldown;
         int playerHealth;
+        Vector2 currentPlayerPos;
         float horizontalVariationLeft;
         vector<Enemy> CreateEnemies(int numEnemies);
         vector<Bullet> enemyBullets;

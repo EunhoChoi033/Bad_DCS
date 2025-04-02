@@ -20,7 +20,9 @@ class Player{
         void InitPlayer(float horizontalVariationLeft);
         void SetNumEnemies(int numEnemies);
         void HandleInput();
+        Vector2 GetPlayerPos();
         Rectangle GetRect();
+        int GetPlayerHealth();
         vector<Bullet> bullets;
         int playerHealth;
         Texture2D image;

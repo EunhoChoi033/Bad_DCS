@@ -32,9 +32,12 @@ are not active
 */
 void Game::Update() {
     if (run) {
+        player.Update();
+        currentPlayerPos = player.GetPlayerPos();
 
         for (auto& enemy: enemies) {
             enemy.MoveDown();
+            enemy.SetPlayerPos(currentPlayerPos);
             enemy.Update();
             enemy.FireBullet(enemyBullets);
         }
@@ -47,7 +50,6 @@ void Game::Update() {
             bullet.Update();
         }
 
-        player.Update();
         playerRadar.Update(player.position, enemies);
 
         DeleteStuff();
@@ -131,7 +133,7 @@ void Game::CheckCollisions() {
         if (CheckCollisionRecs(bullet.GetRect(), player.GetRect())) {
             bullet.active = false;
             player.DamagePlayer(bulletHit, 0);
-            if (player.playerHealth == 0) {
+            if (player.GetPlayerHealth() == 0) {
                 GameOver();
             }
         }
@@ -143,7 +145,7 @@ void Game::CheckCollisions() {
             it = enemies.erase(it);
             player.DamagePlayer(bulletHit, 0);
             // Need to change sound
-            if (player.playerHealth == 0) {
+            if (player.GetPlayerHealth() == 0) {
                 GameOver();
             }
         } else {
@@ -157,13 +159,28 @@ void Game::CheckCollisions() {
             if (CheckCollisionRecs(it -> GetRect(), missile.GetRect())) {
                 player.DamagePlayer(bulletHit, 0);
                 it = enemies.erase(it);
-                missile.active = false;
+                missile.SetActive(false);
                 break;
             } else {
                 it++;
             }
         }
     }
+
+    // Player-Missile Collision
+    // for (auto& enemy: enemies) {
+    //     if (enemy.GetMissilesSize() > 0) {
+    //         for (auto& missile: enemy.GetMissiles()) {
+    //             if (CheckCollisionRecs (missile.GetRect(), player.GetRect())) {
+    //                 missile.SetActive(false);
+    //                 player.DamagePlayer(bulletHit, 7);
+    //                 if (player.GetPlayerHealth() == 0) {
+    //                     GameOver();
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 void Game::Reset() {
@@ -218,12 +235,24 @@ void Game::DeleteStuff() {
     }
 
     for (auto it = playerRadar.missiles.begin(); it != playerRadar.missiles.end();) {
-        if (!it -> active) {
+        if (!it -> GetActive()) {
             it = playerRadar.missiles.erase(it);
         } else {
             it++;
         }
     }
+
+    // for (auto& enemy: enemies) {
+    //     if (enemy.GetMissilesSize() > 0) {
+    //         for (auto it = enemy.missiles.begin(); it != enemy.missiles.end();) {
+    //             if (!it -> GetActive()) {
+    //                 it = enemy.missiles.erase(it);
+    //             } else {
+    //                 it++;
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 void Game::GameOver() {

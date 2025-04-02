@@ -15,6 +15,8 @@ class Missile {
         float ToDegrees(float radians);
         Rectangle GetRect();
         int GetId();
+        bool GetActive();
+        void SetActive(bool active);
         bool active;
         void NormalizeVector();
         void LoseLockOpportunity();

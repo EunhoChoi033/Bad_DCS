@@ -33,8 +33,11 @@ void Enemy::Draw() {
     DrawTextureV(image, position, planeColor);
     enemyCountermeasures.Draw();
 
-    for (auto& missile: missiles) {
-        missile.Draw();
+    if (missiles.size() > 0) {
+        for (auto& missile: missiles) {
+            cout << "Drawing" << endl;
+            missile.Draw();
+        }
     }
 }
 
@@ -143,4 +146,12 @@ void Enemy::FireMissileOpportunity() {
     if ((rand() % FIRING_MISSILE_PROBABILITY_TOTAL) < FIRING_MISSILE_PROBABILITY) {
         missiles.push_back(Missile(position, 3.0, numEnemies));
     }
+}
+
+int Enemy::GetMissilesSize() {
+    return missiles.size();
+}
+
+vector<Missile> Enemy::GetMissiles() {
+    return missiles;
 }

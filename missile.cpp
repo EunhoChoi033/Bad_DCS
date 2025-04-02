@@ -27,13 +27,13 @@ void Missile::Draw() {
 void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     
     if (active) {
-        if (((position.x + image.width) < 0) || (position.x > GetScreenWidth())) {
+        if (((position.x + image.width) < 0) || (position.x > GetScreenWidth()) || (position.y < GetScreenHeight())) {
             active = false;
         }
     }
     
     // MISSILE DEVIATION: If the enemy is 200 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the target and continue on its previously given course
-    if (tracking && (!((position.y - 200) > targetPos.y) || (targetPos.x == (float)GetScreenWidth() && targetPos.y == (float)GetScreenHeight()))) {
+    if (tracking && ((abs(targetPos.y - position.y) < 200) || (targetPos.x == (float)GetScreenWidth() && targetPos.y == (float)GetScreenHeight()))) {
         tracking = false;
     }
     if (tracking) {
@@ -45,7 +45,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         position.x += velocity.x;
         position.y += velocity.y;
     } else {
-        // cout << "Not Tracking" << endl;
+        cout << "Not Tracking" << endl;
         Vector2 velocity;
         if (direction.x == 0 && direction.y == 0) {
             position.y -= speed;
@@ -69,6 +69,14 @@ Rectangle Missile::GetRect() {
 
 int Missile::GetId() {
     return id;
+}
+
+bool Missile::GetActive() {
+    return active;
+}
+
+void Missile::SetActive(bool active) {
+    this -> active = active;
 }
 
 void Missile::NormalizeVector() {

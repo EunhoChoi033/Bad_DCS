@@ -25,16 +25,18 @@ class Enemy {
         void SetPlayerPos(Vector2 playerPos);
         Rectangle GetRect();
         void FireMissileOpportunity();
+        int GetMissilesSize();
+        vector<Missile> GetMissiles();
         bool alive;
         Texture2D image;
         int enemyHealth;
+        vector<Missile> missiles;
     
         private:
         Countermeasures enemyCountermeasures;
         double countermeasureCooldown;
         Vector2 position;
         Vector2 playerPos;
-        vector<Missile> missiles;
         int enemyNum;
         int numEnemies;
         double movementCooldown;
