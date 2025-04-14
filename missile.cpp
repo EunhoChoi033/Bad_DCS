@@ -44,6 +44,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         Vector2 velocity = {direction.x * speed, direction.y * speed};
         position.x += velocity.x;
         position.y += velocity.y;
+        cout << "Tracking" << endl;
     } else {
         cout << "Not Tracking" << endl;
         Vector2 velocity;
