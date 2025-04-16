@@ -27,7 +27,7 @@ void Missile::Draw() {
 void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     
     if (active) {
-        if (((position.x + image.width) < 0) || (position.x > GetScreenWidth()) || (position.y < GetScreenHeight())) {
+        if (((position.x + image.width) < 0) || (position.x > GetScreenWidth()) || (position.y > GetScreenHeight())) {
             active = false;
         }
     }

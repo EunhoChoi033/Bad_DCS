@@ -242,17 +242,17 @@ void Game::DeleteStuff() {
         }
     }
 
-    // for (auto& enemy: enemies) {
-    //     if (enemy.GetMissilesSize() > 0) {
-    //         for (auto it = enemy.missiles.begin(); it != enemy.missiles.end();) {
-    //             if (!it -> GetActive()) {
-    //                 it = enemy.missiles.erase(it);
-    //             } else {
-    //                 it++;
-    //             }
-    //         }
-    //     }
-    // }
+    for (auto& enemy: enemies) {
+        if (enemy.GetMissilesSize() > 0) {
+            for (auto it = enemy.missiles.begin(); it != enemy.missiles.end();) {
+                if (!it -> GetActive()) {
+                    it = enemy.missiles.erase(it);
+                } else {
+                    it++;
+                }
+            }
+        }
+    }
 }
 
 void Game::GameOver() {
