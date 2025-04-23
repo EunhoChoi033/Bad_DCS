@@ -7,6 +7,9 @@ Game::Game(int numEnemies, int playerHealth, Color colorMain, float horizontalVa
     gunfire = LoadSound("Sounds/gunfire.wav");
     bulletHit = LoadSound("Sounds/bullet_hit.wav");
     radarPing = LoadSound("Sounds/radar_update_blip.wav");
+    playerPlaneImage = LoadTexture("Graphics/jet.png");
+    playerPlaneImage.height /= 25;
+    playerPlaneImage.width /= 25;
     SetSoundVolume(gunfire, 0.5f);
     SetSoundVolume(bulletHit, 0.25f);
     SetSoundVolume(radarPing, 0.15f);
@@ -40,6 +43,19 @@ void Game::Update() {
             enemy.SetPlayerPos(currentPlayerPos);
             enemy.Update();
             enemy.FireBullet(enemyBullets);
+            if ((enemy.GetMissileRequests() == 1) && (player.GetPlayerPos().y - enemy.GetEnemyYPos() > 200)) {
+                int currentNumEnemies = numEnemies;
+                enemyMissiles.push_back(Missile(enemy.GetEnemyPos(), 3.0, currentNumEnemies));
+                enemy.SetMissileRequests(0);
+                cout << "Spawning Enemy Missile" << endl;
+            }
+        }
+
+        if (enemyMissiles.size() > 0) {
+            Vector2 playerPos = player.GetPlayerPos();
+            for (auto& missile: enemyMissiles) {
+                missile.Update({playerPos.x, playerPos.y}, playerPlaneImage.width, playerPlaneImage.height);
+            }
         }
 
         for (auto& bullet: player.bullets) {
@@ -84,6 +100,10 @@ void Game::Draw() {
     for (auto& enemy: enemies) {
         enemy.Draw();
         // cout << enemy.getEnemyNum() << ", ";
+    }
+
+    for (auto& missile: enemyMissiles) {
+        missile.Draw();
     }
     // cout << endl;
 }
@@ -168,24 +188,25 @@ void Game::CheckCollisions() {
     }
 
     // Player-Missile Collision
-    // for (auto& enemy: enemies) {
-    //     if (enemy.GetMissilesSize() > 0) {
-    //         for (auto& missile: enemy.GetMissiles()) {
-    //             if (CheckCollisionRecs (missile.GetRect(), player.GetRect())) {
-    //                 missile.SetActive(false);
-    //                 player.DamagePlayer(bulletHit, 7);
-    //                 if (player.GetPlayerHealth() == 0) {
-    //                     GameOver();
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    if (enemyMissiles.size() > 0) {
+        for (auto it = enemyMissiles.begin(); it != enemyMissiles.end();) {
+            if (CheckCollisionRecs(it -> GetRect(), player.GetRect())) {
+                player.DamagePlayer(bulletHit, 5);
+                it = enemyMissiles.erase(it);
+                if (player.GetPlayerHealth() == 0) {
+                    GameOver();
+                }
+            } else {
+                it++;
+            }
+        }
+    }
 }
 
 void Game::Reset() {
     enemies.clear();
     enemyBullets.clear();
+    enemyMissiles.clear();
     player.bullets.clear();
     playerRadar.ClearMissiles();
     playerRadar.SetSelectedEnemy(-1);
@@ -242,14 +263,12 @@ void Game::DeleteStuff() {
         }
     }
 
-    for (auto& enemy: enemies) {
-        if (enemy.GetMissilesSize() > 0) {
-            for (auto it = enemy.missiles.begin(); it != enemy.missiles.end();) {
-                if (!it -> GetActive()) {
-                    it = enemy.missiles.erase(it);
-                } else {
-                    it++;
-                }
+    if (enemyMissiles.size() > 0) {
+        for (auto it = enemyMissiles.begin(); it != enemyMissiles.end();) {
+            if (!it -> GetActive()) {
+                it = enemyMissiles.erase(it);
+            } else {
+                it++;
             }
         }
     }

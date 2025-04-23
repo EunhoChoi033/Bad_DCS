@@ -34,4 +34,4 @@ class Missile {
 };
 
 const int LOSING_LOCK_PROBABILITY_TOTAL = 100;
-const int LOSING_LOCK_PROBABILITY = 90; /* Probability = 0 - 100 */
+const int LOSING_LOCK_PROBABILITY = 100; /* Probability = 0 - 100 */

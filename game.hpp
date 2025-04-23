@@ -38,6 +38,8 @@ class Game {
         int playerHealth;
         Vector2 currentPlayerPos;
         float horizontalVariationLeft;
+        Texture2D playerPlaneImage;
         vector<Enemy> CreateEnemies(int numEnemies);
         vector<Bullet> enemyBullets;
+        vector<Missile> enemyMissiles;
 };

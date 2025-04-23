@@ -9,6 +9,7 @@ Enemy::Enemy(Vector2 position, int enemyNum, int numEnemies, float horizontalVar
     this -> enemyNum = enemyNum;
     this -> numEnemies = numEnemies;
     this -> horizontalVariationLeft = horizontalVariationLeft;
+    missileRequests = 0;
 
     if (position.x != GetScreenWidth() && position.y != GetScreenHeight()) {
         InitEnemy();
@@ -33,12 +34,12 @@ void Enemy::Draw() {
     DrawTextureV(image, position, planeColor);
     enemyCountermeasures.Draw();
 
-    if (missiles.size() > 0) {
-        for (auto& missile: missiles) {
-            cout << "Drawing" << endl;
-            missile.Draw();
-        }
-    }
+    // if (missiles.size() > 0) {
+    //     for (auto& missile: missiles) {
+    //         cout << "Drawing" << endl;
+    //         missile.Draw();
+    //     }
+    // }
 }
 
 // Moves the plane down
@@ -87,11 +88,11 @@ void Enemy::Update() {
 
     enemyCountermeasures.Update();
     
-    if (missiles.size() > 0) {
-        for (auto& missile: missiles) {
-            missile.Update({playerPos.x, playerPos.y}, image.width, image.height);
-        }
-    }
+    // if (missiles.size() > 0) {
+    //     for (auto& missile: missiles) {
+    //         missile.Update({playerPos.x, playerPos.y}, image.width, image.height);
+    //     }
+    // }
 
     // FireCountermeasure();
 }
@@ -124,12 +125,24 @@ int Enemy::GetEnemyNum() {
     return enemyNum;
 }
 
+Vector2 Enemy::GetEnemyPos() {
+    return position;
+}
+
 float Enemy::GetEnemyXPos() {
     return position.x;
 }
 
 float Enemy::GetEnemyYPos() {
     return position.y;
+}
+
+int Enemy::GetMissileRequests() {
+    return missileRequests;
+}
+
+void Enemy::SetMissileRequests(int missileRequests) {
+    this -> missileRequests = missileRequests;
 }
 
 void Enemy::SetPlayerPos(Vector2 playerPos) {
@@ -141,17 +154,17 @@ Rectangle Enemy::GetRect() {
 }
 
 void Enemy::FireMissileOpportunity() {
-    srand(time(0));
+    srand(time(enemyNum));
 
     if ((rand() % FIRING_MISSILE_PROBABILITY_TOTAL) < FIRING_MISSILE_PROBABILITY) {
-        missiles.push_back(Missile(position, 3.0, numEnemies));
+        missileRequests = 1;
     }
 }
 
-int Enemy::GetMissilesSize() {
-    return missiles.size();
-}
+// int Enemy::GetMissilesSize() {
+//     return missiles.size();
+// }
 
-vector<Missile> Enemy::GetMissiles() {
-    return missiles;
-}
+// vector<Missile> Enemy::GetMissiles() {
+//     return missiles;
+// }

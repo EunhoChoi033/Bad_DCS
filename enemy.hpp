@@ -20,17 +20,20 @@ class Enemy {
         void UnloadImages();
         void DamageEnemy(Sound hitSound, int damageAmount);
         int GetEnemyNum();
+        Vector2 GetEnemyPos(); 
         float GetEnemyXPos();
         float GetEnemyYPos();
+        int GetMissileRequests();
+        void SetMissileRequests(int missileRequests);
         void SetPlayerPos(Vector2 playerPos);
         Rectangle GetRect();
         void FireMissileOpportunity();
-        int GetMissilesSize();
-        vector<Missile> GetMissiles();
+        // int GetMissilesSize();
+        // vector<Missile> GetMissiles();
         bool alive;
         Texture2D image;
         int enemyHealth;
-        vector<Missile> missiles;
+        // vector<Missile> missiles;
     
         private:
         Countermeasures enemyCountermeasures;
@@ -45,9 +48,10 @@ class Enemy {
         double fireCooldown;
         Color planeColor;
         float horizontalVariationLeft;
+        int missileRequests;
 };
 
 const float ENEMY_COUNTERMEASURE_COOLDOWN_TIME = 0.3f;
-const double FIRING_MISSILE_COOLDOWN_TIME = 2.0;
+const double FIRING_MISSILE_COOLDOWN_TIME = 1.0;
 const int FIRING_MISSILE_PROBABILITY_TOTAL = 100;
-const int FIRING_MISSILE_PROBABILITY = 20; /* Probability = 0 - 100 */
+const int FIRING_MISSILE_PROBABILITY = 10; /* Probability = 0 - 100 */

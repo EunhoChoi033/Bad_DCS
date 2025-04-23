@@ -44,7 +44,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         Vector2 velocity = {direction.x * speed, direction.y * speed};
         position.x += velocity.x;
         position.y += velocity.y;
-        cout << "Tracking" << endl;
+        // cout << "Tracking" << endl;
     } else {
         cout << "Not Tracking" << endl;
         Vector2 velocity;
@@ -87,7 +87,7 @@ void Missile::NormalizeVector() {
 }
 
 void Missile::LoseLockOpportunity() {
-    srand(time(0));
+    srand(GetTime());
 
     if ((rand() % LOSING_LOCK_PROBABILITY_TOTAL) < LOSING_LOCK_PROBABILITY) {
         tracking = false;
