@@ -4,6 +4,7 @@ Missile::Missile(Vector2 position, float speed, int id) {
     this -> position = position;
     this -> speed = speed;
     this -> id = id;
+    srand(GetTime() + (double)id);
     
     image = LoadTexture("Graphics/missile.png");
     image.width /= 4;
@@ -33,7 +34,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
     }
     
     // MISSILE DEVIATION: If the enemy is 200 pixels ahead of the missile (direct vertical distance), then the missile will stop tracking the target and continue on its previously given course
-    if (tracking && ((abs(targetPos.y - position.y) < 200) || (targetPos.x == (float)GetScreenWidth() && targetPos.y == (float)GetScreenHeight()))) {
+    if (tracking && (((DistanceFromMissile(targetPos)) < MAX_DISTANCE_AWAY_FROM_TARGET_MISSILE_WILL_LOSE_LOCK) || (targetPos.x == (float)GetScreenWidth() && targetPos.y == (float)GetScreenHeight()))) {
         tracking = false;
     }
     if (tracking) {
@@ -46,7 +47,7 @@ void Missile::Update(Vector2 targetPos, float targetWidth, float targetHeight) {
         position.y += velocity.y;
         // cout << "Tracking" << endl;
     } else {
-        cout << "Not Tracking" << endl;
+        // cout << "Not Tracking" << endl;
         Vector2 velocity;
         if (direction.x == 0 && direction.y == 0) {
             position.y -= speed;
@@ -87,9 +88,13 @@ void Missile::NormalizeVector() {
 }
 
 void Missile::LoseLockOpportunity() {
-    srand(GetTime());
 
-    if ((rand() % LOSING_LOCK_PROBABILITY_TOTAL) < LOSING_LOCK_PROBABILITY) {
+    if (((rand() % LOSING_LOCK_PROBABILITY_TOTAL) < LOSING_LOCK_PROBABILITY) && !tracking) {
         tracking = false;
+        // cout << "Lost lock due to flares" << endl;
     }
+}
+
+float Missile::DistanceFromMissile(Vector2 targetPos) {
+    return hypot((abs(position.x - targetPos.x)), (abs(position.y - targetPos.y)));
 }

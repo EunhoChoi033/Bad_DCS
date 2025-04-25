@@ -43,3 +43,5 @@ class Game {
         vector<Bullet> enemyBullets;
         vector<Missile> enemyMissiles;
 };
+
+const int FLARE_DISTANCE_TO_MISSILE_TO_LOSE_LOCK = 500;

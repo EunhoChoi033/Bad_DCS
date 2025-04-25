@@ -20,6 +20,7 @@ class Missile {
         bool active;
         void NormalizeVector();
         void LoseLockOpportunity();
+        float DistanceFromMissile(Vector2 targetPos);
         // bool forward;
 
     private:
@@ -33,5 +34,6 @@ class Missile {
         bool tracking;
 };
 
-const int LOSING_LOCK_PROBABILITY_TOTAL = 100;
-const int LOSING_LOCK_PROBABILITY = 100; /* Probability = 0 - 100 */
+const int LOSING_LOCK_PROBABILITY_TOTAL = 100; /* DON'T CHANGE */
+const int LOSING_LOCK_PROBABILITY = 80; /* Probability = 0 - 100 */
+const int MAX_DISTANCE_AWAY_FROM_TARGET_MISSILE_WILL_LOSE_LOCK = 200;

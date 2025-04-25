@@ -59,6 +59,7 @@ void Player::DamagePlayer(Sound hitSound, int damageAmount) {
 
 void Player::InitPlayer(float horizontalVariationLeft) {
     this -> horizontalVariationLeft = horizontalVariationLeft;
+    countermeasureFired = false;
     image = LoadTexture("Graphics/jet.png");
     image.height /= 25;
     image.width /= 25;
@@ -78,8 +79,17 @@ void Player::SetNumEnemies(int numEnemies) {
 void Player::HandleInput() {
     if(IsKeyDown(KEY_Q) && (GetTime() - countermeasureCooldown >= PLAYER_COUNTERMEASURE_COOLDOWN_TIME)) {
         playerCountermeasures.AddFlare(position);
+        countermeasureFired = true;
         countermeasureCooldown = GetTime();
     }
+}
+
+void Player::SetCountermeasureFired(bool countermeasureFired) {
+    this -> countermeasureFired = countermeasureFired;
+}
+
+bool Player::GetCountermeasureFired() {
+    return countermeasureFired;
 }
 
 Vector2 Player::GetPlayerPos() {

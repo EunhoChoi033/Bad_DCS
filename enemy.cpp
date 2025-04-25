@@ -9,6 +9,7 @@ Enemy::Enemy(Vector2 position, int enemyNum, int numEnemies, float horizontalVar
     this -> enemyNum = enemyNum;
     this -> numEnemies = numEnemies;
     this -> horizontalVariationLeft = horizontalVariationLeft;
+    srand(GetTime() + (double)enemyNum);
     missileRequests = 0;
 
     if (position.x != GetScreenWidth() && position.y != GetScreenHeight()) {
@@ -81,7 +82,7 @@ void Enemy::Update() {
         break;
     }
 
-    if (GetTime() - fireMissileCooldown > FIRING_MISSILE_COOLDOWN_TIME) {
+    if ((GetTime() - fireMissileCooldown) > FIRING_MISSILE_COOLDOWN_TIME) {
         FireMissileOpportunity();
         fireMissileCooldown = GetTime();
     }
@@ -154,10 +155,10 @@ Rectangle Enemy::GetRect() {
 }
 
 void Enemy::FireMissileOpportunity() {
-    srand(time(enemyNum));
 
     if ((rand() % FIRING_MISSILE_PROBABILITY_TOTAL) < FIRING_MISSILE_PROBABILITY) {
         missileRequests = 1;
+        // cout << "#" << enemyNum << " requesting Missile" << endl;
     }
 }
 

@@ -54,4 +54,4 @@ class Enemy {
 const float ENEMY_COUNTERMEASURE_COOLDOWN_TIME = 0.3f;
 const double FIRING_MISSILE_COOLDOWN_TIME = 1.0;
 const int FIRING_MISSILE_PROBABILITY_TOTAL = 100;
-const int FIRING_MISSILE_PROBABILITY = 10; /* Probability = 0 - 100 */
+const int FIRING_MISSILE_PROBABILITY = 5; /* Probability = 0 - 100 */

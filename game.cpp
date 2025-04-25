@@ -41,20 +41,24 @@ void Game::Update() {
         for (auto& enemy: enemies) {
             enemy.MoveDown();
             enemy.SetPlayerPos(currentPlayerPos);
-            enemy.Update();
-            enemy.FireBullet(enemyBullets);
             if ((enemy.GetMissileRequests() == 1) && (player.GetPlayerPos().y - enemy.GetEnemyYPos() > 200)) {
                 int currentNumEnemies = numEnemies;
                 enemyMissiles.push_back(Missile(enemy.GetEnemyPos(), 3.0, currentNumEnemies));
                 enemy.SetMissileRequests(0);
                 cout << "Spawning Enemy Missile" << endl;
             }
+            enemy.Update();
+            enemy.FireBullet(enemyBullets);
         }
 
         if (enemyMissiles.size() > 0) {
             Vector2 playerPos = player.GetPlayerPos();
             for (auto& missile: enemyMissiles) {
                 missile.Update({playerPos.x, playerPos.y}, playerPlaneImage.width, playerPlaneImage.height);
+                if (player.GetCountermeasureFired() && ((missile.DistanceFromMissile(player.GetPlayerPos())) < FLARE_DISTANCE_TO_MISSILE_TO_LOSE_LOCK)) {
+                    missile.LoseLockOpportunity();
+                    player.SetCountermeasureFired(true);
+                }
             }
         }
 

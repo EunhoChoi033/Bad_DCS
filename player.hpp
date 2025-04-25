@@ -20,6 +20,8 @@ class Player{
         void InitPlayer(float horizontalVariationLeft);
         void SetNumEnemies(int numEnemies);
         void HandleInput();
+        void SetCountermeasureFired(bool countermeasureFired);
+        bool GetCountermeasureFired();
         Vector2 GetPlayerPos();
         Rectangle GetRect();
         int GetPlayerHealth();
@@ -35,6 +37,7 @@ class Player{
         double countermeasureCooldown;
         int numEnemies;
         float horizontalVariationLeft;
+        bool countermeasureFired;
 };
 
 const float HORIZONTAL_MOVEMENT_MAGNITUDE = 5;
