@@ -20,7 +20,6 @@ Missile::Missile() {
 
 void Missile::Draw() {
     if (active) {
-        // DrawTextureV(image, position, WHITE);
         DrawTextureEx(image, position, ToDegrees(rotation) + 90.0f, 1.0f, WHITE);
     }
 }
@@ -66,7 +65,7 @@ float Missile::ToDegrees(float radians) {
 }
 
 Rectangle Missile::GetRect() {
-    return {position.x, position.y, float(image.width), float(image.height)};
+    return {position.x, position.y, -float(image.width), -float(image.height)};
 }
 
 int Missile::GetId() {
