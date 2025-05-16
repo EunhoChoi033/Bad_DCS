@@ -25,6 +25,7 @@ class Countermeasures{
         int flareHealth;
         Color flareColor;
         int coolingCooldown;
+        Sound chaffFlareSound;
         // float entityHorizontalCompensation;
 };
 
