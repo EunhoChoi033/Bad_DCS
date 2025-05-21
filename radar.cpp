@@ -45,7 +45,10 @@ Radar::~Radar() {
 void Radar::Draw() {
     
     DrawCircle(position.x, position.y, outerRadius + 10.0f, fadedColor);
- 
+    
+
+    DrawRing(position, outerRadius + 2.0f, outerRadius + 6.0f, 20.0f, 60.0f, 128, YELLOW); 
+    DrawRing(position, outerRadius - 5.0f, outerRadius - 1.0f, 20.0f, 60.0f, 128, ORANGE); 
     // DrawCircleSector(position, outerRadius + 6.0f, 20.0f, 60.0f, 128, YELLOW);
     // DrawCircleSector(position, outerRadius + 2.0f, 20.0f, 60.0f, 128, grey);
     // DrawCircleSector(position, outerRadius + 2.0f, 20.0f, 60.0f, 128, fadedColor);

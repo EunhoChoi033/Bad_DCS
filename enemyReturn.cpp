@@ -29,9 +29,8 @@ void EnemyReturn::Draw() {
         DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
     }
     
-    // Other stuff to draw on the radar:
+    // Missile on Radar Drawing:
 
-    // DrawRing(position, radius, radius + thickness, 0.0f, 360.0f, 128, color);
     // const char* missileMessage = "M";
     // Vector2 offset = MeasureTextEx(font, missileMessage, 10, 1);
     // DrawTextEx(font, missileMessage, {position.x - (offset.x / 2), position.y - (offset.y / 2)}, 10, 1, color);
