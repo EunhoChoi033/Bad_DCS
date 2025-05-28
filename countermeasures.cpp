@@ -9,7 +9,7 @@ Countermeasures::Countermeasures(int id, int numEnemies, float entityWidth, floa
     this -> numEnemies = numEnemies;
     this -> entityWidth = entityWidth;
     this -> entityHeight = entityHeight;
-    chaffFlareSound = LoadSound("Sounds/chaff_flare_SFX.wav");
+    chaffFlareSound = LoadSound("Sounds/Chaff_Flare_SFX.wav");
 }
 
 void Countermeasures::Draw() {

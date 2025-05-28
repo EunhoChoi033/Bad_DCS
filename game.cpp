@@ -45,11 +45,14 @@ void Game::Update() {
                 int currentNumEnemies = numEnemies;
                 enemyMissiles.push_back(Missile(enemy.GetEnemyPos(), 3.0, currentNumEnemies));
                 enemy.SetMissileRequests(0);
+                playerRadar.AlertMissileLaunch();
                 cout << "Spawning Enemy Missile" << endl;
             }
             enemy.Update();
             enemy.FireBullet(enemyBullets);
         }
+
+        playerRadar.SetEnemyMissiles(enemyMissiles);
 
         if (enemyMissiles.size() > 0) {
             Vector2 playerPos = player.GetPlayerPos();
@@ -59,6 +62,7 @@ void Game::Update() {
                     missile.LoseLockOpportunity();
                     player.SetCountermeasureFired(true);
                 }
+
             }
         }
 
@@ -109,7 +113,6 @@ void Game::Draw() {
     for (auto& missile: enemyMissiles) {
         missile.Draw();
     }
-    // cout << endl;
 }
 
 /*
@@ -156,7 +159,7 @@ void Game::CheckCollisions() {
     for (auto& bullet: enemyBullets) {
         if (CheckCollisionRecs(bullet.GetRect(), player.GetRect())) {
             bullet.active = false;
-            player.DamagePlayer(bulletHit, 0);
+            player.DamagePlayer(bulletHit, 1);
             if (player.GetPlayerHealth() == 0) {
                 GameOver();
             }
@@ -167,7 +170,7 @@ void Game::CheckCollisions() {
     for (auto it = enemies.begin(); it != enemies.end();) {
         if(CheckCollisionRecs(it -> GetRect(), player.GetRect())) {
             it = enemies.erase(it);
-            player.DamagePlayer(bulletHit, 0);
+            player.DamagePlayer(bulletHit, 8);
             // Need to change sound
             if (player.GetPlayerHealth() == 0) {
                 GameOver();

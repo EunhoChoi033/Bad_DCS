@@ -17,12 +17,16 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     radarFont = LoadFontEx("Fonts/Oxanium-SemiBold.ttf", 256, 0, 0);
     missileLockVWS = LoadSound("Sounds/missile_lock_VWS.wav");
     missileLocking = LoadMusicStream("Sounds/missile_locking.mp3");
+    alertMissileLaunch = LoadMusicStream("missile_launch_warning.mp3");
     SetSoundVolume(missileLockVWS, 1.0f);
+    SetMusicVolume(alertMissileLaunch, 1.0f);
+    PlayMusicStream(alertMissileLaunch);
     SetMusicVolume(missileLocking, 1.0f);
     PlayMusicStream(missileLocking);
     outerRadius = 100.0f;
     innerRadius = 20.0f;
     thickness = 2.0f;
+    rwrOn = false;
     fadedColor = {color.r, color.g, color.b, (unsigned char)Limiter(color.a - 225, 0 , 255)};
     grey = {29, 29, 27, 255};
     radarRangeX = GetScreenWidth() / 2;
@@ -30,6 +34,7 @@ Radar::Radar(Vector2 position, Vector2 initPlayerPos, float playerWidth, float p
     radarUpdateCooldown = 0.0;
     radarReturnSelectCooldown = 0.0;
     missileLockedCooldown = 0.0;
+    flickeringRWRTimer = 0.0;
 }
 
 Radar::Radar() {
@@ -46,12 +51,21 @@ void Radar::Draw() {
     
     DrawCircle(position.x, position.y, outerRadius + 10.0f, fadedColor);
     
+    if ((enemyMissiles.size() > 0) && ((GetTime() - flickeringRWRTimer) > RWR_TIME)) {
+        rwrOn = !rwrOn;
+        flickeringRWRTimer = GetTime();
+        UpdateMusicStream(alertMissileLaunch);
+    }
 
-    DrawRing(position, outerRadius + 2.0f, outerRadius + 6.0f, 20.0f, 60.0f, 128, YELLOW); 
-    DrawRing(position, outerRadius - 5.0f, outerRadius - 1.0f, 20.0f, 60.0f, 128, ORANGE); 
-    // DrawCircleSector(position, outerRadius + 6.0f, 20.0f, 60.0f, 128, YELLOW);
-    // DrawCircleSector(position, outerRadius + 2.0f, 20.0f, 60.0f, 128, grey);
-    // DrawCircleSector(position, outerRadius + 2.0f, 20.0f, 60.0f, 128, fadedColor);
+    if (rwrOn) {
+        DrawRing(position, outerRadius + 2.0f, outerRadius + 6.0f, -180.0f, 0.0f, 128, YELLOW); 
+    }
+
+    // if (enemyMissiles.size() == 0) {
+    //     SeekMusicStream(alertMissileLaunch, 0.0f);
+    // }
+
+    // DrawRing(position, outerRadius - 5.0f, outerRadius - 1.0f, 20.0f, 60.0f, 128, ORANGE);
 
     for (auto& enemyReturn: enemyReturns) {
         enemyReturn.Draw();
@@ -193,6 +207,14 @@ void Radar::ClearMissiles() {
 
 void Radar::SetSelectedEnemy(int newSelectedEnemy) {
     selectedEnemy = newSelectedEnemy;
+}
+
+void Radar::AlertMissileLaunch() {
+    // PlaySound(alertMissileLaunch);
+}
+
+void Radar::SetEnemyMissiles(vector<Missile> enemyMissiles) {
+    this -> enemyMissiles = enemyMissiles;
 }
 
 int Radar::Limiter(int value, int min, int max) {

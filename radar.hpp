@@ -23,10 +23,13 @@ class Radar {
         Enemy FindEnemy(Missile missile, vector<Enemy> enemyList);
         void ClearMissiles();
         void SetSelectedEnemy(int newSelectedEnemy);
+        void AlertMissileLaunch();
+        void SetEnemyMissiles(vector<Missile> enemyMissiles);
         Font radarFont;
         vector<Missile> missiles;
         Sound missileLockVWS;
         Music missileLocking;
+        Music alertMissileLaunch;
 
     private:
         int Limiter(int value, int min, int max);
@@ -35,6 +38,7 @@ class Radar {
         Vector2 position;
         Color color;
         Vector2 initPlayerPos;
+        vector<Missile> enemyMissiles;
         vector<Enemy> enemies;
         vector<EnemyReturn> enemyReturns;
         Texture2D planeImage;
@@ -49,9 +53,13 @@ class Radar {
         float radarReturnSelectCooldown;
         float missileLockedCooldown;
         float horizontalVariationLeft;
+        float flickeringRWRTimer;
+        bool rwrOn;
         bool canFire;
         Color fadedColor;
         Color grey;
         Sound radarPing;
         // Missile oneMissile;
 };
+
+const float RWR_TIME = 0.30;
